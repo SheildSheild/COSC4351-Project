@@ -17,3 +17,4 @@ nvm install node
 echo "Verifying files..."
 node -v
 npm -v
+npm install
