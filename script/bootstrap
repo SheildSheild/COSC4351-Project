@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Install NVM
+echo "Installing NVM..."
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+
+# Source nvm script to ensure we can use nvm in this shell
+echo "Exporting nvm script..."
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Install latest version of Node.js and npm
+echo "Installing latest version of Node/npm..."
+nvm install node
+
+# Verify installation
+echo "Verifying files..."
+node -v
+npm -v
