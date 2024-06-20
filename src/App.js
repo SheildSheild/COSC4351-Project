@@ -1,8 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/navBar/navBar';
+import LoginPage from './components/Login/Login';
+import RegisterPage from './components/Register/Register';
+import Profile from './components/ProfileManagement/profileManagement';
+import Events from './components/EventManagement/eventManagement';
+import logo from './images/volunLogo.png';
 import './App.css';
 
 const { TextDecoder, TextEncoder } = require('util');
@@ -14,34 +17,24 @@ function Home() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-Logo" alt="logo"/>
-        <p>
-          My nuts are big.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <nav>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
-        </nav>
+        <h3>Welcome!</h3>
       </header>
     </div>
   );
 }
 
 function App() {
+  const links = [["", "Home"], ["Login", "Login"], ["Register", "Register"], ["Profile", "Profile"], ["Events", "Events"]];
   return (
     <Router>
       <div>
+        <Navbar links={links} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={Login} />
-          <Route path="/register" element={Register} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/events" element={<Events />} />
         </Routes>
       </div>
     </Router>
