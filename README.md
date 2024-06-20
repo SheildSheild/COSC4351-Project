@@ -7,3 +7,7 @@ In your ubuntu terminal, run this code
 Then type this into your terminal
 
 `./script/bootstrap`
+
+Ensure that you have the latest dependencies by running this command
+
+`npm install`
