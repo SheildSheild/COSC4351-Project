@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './profileManagement.css';
-import state from './state.json';
-import skills from './skills.json';
+import state from '../mockData/state.json';
+import skills from '../mockData/skills.json';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
