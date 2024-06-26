@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import './eventManagement.css';
-import state from '../mockData/state.json';
-import skills from '../mockData/skills.json';
+import './eventManagement.css'; // Update CSS file path as needed
+import skills from '../mockData/skills.json'; // Update path to skills data
 
-const Profile = () => {
+const Event = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    skills: [],
-    preferences: '',
-    availability: []
+    eventName: '',
+    eventDescription: '',
+    location: '',
+    requiredSkills: [],
+    urgency: '',
+    eventDate: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -38,7 +34,7 @@ const Profile = () => {
     }
     setFormData({
       ...formData,
-      skills: selectedSkills
+      requiredSkills: selectedSkills
     });
   };
 
@@ -52,32 +48,20 @@ const Profile = () => {
 
   const validateInput = (name, value) => {
     let errorMsg = '';
-
+  
     switch (name) {
-      case 'fullName':
-        if (value.length > 50) {
-          errorMsg = 'Full Name cannot exceed 50 characters.';
-        }
-        break;
-      case 'address1':
+      case 'eventName':
         if (value.length > 100) {
-          errorMsg = 'Address 1 cannot exceed 100 characters.';
+          errorMsg = 'Event Name cannot exceed 100 characters.';
         }
         break;
-      case 'address2':
-        if (value.length > 100) {
-          errorMsg = 'Address 2 cannot exceed 100 characters.';
-        }
+      case 'eventDescription':
         break;
-      case 'city':
-        if (value.length > 100) {
-          errorMsg = 'City cannot exceed 100 characters.';
-        }
+      case 'location':
         break;
-      case 'zipCode':
-        if (!isValidZipCode(value)) {
-          errorMsg = 'Invalid ZIP Code format.';
-        }
+      case 'urgency':
+        break;
+      case 'eventDate':
         break;
       default:
         break;
@@ -89,27 +73,7 @@ const Profile = () => {
     }));
   };
 
-  const isValidZipCode = (value) => {
-    // Allow either standard 5-digit ZIP code or ZIP+4 (5 digits followed by a dash and 4 digits)
-    return /^\d{5}(-\d{4})?$/.test(value);
-  };
-
-  const handleZipCodeChange = (e) => {
-    let { value } = e.target;
-    // Remove non-numeric characters
-    value = value.replace(/\D/g, '');
-
-    // Format ZIP code with hyphen for ZIP+4 if necessary
-    if (value.length > 5) {
-      value = `${value.slice(0, 5)}-${value.slice(5)}`;
-    }
-
-    setFormData({
-      ...formData,
-      zipCode: value
-    });
-    validateInput('zipCode', value);
-  };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -118,133 +82,91 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
-      <h1>Profile Management</h1>
+    <div className="event-container">
+      <h1>Event Management</h1>
 
       <div className="form-group">
-        <label>Full Name:</label>
+        <label>Event Name:</label>
         <input
-          type="text"
-          name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          required
-          maxLength="50"
-        />
-        {errors.fullName && <span className="error-message">{errors.fullName}</span>}
-      </div>
-
-      <div className="form-group">
-        <label>Address 1:</label>
-        <input
-          type="text"
-          name="address1"
-          value={formData.address1}
-          onChange={handleChange}
-          required
-          maxLength="100"
-        />
-        {errors.address1 && <span className="error-message">{errors.address1}</span>}
-      </div>
-
-      <div className="form-group">
-        <label>Address 2:</label>
-        <input
-          type="text"
-          name="address2"
-          value={formData.address2}
-          onChange={handleChange}
-          maxLength="100"
-        />
-        {errors.address2 && <span className="error-message">{errors.address2}</span>}
-      </div>
-
-      <div className="form-group">
-        <label>City:</label>
-        <input
-          type="text"
-          name="city"
-          value={formData.city}
-          onChange={handleChange}
-          required
-          maxLength="100"
-        />
-        {errors.city && <span className="error-message">{errors.city}</span>}
-      </div>
-
-      <div className="form-group">
-        <label>State:</label>
-        <select
-          name="state"
-          value={formData.state}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select State</option>
-          {state.map((state) => (
-            <option key={state.code} value={state.code}>
-              {state.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>ZIP Code:</label>
-        <input
-          type="text"
-          name="zipCode"
-          value={formData.zipCode}
-          onChange={handleZipCodeChange}
-          maxLength="10"
-          placeholder="Enter ZIP or ZIP+4"
-        />
-        {errors.zipCode && <span className="error-message">{errors.zipCode}</span>}
-      </div>
-
-      <div className="form-group">
-        <label>Skills:</label>
-        <select
-          name="skills"
-          value={formData.skills}
-          onChange={handleSkillsChange}
-          multiple
-          required
-        >
-          {skills.map((skill) => (
-            <option key={skill.id} value={skill.id}>
-              {skill.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>Preferences:</label>
-        <textarea
-          name="preferences"
-          value={formData.preferences}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Availability:</label>
-        <input
-          type="date"
-          name="availability"
-          onChange={handleDateChange}
-        />
-        <div>
-          {formData.availability.map((date, index) => (
-            <span key={index}>{date} </span>
-          ))}
-        </div>
-      </div>
-
-      <button className="save-button" onClick={handleSubmit}>Save Changes</button>
+        type="text"
+        name="eventName"
+        value={formData.eventName}
+        onChange={handleChange}
+        required
+        maxLength="100"
+      />
+      {errors.eventName && <span className="error-message">{errors.eventName}</span>}
     </div>
-  );
+
+    <div className="form-group">
+      <label>Event Description:</label>
+      <textarea
+        name="eventDescription"
+        value={formData.eventDescription}
+        onChange={handleChange}
+        required
+      />
+      {errors.eventDescription && <span className="error-message">{errors.eventDescription}</span>}
+    </div>
+
+    <div className="form-group">
+      <label>Location:</label>
+      <textarea
+        name="location"
+        value={formData.location}
+        onChange={handleChange}
+        required
+      />
+      {errors.location && <span className="error-message">{errors.location}</span>}
+    </div>
+
+    <div className="form-group">
+      <label>Required Skills:</label>
+      <select
+        name="requiredSkills"
+        value={formData.requiredSkills}
+        onChange={handleSkillsChange}
+        multiple
+        required
+      >
+        {skills.map((skill) => (
+          <option key={skill.id} value={skill.id}>
+            {skill.name}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div className="form-group">
+      <label>Urgency:</label>
+      <select
+        name="urgency"
+        value={formData.urgency}
+        onChange={handleChange}
+        required
+      >
+        <option value="">Select Urgency</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+
+    <div className="form-group">
+      <label>Event Date:</label>
+      <input
+        type="date"
+        name="eventDate"
+        value={formData.eventDate}
+        onChange={handleDateChange}
+        required
+      />
+      {errors.eventDate && <span className="error-message">{errors.eventDate}</span>}
+    </div>
+
+    <button className="save-button" onClick={handleSubmit}>Create Event</button>
+  </div>
+);
 };
 
-export default Profile;
+export default Event;
