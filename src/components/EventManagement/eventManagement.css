@@ -1,6 +1,6 @@
 /* Event.css */
 
-.profile-container {
+.event-container {
   width: 50%; /* Ensures container fills the width of its parent */
   max-width: 600px; /* Limits container width for larger screens */
   margin: 0 auto;
@@ -11,24 +11,24 @@
   box-sizing: border-box; /* Include padding and border in total width */
 }
 
-.profile-container h1 {
+.event-container h1 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.form-group {
+.event-container .form-group {
   margin-bottom: 15px;
 }
 
-.form-group label {
+.event-container .form-group label {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.event-container .form-group input,
+.event-container .form-group select,
+.event-container .form-group textarea {
   width: 100%; /* Ensures inputs span full width of form-group */
   padding: 10px;
   border: 1px solid #ccc;
@@ -37,21 +37,21 @@
   font-size: 16px;
 }
 
-.form-group textarea {
+.event-container .form-group textarea {
   resize: vertical; /* Allows textarea to be vertically resizable */
 }
 
-.form-group input[type="date"] {
+.event-container .form-group input[type="date"] {
   padding: 8px;
 }
 
-.error-message {
+.event-container .error-message {
   color: red;
   font-size: 14px;
   margin-top: 5px;
 }
 
-.save-button {
+.event-container .save-button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -61,6 +61,6 @@
   font-size: 16px;
 }
 
-.save-button:hover {
+.event-container .save-button:hover {
   background-color: #0056b3;
 }
