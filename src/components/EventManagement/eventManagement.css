@@ -1,7 +1,7 @@
 /* Profile.css */
 
 .profile-container {
-  width: 100%; /* Ensures container fills the width of its parent */
+  width: 50%; /* Ensures container fills the width of its parent */
   max-width: 600px; /* Limits container width for larger screens */
   margin: 0 auto;
   padding: 20px;
