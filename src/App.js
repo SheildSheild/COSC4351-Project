@@ -8,10 +8,6 @@ import Events from './components/EventManagement/eventManagement';
 import logo from './images/volunLogo.png';
 import './App.css';
 
-const { TextDecoder, TextEncoder } = require('util');
-global.TextDecoder = TextDecoder;
-global.TextEncoder = TextEncoder;
-
 function Home() {
   return (
     <div className="App">
@@ -25,16 +21,18 @@ function Home() {
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
+  const [update, setUpdate] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     setUser(null);
+    setUpdate(!update);
   };
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('loggedInUser')));
-  }, []);
-  
+  }, [update]);
+
   const isLoggedIn = user != null;
   let links = [["", "Home"], ["Login", "Login"], ["Register", "Register"]];
   if (isLoggedIn) {
@@ -51,7 +49,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage setUser={setUser} />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register" element={<RegisterPage setUpdate={setUpdate}/>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/events" element={<Events />} />
       </Routes>

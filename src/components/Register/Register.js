@@ -1,24 +1,51 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../firebase/firebaseConfig';
-import './Register.css';  // Import the CSS file
+import './Register.css';
+import users from '../mockData/fake_users.json';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Registered
-        const user = userCredential.user;
-        console.log('Registered:', user);
-      })
-      .catch((error) => {
-        console.error('Error registering:', error);
-      });
+
+    // Checks if the user already exists
+    const existingUser = users.find((user) => user.email === email);
+    if (existingUser) {
+      alert('User already exists');
+      return;
+    }
+
+    const newUser = {
+      id: users.length + 1,
+      username: username,
+      email: email,
+      password: password,
+      role: 'user',
+      fullName: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      skills: [],
+      preferences: '',
+      availability: []
+    };
+
+    // Adds the new user into mock data
+    users.push(newUser);
+
+    // Store the new user in local storage
+    localStorage.setItem('loggedInUser', JSON.stringify(newUser));
+
+    // Redirects to homepage
+    navigate('/');
   };
 
   return (
