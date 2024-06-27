@@ -1,0 +1,13 @@
+.user-event-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .user-event-page h2 {
+    font-size: 2em;
+    color: #333;
+  }
+  
