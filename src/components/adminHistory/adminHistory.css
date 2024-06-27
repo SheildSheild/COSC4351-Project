@@ -1,13 +1,28 @@
-.user-event-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-  }
-  
-  .user-event-page h2 {
-    font-size: 2em;
-    color: #333;
-  }
-  
+.admin-history-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.volunteer-history-heading {
+  text-align: center;
+  margin-bottom: 20px; /* Adjust this margin as needed */
+  line-height: 3.5; /* Adjust line height to vertically center the text */
+}
+
+.event-box {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.event-info {
+  margin-bottom: 10px;
+}
+
+.line {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
