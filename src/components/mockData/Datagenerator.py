@@ -11,6 +11,7 @@ def generate_fake_users(num_users, num_admins):
             'id': i,
             'username': fake.user_name(),
             'password': f'user{i}pass',  # Generate a simple password based on user ID
+            'email': fake.email(),
             'role': 'user',  # Assuming all generated users are regular users
             'fullName': fake.name(),
             'address1': fake.street_address(),
@@ -30,6 +31,7 @@ def generate_fake_users(num_users, num_admins):
             'id': i,
             'username': fake.user_name(),
             'password': f'admin{i}pass',  # Generate a simple password for admin based on ID
+            'email': fake.email(),
             'role': 'admin',  # Role set to 'admin' for admin users
             'fullName': fake.name(),
             'address1': fake.street_address(),
@@ -63,5 +65,5 @@ if __name__ == '__main__':
     num_users = 4  # Number of regular users to generate
     num_admins = 1  # Number of admin users to generate
     fake_users = generate_fake_users(num_users, num_admins)
-    save_to_json(fake_users, 'fake_users.json')
+    save_to_json(fake_users, './src/components/mockData/fake_users.json')
     print(f'Generated {num_users} regular users and {num_admins} admin users, and saved to fake_users.json')
