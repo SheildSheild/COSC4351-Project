@@ -11,9 +11,7 @@
     "city": "Lake Jill",
     "state": "KS",
     "zipCode": "89445",
-    "skills": [
-      "prepare"
-    ],
+    "skills": [1],
     "preferences": "User 1 preferences",
     "availability": [
       "2024-09-02",
@@ -33,13 +31,7 @@
     "city": "North Stephanie",
     "state": "KY",
     "zipCode": "01967",
-    "skills": [
-      "east",
-      "nearly",
-      "TV",
-      "tough",
-      "mention"
-    ],
+    "skills": [2, 3, 4, 5],
     "preferences": "User 2 preferences",
     "availability": [
       "2023-08-14",
@@ -59,11 +51,7 @@
     "city": "West Lauren",
     "state": "LA",
     "zipCode": "84355",
-    "skills": [
-      "source",
-      "sense",
-      "form"
-    ],
+    "skills": [2, 3, 1],
     "preferences": "User 3 preferences",
     "availability": [
       "2024-12-09",
@@ -83,9 +71,7 @@
     "city": "South Brianville",
     "state": "IL",
     "zipCode": "40947",
-    "skills": [
-      "only"
-    ],
+    "skills": [4],
     "preferences": "User 4 preferences",
     "availability": [
       "2024-08-30"
@@ -103,9 +89,7 @@
     "city": "South Brianbury",
     "state": "IA",
     "zipCode": "67848",
-    "skills": [
-      "leave"
-    ],
+    "skills": [5],
     "preferences": "Admin 5 preferences",
     "availability": [
       "2025-01-09"

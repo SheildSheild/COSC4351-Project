@@ -5,6 +5,7 @@ import LoginPage from './components/Login/Login';
 import RegisterPage from './components/Register/Register';
 import Profile from './components/ProfileManagement/profileManagement';
 import Events from './components/EventManagement/eventManagement';
+import UserEventsPage from './components/userEvents/userEvents';
 import logo from './images/volunLogo.png';
 import './App.css';
 
@@ -39,7 +40,7 @@ function App() {
     if (user.role === 'admin') {
       links = [["", "Home"], ["Profile", "User Profile"], ["Events", "Event Management"], ["adminHistory", "Volunteer History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
     } else {
-      links = [["", "Home"], ["Profile", "User Profile"], ["userHistory", "My History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
+      links = [["", "Home"], ["Profile", "User Profile"], ["UserEventsPage", "View Events"], ["userHistory", "My History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
     }
   }
 
@@ -52,6 +53,7 @@ function App() {
         <Route path="/register" element={<RegisterPage setUpdate={setUpdate}/>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/userEventsPage" element={<UserEventsPage />} />
       </Routes>
     </Router>
   );
