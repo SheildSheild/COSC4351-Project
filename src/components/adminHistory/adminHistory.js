@@ -1,23 +1,58 @@
-import React from 'react';
-import './adminHistory.css'; // Ensure you have appropriate CSS styles
-import fakeEvents from '../mockData/fake_event.json'; // Adjust the path as per your file structure
+import React, { useState } from 'react';
+import './adminHistory.css'; // Make sure to import your CSS file
+import fakeEvents from '../mockData/fake_event.json';
 
 const AdminHistory = () => {
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const handleEventClick = (eventId) => {
+    if (selectedEvent === eventId) {
+      setSelectedEvent(null); // Deselect event if already selected
+    } else {
+      setSelectedEvent(eventId); // Select the clicked event
+    }
+  };
+
   return (
     <div className="admin-history-container">
-      <h2 className='volunteer-history-heading'>Volunteer History</h2>
-      {fakeEvents.map((event) => (
-        <div key={event.id} className="event-box">
-          <div className="event-info">
-            <div><strong>Event Name:</strong> {event.name}</div>
-            <div><strong>Description:</strong> {event.description}</div>
-            <div><strong>Location:</strong> {event.location}</div>
-            <div><strong>Date:</strong> {event.date}</div>
-            <div><strong>Urgency:</strong> {event.urgency.name}</div>
-          </div>
-          <hr className="line" />
-        </div>
-      ))}
+      <h1>Volunteer History</h1>
+      <table className="event-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Urgency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {fakeEvents.map((event) => (
+            <React.Fragment key={event.id}>
+              <tr onClick={() => handleEventClick(event.id)} className={selectedEvent === event.id ? 'selected' : ''}>
+                <td>{event.id}</td>
+                <td>{event.name}</td>
+                <td>{event.description}</td>
+                <td>{event.location}</td>
+                <td>{event.date}</td>
+                <td>{event.urgency.name}</td>
+              </tr>
+              {selectedEvent === event.id && (
+                <tr className="participants-row">
+                  <td colSpan="6">
+                    <ul>
+                      {event.participants.map((participant, index) => (
+                        <li key={index}>{participant}</li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
