@@ -16,7 +16,8 @@ const UserEventPage = () => {
   useEffect(() => {
     if (user) {
       const filteredEvents = events.filter(event =>
-        user.skills.some(skill => event.requiredSkills.includes(skill))
+        user.skills.some(skill => event.requiredSkills.includes(skill)) &&
+        !user.acceptedEvents?.some(acceptedEvent => acceptedEvent.eventName === event.name && dayjs(acceptedEvent.eventDate).isSame(event.date, 'day'))
       );
       setUserEvents(filteredEvents);
     }
