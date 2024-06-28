@@ -7,6 +7,7 @@ import Profile from './components/ProfileManagement/profileManagement';
 import Events from './components/EventManagement/eventManagement';
 import UserEventsPage from './components/userEvents/userEvents';
 import AdminHistory from './components/adminHistory/adminHistory';
+import VolunteerMatchingForm from './components/volunteerMatching/matchingForm';
 import logo from './images/volunLogo.png';
 import './App.css';
 
@@ -39,7 +40,7 @@ function App() {
   let links = [["", "Home"], ["Login", "Login"], ["Register", "Register"]];
   if (isLoggedIn) {
     if (user.role === 'admin') {
-      links = [["", "Home"], ["Profile", "User Profile"], ["Events", "Event Management"], ["AdminHistory", "Volunteer History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
+      links = [["", "Home"], ["Profile", "User Profile"], ["Events", "Event Management"], ["volunteerMatching", "Match Volunteers"], ["AdminHistory", "Volunteer History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
     } else {
       links = [["", "Home"], ["Profile", "User Profile"], ["UserEventsPage", "View Events"], ["userHistory", "My History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
     }
@@ -56,6 +57,7 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/userEventsPage" element={<UserEventsPage />} />
         <Route path="/AdminHistory" element={<AdminHistory />} />
+        <Route path="/VolunteerMatching" element={<VolunteerMatchingForm />} />
       </Routes>
     </Router>
   );
