@@ -7,6 +7,7 @@ import Profile from './components/ProfileManagement/profileManagement';
 import Events from './components/EventManagement/eventManagement';
 import UserEventsPage from './components/userEvents/userEvents';
 import AdminHistory from './components/adminHistory/adminHistory';
+import UserHistory from './components/userHistory/userHistory';
 import VolunteerMatchingForm from './components/volunteerMatching/matchingForm';
 import logo from './images/volunLogo.png';
 import './App.css';
@@ -57,6 +58,7 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/userEventsPage" element={<UserEventsPage />} />
         <Route path="/AdminHistory" element={<AdminHistory />} />
+        <Route path="/UserHistory" element={<UserHistory />} />
         <Route path="/VolunteerMatching" element={<VolunteerMatchingForm />} />
       </Routes>
     </Router>
