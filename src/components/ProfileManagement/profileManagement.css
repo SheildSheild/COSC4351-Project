@@ -1,14 +1,12 @@
-/* Profile.css */
-
 .profile-container {
-  width: 100%; /* Ensures container fills the width of its parent */
-  max-width: 600px; /* Limits container width for larger screens */
+  width: 100%;
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box; /* Include padding and border in total width */
+  box-sizing: border-box;
 }
 
 .profile-container h1 {
@@ -29,20 +27,58 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%; /* Ensures inputs span full width of form-group */
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-sizing: border-box; /* Include padding and border in total width */
+  box-sizing: border-box;
   font-size: 16px;
 }
 
 .form-group textarea {
-  resize: vertical; /* Allows textarea to be vertically resizable */
+  resize: vertical;
 }
 
 .form-group input[type="date"] {
   padding: 8px;
+}
+
+.multi-select-dropdown {
+  position: relative;
+}
+
+.multi-select-dropdown button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: left;
+  background: white;
+  cursor: pointer;
+}
+
+.multi-select-dropdown .multi-select-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  z-index: 1000;
+}
+
+.multi-select-dropdown .multi-select-options label {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.multi-select-dropdown .multi-select-options label:hover {
+  background: #f0f0f0;
 }
 
 .error-message {
@@ -51,16 +87,25 @@
   margin-top: 5px;
 }
 
-.save-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+.error {
+  border: 1px solid red;
 }
 
-.save-button:hover {
-  background-color: #0056b3;
+.selected-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.selected-date button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 14px;
 }
