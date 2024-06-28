@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import events from '../mockData/fake_event.json';
-import users from '../mockData/fake_users.json';
+// import users from '../mockData/fake_users.json';
 import dayjs from 'dayjs';
 import './userEvents.css';
 
@@ -22,13 +22,13 @@ const UserEventPage = () => {
     }
   }, [user]);
 
-  const checkAvailability = (date, availability) => {
-    return availability.some(range => {
-      const [start, end] = range.split(' - ').map(dayjs);
-      const checkDate = dayjs(date);
-      return checkDate.isAfter(start) && checkDate.isBefore(end);
-    });
-  };
+  // const checkAvailability = (date, availability) => {
+  //   return availability.some(range => {
+  //     const [start, end] = range.split(' - ').map(dayjs);
+  //     const checkDate = dayjs(date);
+  //     return checkDate.isAfter(start) && checkDate.isBefore(end);
+  //   });
+  // };
 
   const onDateChange = (date) => {
     setValue(date);

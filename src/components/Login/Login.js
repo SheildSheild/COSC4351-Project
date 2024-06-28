@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../firebase/firebaseConfig';
+// import { signInWithEmailAndPassword } from "firebase/auth";
+// import { auth } from '../../firebase/firebaseConfig';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import users from '../mockData/fake_users.json';
