@@ -103,7 +103,7 @@ const UserEventPage = () => {
           <ul>
             {availableEvents.map(event => (
               <li key={event.id}>
-                {event.name} - <button onClick={() => onEventClick(event)}>Sign Up</button>
+                {event.name} - {event.description} <button onClick={() => onEventClick(event)}>Sign Up</button>
               </li>
             ))}
           </ul>
