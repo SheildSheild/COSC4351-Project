@@ -1,28 +1,70 @@
+/* adminHistory.css */
+
 .admin-history-container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
-}
-
-.volunteer-history-heading {
-  text-align: center;
-  margin-bottom: 20px; /* Adjust this margin as needed */
-  line-height: 3.5; /* Adjust line height to vertically center the text */
-}
-
-.event-box {
   border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.event-info {
-  margin-bottom: 10px;
+.admin-history-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.line {
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin-top: 10px;
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.event-table th,
+.event-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.event-table th {
+  background-color: #f2f2f2;
+}
+
+.event-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.event-table tbody tr:hover {
+  background-color: #e9e9e9;
+  cursor: pointer;
+}
+
+
+.event-table td ul {
+  padding-left: 20px; /* Adjust padding as needed */
+  margin-top: 0;
+}
+
+.event-table td ul li {
+  list-style-type: none;
+  margin-bottom: 5px;
+  padding-left: 5px; /* Adjust padding for bullet points */
+}
+
+.event-table td ul li::before {
+  content: "\2022";
+  color: #666;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+
+.participants-row {
+  background-color: #f0f0f0;
+}
+
+.selected {
+  background-color: #d9edf7 !important;
 }
