@@ -17,6 +17,7 @@ const Profile = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,25 +29,36 @@ const Profile = () => {
     validateInput(name, value);
   };
 
-  const handleSkillsChange = (e) => {
-    const { options } = e.target;
-    const selectedSkills = [];
-    for (const option of options) {
-      if (option.selected) {
-        selectedSkills.push(option.value);
-      }
-    }
-    setFormData({
-      ...formData,
-      skills: selectedSkills
+  const handleSkillsChange = (skillId) => {
+    setFormData((prevData) => {
+      const newSkills = prevData.skills.includes(skillId)
+        ? prevData.skills.filter(id => id !== skillId)
+        : [...prevData.skills, skillId];
+      return {
+        ...prevData,
+        skills: newSkills
+      };
     });
   };
 
   const handleDateChange = (e) => {
     const date = e.target.value;
+    if (!formData.availability.includes(date)) {
+      setFormData({
+        ...formData,
+        availability: [...formData.availability, date]
+      });
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        availability: '' // Clear any existing error message
+      }));
+    }
+  };
+
+  const removeDate = (date) => {
     setFormData({
       ...formData,
-      availability: [...formData.availability, date]
+      availability: formData.availability.filter(d => d !== date)
     });
   };
 
@@ -113,12 +125,46 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here, e.g., send data to server
-    console.log('Form submitted:', formData);
+
+    // Check for errors before submitting
+    let hasErrors = false;
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      if (key !== 'address2' && key !== 'preferences') {
+        validateInput(key, formData[key]);
+        if (formData[key] === '' || errors[key]) {
+          hasErrors = true;
+          if (formData[key] === '') {
+            newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
+          }
+        }
+      }
+    });
+
+    // Check if skills are selected
+    if (formData.skills.length === 0) {
+      newErrors.skills = 'Skills are required.';
+      hasErrors = true;
+    }
+
+    if (!hasErrors) {
+      console.log('Form submitted successfully!', formData);
+      // Here, you can handle the form submission, such as sending data to an API.
+    } else {
+      console.log('Form has errors.');
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ...newErrors
+      }));
+    }
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
-    <div className="profile-container">
+    <form className="profile-container" onSubmit={handleSubmit}>
       <h1>Profile Management</h1>
 
       <div className="form-group">
@@ -198,25 +244,54 @@ const Profile = () => {
           onChange={handleZipCodeChange}
           maxLength="10"
           placeholder="Enter ZIP or ZIP+4"
+          required
         />
         {errors.zipCode && <span className="error-message">{errors.zipCode}</span>}
       </div>
 
       <div className="form-group">
         <label>Skills:</label>
-        <select
-          name="skills"
-          value={formData.skills}
-          onChange={handleSkillsChange}
-          multiple
-          required
-        >
-          {skills.map((skill) => (
-            <option key={skill.id} value={skill.id}>
-              {skill.name}
-            </option>
-          ))}
-        </select>
+        <div className="multi-select-dropdown">
+          <button
+            type="button"
+            onClick={toggleDropdown}
+            className={errors.skills ? "error" : ""}
+          >
+            {formData.skills.length === 0 ? 'Select Skills' : `Selected Skills: ${formData.skills.map(skillId => skills.find(skill => skill.id === skillId).name).join(', ')}`}
+          </button>
+          {dropdownOpen && (
+            <div className="multi-select-options">
+              {skills.map((skill) => (
+                <label key={skill.id}>
+                  <input
+                    type="checkbox"
+                    checked={formData.skills.includes(skill.id)}
+                    onChange={() => handleSkillsChange(skill.id)}
+                  />
+                  {skill.name}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+        {errors.skills && <span className="error-message">{errors.skills}</span>}
+      </div>
+
+      <div className="selected-skills">
+        {formData.skills.length > 0 ? (
+          formData.skills.map((skillId) => {
+            const skill = skills.find((s) => s.id === skillId);
+            return (
+              skill && (
+                <div key={skill.id} className="selected-skill">
+                  {skill.name}
+                </div>
+              )
+            );
+          })
+        ) : (
+          <div className="placeholder-text">No skills selected</div>
+        )}
       </div>
 
       <div className="form-group">
@@ -236,14 +311,20 @@ const Profile = () => {
           onChange={handleDateChange}
         />
         <div>
+          {formData.availability.length === 0 && errors.availability && (
+            <span className="error-message">{errors.availability}</span>
+          )}
           {formData.availability.map((date, index) => (
-            <span key={index}>{date} </span>
+            <div key={index} className="selected-date">
+              <span>{date}</span>
+              <button type="button" onClick={() => removeDate(date)}>Remove</button>
+            </div>
           ))}
         </div>
       </div>
 
-      <button className="save-button" onClick={handleSubmit}>Save Changes</button>
-    </div>
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
