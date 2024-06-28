@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './userEvents.css';
-import eventsData from './events.json';
+import eventsData from '/Users/mahiralam/COSC4353-Project-2/src/components/mockData/fake_event.json';
 
 const localizer = momentLocalizer(moment);
 
