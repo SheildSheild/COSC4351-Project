@@ -1,13 +1,15 @@
 .user-event-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-  }
-  
-  .user-event-page h2 {
-    font-size: 2em;
-    color: #333;
-  }
-  
+  padding: 20px;
+}
+
+.user-event-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.rbc-calendar {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
