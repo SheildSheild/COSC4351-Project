@@ -1,0 +1,29 @@
+.notifications-container {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .notifications-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  .notifications-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .notifications-container li {
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  .notifications-container li div {
+    margin: 5px 0;
+  }
+  

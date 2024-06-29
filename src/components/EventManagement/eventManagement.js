@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './eventManagement.css'; // Update CSS file path as needed
 import skills from '../mockData/skills.json'; // Update path to skills data
+import users from '../mockData/fake_users.json'; // Update path to users data
 
 const Event = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,6 @@ const Event = () => {
     requiredSkills: [],
     urgency: '',
     eventDate: '',
-    availability: [] // Include availability in the initial state
   });
 
   const [errors, setErrors] = useState({});
@@ -70,6 +70,26 @@ const Event = () => {
     e.preventDefault();
     // Handle form submission logic here, e.g., send data to server
     console.log('Form submitted:', formData);
+
+    // Add a confirmation prompt for the admin
+    if (window.confirm('Are you sure you want to create this event?')) {
+      // Push the event into the users' notification system
+      const currentTime = new Date().toLocaleString();
+      const newNotification = {
+        message: `New Event: ${formData.eventName}, Date: ${formData.eventDate} | Created at ${currentTime}`,
+        date: currentTime,
+      };
+
+      // Update users with the new notification
+      const storedUsers = JSON.parse(localStorage.getItem('users')) || users;
+      const updatedUsers = storedUsers.map(user => ({
+        ...user,
+        notifications: user.notifications ? [...user.notifications, newNotification] : [newNotification]
+      }));
+
+      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      alert('Event created successfully! Notifications have been sent to users.');
+    }
   };
 
   const toggleSkills = () => {
@@ -78,8 +98,12 @@ const Event = () => {
 
   return (
     <div className="event-container">
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
       <h1>Event Management</h1>
-
       <div className="form-group">
         <label>Event Name: <span className="required">* required</span></label>
         <input
