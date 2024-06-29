@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/navBar/navBar';
 import LoginPage from './components/Login/Login';
 import RegisterPage from './components/Register/Register';
@@ -31,6 +31,7 @@ function App() {
     localStorage.removeItem('loggedInUser');
     setUser(null);
     setUpdate(!update);
+    return <Navigate to="/" />;
   };
 
   useEffect(() => {
