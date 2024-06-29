@@ -26,12 +26,13 @@ function Home() {
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
   const [update, setUpdate] = useState(false);
+  const [loggedOut, setLoggedOut] = useState(false); // State to track logout
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     setUser(null);
     setUpdate(!update);
-    <Navigate to="/" />;
+    setLoggedOut(true); // Set loggedOut state to true to trigger redirection
   };
 
   useEffect(() => {
@@ -52,15 +53,35 @@ function App() {
     <Router>
       <Navbar links={links.map(link => link[0] === "Logout" ? { path: link[0], label: link[1], onClick: handleLogout } : { path: link[0], label: link[1] })} />
       <Routes>
+        {/* Route for Home */}
         <Route path="/" element={<Home />} />
+        
+        {/* Route for Login */}
         <Route path="/login" element={<LoginPage setUser={setUser} />} />
+        
+        {/* Route for Register */}
         <Route path="/register" element={<RegisterPage setUpdate={setUpdate}/>} />
+        
+        {/* Route for Profile */}
         <Route path="/profile" element={<Profile />} />
+        
+        {/* Route for Events */}
         <Route path="/events" element={<Events />} />
+        
+        {/* Route for User Events Page */}
         <Route path="/userEventsPage" element={<UserEventsPage />} />
+        
+        {/* Route for Admin History */}
         <Route path="/AdminHistory" element={<AdminHistory />} />
+        
+        {/* Route for User History */}
         <Route path="/UserHistory" element={<UserHistory />} />
+        
+        {/* Route for Volunteer Matching Form */}
         <Route path="/VolunteerMatching" element={<VolunteerMatchingForm />} />
+
+        {/* Conditional rendering of Navigate */}
+        {loggedOut && <Navigate to="/" />} 
       </Routes>
     </Router>
   );
