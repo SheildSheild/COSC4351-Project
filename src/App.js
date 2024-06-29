@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/navBar/navBar';
 import LoginPage from './components/Login/Login';
 import RegisterPage from './components/Register/Register';
@@ -26,13 +26,11 @@ function Home() {
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
   const [update, setUpdate] = useState(false);
-  const navigate = useNavigate(); // Using useNavigate hook for navigation
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     setUser(null);
     setUpdate(!update);
-    navigate('/'); // Navigate to home page after logout
   };
 
   useEffect(() => {
