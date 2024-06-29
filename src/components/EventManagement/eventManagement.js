@@ -68,13 +68,45 @@ const Event = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here, e.g., send data to server
-    console.log('Form submitted:', formData);
+  
+    // Check for errors before submitting
+    let hasErrors = false;
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      if (True) {
+        validateInput(key, formData[key]);
+        if (formData[key] === '' || errors[key]) {
+          hasErrors = true;
+          if (formData[key] === '') {
+            newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
+          }
+        }
+      }
+    });
+  
+    // Check if skills are selected
+    if (formData.skills.length === 0) {
+      newErrors.skills = 'Skills are required.';
+      hasErrors = true;
+    }
+  
+    if (!hasErrors) {
+      console.log('Form submitted successfully!', formData);
+      // Here, you can handle the form submission, such as sending data to an API.
+    } else {
+      console.log('Form has errors.');
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ...newErrors
+      }));
+    }
   };
 
   const toggleSkills = () => {
     setShowSkills(!showSkills);
   };
+
+  
 
   return (
     <div className="event-container">
