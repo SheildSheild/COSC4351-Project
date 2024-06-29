@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -50,11 +50,12 @@
 .multi-select-dropdown button {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 5px;
   font-size: 16px;
   text-align: left;
-  background: white;
+  background: #cccccc;
+  -webkit-text-fill-color: #000000;
   cursor: pointer;
 }
 
@@ -65,7 +66,7 @@
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
-  border: 1px solid #ccc;
+  border: 1px solid white;
   border-radius: 5px;
   background: white;
   z-index: 1000;
@@ -79,16 +80,6 @@
 
 .multi-select-dropdown .multi-select-options label:hover {
   background: #f0f0f0;
-}
-
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-.error {
-  border: 1px solid red;
 }
 
 .selected-date {
@@ -108,4 +99,26 @@
   color: red;
   cursor: pointer;
   font-size: 14px;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.error {
+  border: 1px solid red;
+}
+
+.required {
+  color: red;
+  font-size: 0.9em;
+  margin-left: 5px;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
