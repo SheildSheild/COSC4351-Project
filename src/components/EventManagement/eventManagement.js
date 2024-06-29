@@ -25,17 +25,15 @@ const Event = () => {
     validateInput(name, value);
   };
 
-  const handleSkillsChange = (e) => {
-    const { options } = e.target;
-    const selectedSkills = [];
-    for (const option of options) {
-      if (option.selected) {
-        selectedSkills.push(option.value);
-      }
-    }
-    setFormData({
-      ...formData,
-      requiredSkills: selectedSkills
+  const handleSkillsChange = (skillId) => {
+    setFormData((prevData) => {
+      const newSkills = prevData.skills.includes(skillId)
+        ? prevData.skills.filter(id => id !== skillId)
+        : [...prevData.skills, skillId];
+      return {
+        ...prevData,
+        skills: newSkills
+      };
     });
   };
 
