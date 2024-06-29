@@ -31,6 +31,9 @@ function App() {
     localStorage.removeItem('loggedInUser');
     setUser(null);
     setUpdate(!update);
+    
+    // Navigate to homepage after logout
+    window.location.href = '/';
   };
 
   useEffect(() => {
