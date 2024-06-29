@@ -48,7 +48,7 @@ const Event = () => {
 
   const validateInput = (name, value) => {
     let errorMsg = '';
-  
+
     switch (name) {
       case 'eventName':
         if (value.length > 100) {
@@ -68,28 +68,26 @@ const Event = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     // Check for errors before submitting
     let hasErrors = false;
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
-      if ('1' == '1') {
-        validateInput(key, formData[key]);
-        if (formData[key] === '' || errors[key]) {
-          hasErrors = true;
-          if (formData[key] === '') {
-            newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
-          }
+      validateInput(key, formData[key]);
+      if (formData[key] === '' || errors[key]) {
+        hasErrors = true;
+        if (formData[key] === '') {
+          newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
         }
       }
     });
-  
+
     // Check if skills are selected
-    if (formData.skills.length === 0) {
-      newErrors.skills = 'Skills are required.';
+    if (formData.requiredSkills.length === 0) {
+      newErrors.requiredSkills = 'Skills are required.';
       hasErrors = true;
     }
-  
+
     if (!hasErrors) {
       console.log('Form submitted successfully!', formData);
       // Here, you can handle the form submission, such as sending data to an API.
@@ -106,14 +104,12 @@ const Event = () => {
     setShowSkills(!showSkills);
   };
 
-  
-
   return (
     <div className="event-container">
       <h1>Event Management</h1>
 
       <div className="form-group">
-        <label>Event Name:</label>
+        <label>Event Name*:</label>
         <input
           type="text"
           name="eventName"
@@ -126,7 +122,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Event Description:</label>
+        <label>Event Description*:</label>
         <textarea
           name="eventDescription"
           value={formData.eventDescription}
@@ -137,7 +133,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Location:</label>
+        <label>Location*:</label>
         <textarea
           name="location"
           value={formData.location}
@@ -148,7 +144,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Required Skills:</label>
+        <label>Required Skills*:</label>
         <div className="multi-select-dropdown">
           <button
             type="button"
@@ -176,7 +172,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Urgency:</label>
+        <label>Urgency*:</label>
         <select
           name="urgency"
           value={formData.urgency}
@@ -188,10 +184,11 @@ const Event = () => {
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
+        {errors.urgency && <span className="error-message">{errors.urgency}</span>}
       </div>
 
       <div className="form-group">
-        <label>Event Date:</label>
+        <label>Event Date*:</label>
         <input
           type="date"
           name="eventDate"
