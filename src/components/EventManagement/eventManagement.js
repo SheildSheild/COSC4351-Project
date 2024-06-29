@@ -14,6 +14,7 @@ const Event = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [showSkills, setShowSkills] = useState(false); // State to toggle skills visibility
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,6 +72,10 @@ const Event = () => {
     console.log('Form submitted:', formData);
   };
 
+  const toggleSkills = () => {
+    setShowSkills(!showSkills);
+  };
+
   return (
     <div className="event-container">
       <h1>Event Management</h1>
@@ -112,14 +117,14 @@ const Event = () => {
 
       <div className="form-group">
         <label>Required Skills:</label>
-        <div className="multi-select-dropdown">
-          <button
-            type="button"
-            onClick={() => {}}
-            className={errors.requiredSkills ? "error" : ""}
-          >
-            {formData.requiredSkills.length === 0 ? 'Select Skills' : `Selected Skills: ${formData.requiredSkills.map(skillId => skills.find(skill => skill.id === skillId).name).join(', ')}`}
-          </button>
+        <button
+          type="button"
+          onClick={toggleSkills}
+          className={errors.requiredSkills ? "error" : ""}
+        >
+          {showSkills ? 'Hide Skills' : 'Show Skills'}
+        </button>
+        {showSkills && (
           <div className="multi-select-options">
             {skills.map((skill) => (
               <label key={skill.id}>
@@ -132,7 +137,7 @@ const Event = () => {
               </label>
             ))}
           </div>
-        </div>
+        )}
         {errors.requiredSkills && <span className="error-message">{errors.requiredSkills}</span>}
       </div>
 
