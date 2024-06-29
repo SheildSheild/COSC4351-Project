@@ -117,27 +117,29 @@ const Event = () => {
 
       <div className="form-group">
         <label>Required Skills:</label>
-        <button
-          type="button"
-          onClick={toggleSkills}
-          className={errors.requiredSkills ? "error" : ""}
-        >
-          {showSkills ? 'Hide Skills' : 'Show Skills'}
-        </button>
-        {showSkills && (
-          <div className="multi-select-options">
-            {skills.map((skill) => (
-              <label key={skill.id}>
-                <input
-                  type="checkbox"
-                  checked={formData.requiredSkills.includes(skill.id)}
-                  onChange={() => handleSkillsChange(skill.id)}
-                />
-                {skill.name}
-              </label>
-            ))}
-          </div>
-        )}
+        <div className="multi-select-dropdown">
+          <button
+            type="button"
+            onClick={toggleSkills}
+            className={errors.requiredSkills ? "error" : ""}
+          >
+            {formData.requiredSkills.length === 0 ? 'Select Skills' : `Selected Skills: ${formData.requiredSkills.map(skillId => skills.find(skill => skill.id === skillId).name).join(', ')}`}
+          </button>
+          {showSkills && (
+            <div className="multi-select-options">
+              {skills.map((skill) => (
+                <label key={skill.id}>
+                  <input
+                    type="checkbox"
+                    checked={formData.requiredSkills.includes(skill.id)}
+                    onChange={() => handleSkillsChange(skill.id)}
+                  />
+                  {skill.name}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
         {errors.requiredSkills && <span className="error-message">{errors.requiredSkills}</span>}
       </div>
 
