@@ -9,7 +9,8 @@ const Event = () => {
     location: '',
     requiredSkills: [],
     urgency: '',
-    eventDate: ''
+    eventDate: '',
+    availability: [] // Include availability in the initial state
   });
 
   const [errors, setErrors] = useState({});
@@ -42,7 +43,7 @@ const Event = () => {
     const date = e.target.value;
     setFormData({
       ...formData,
-      availability: [...formData.availability, date]
+      eventDate: date // Update eventDate directly
     });
   };
 
@@ -55,14 +56,7 @@ const Event = () => {
           errorMsg = 'Event Name cannot exceed 100 characters.';
         }
         break;
-      case 'eventDescription':
-        break;
-      case 'location':
-        break;
-      case 'urgency':
-        break;
-      case 'eventDate':
-        break;
+      // Add validation cases for other fields as needed
       default:
         break;
     }
@@ -72,8 +66,6 @@ const Event = () => {
       [name]: errorMsg
     }));
   };
-
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,85 +80,85 @@ const Event = () => {
       <div className="form-group">
         <label>Event Name:</label>
         <input
-        type="text"
-        name="eventName"
-        value={formData.eventName}
-        onChange={handleChange}
-        required
-        maxLength="100"
-      />
-      {errors.eventName && <span className="error-message">{errors.eventName}</span>}
-    </div>
+          type="text"
+          name="eventName"
+          value={formData.eventName}
+          onChange={handleChange}
+          required
+          maxLength="100"
+        />
+        {errors.eventName && <span className="error-message">{errors.eventName}</span>}
+      </div>
 
-    <div className="form-group">
-      <label>Event Description:</label>
-      <textarea
-        name="eventDescription"
-        value={formData.eventDescription}
-        onChange={handleChange}
-        required
-      />
-      {errors.eventDescription && <span className="error-message">{errors.eventDescription}</span>}
-    </div>
+      <div className="form-group">
+        <label>Event Description:</label>
+        <textarea
+          name="eventDescription"
+          value={formData.eventDescription}
+          onChange={handleChange}
+          required
+        />
+        {errors.eventDescription && <span className="error-message">{errors.eventDescription}</span>}
+      </div>
 
-    <div className="form-group">
-      <label>Location:</label>
-      <textarea
-        name="location"
-        value={formData.location}
-        onChange={handleChange}
-        required
-      />
-      {errors.location && <span className="error-message">{errors.location}</span>}
-    </div>
+      <div className="form-group">
+        <label>Location:</label>
+        <textarea
+          name="location"
+          value={formData.location}
+          onChange={handleChange}
+          required
+        />
+        {errors.location && <span className="error-message">{errors.location}</span>}
+      </div>
 
-    <div className="form-group">
-      <label>Required Skills:</label>
-      <select
-        name="requiredSkills"
-        value={formData.requiredSkills}
-        onChange={handleSkillsChange}
-        multiple
-        required
-      >
-        {skills.map((skill) => (
-          <option key={skill.id} value={skill.id}>
-            {skill.name}
-          </option>
-        ))}
-      </select>
-    </div>
+      <div className="form-group">
+        <label>Required Skills:</label>
+        <select
+          name="requiredSkills"
+          value={formData.requiredSkills}
+          onChange={handleSkillsChange}
+          multiple
+          required
+        >
+          {skills.map((skill) => (
+            <option key={skill.id} value={skill.id}>
+              {skill.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-    <div className="form-group">
-      <label>Urgency:</label>
-      <select
-        name="urgency"
-        value={formData.urgency}
-        onChange={handleChange}
-        required
-      >
-        <option value="">Select Urgency</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-    </div>
+      <div className="form-group">
+        <label>Urgency:</label>
+        <select
+          name="urgency"
+          value={formData.urgency}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Urgency</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
 
-    <div className="form-group">
-      <label>Event Date:</label>
-      <input
-        type="date"
-        name="eventDate"
-        value={formData.eventDate}
-        onChange={handleDateChange}
-        required
-      />
-      {errors.eventDate && <span className="error-message">{errors.eventDate}</span>}
-    </div>
+      <div className="form-group">
+        <label>Event Date:</label>
+        <input
+          type="date"
+          name="eventDate"
+          value={formData.eventDate}
+          onChange={handleDateChange}
+          required
+        />
+        {errors.eventDate && <span className="error-message">{errors.eventDate}</span>}
+      </div>
 
-    <button className="save-button" onClick={handleSubmit}>Create Event</button>
-  </div>
-);
+      <button className="save-button" onClick={handleSubmit}>Create Event</button>
+    </div>
+  );
 };
 
 export default Event;
