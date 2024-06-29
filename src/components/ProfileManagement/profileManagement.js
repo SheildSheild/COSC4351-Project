@@ -150,7 +150,6 @@ const Profile = () => {
   
     if (!hasErrors) {
       console.log('Form submitted successfully!', formData);
-      // Here, you can handle the form submission, such as sending data to an API.
     } else {
       console.log('Form has errors.');
       setErrors((prevErrors) => ({

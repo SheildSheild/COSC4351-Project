@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './adminHistory.css'; // Make sure to import your CSS file
+import './adminHistory.css';
 import fakeEvents from '../mockData/fake_event.json';
 
 const AdminHistory = () => {

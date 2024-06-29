@@ -11,6 +11,10 @@ const AdminNotifications = () => {
 
   return (
     <div className="admin-notifications">
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
       <h2>Admin Notifications</h2>
       <ul>
         {notifications.map((notification, index) => (

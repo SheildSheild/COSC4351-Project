@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './userNotifications.css'; // Update CSS file path as needed
+import './userNotifications.css';
 
 const UserNotifications = () => {
   const [notifications, setNotifications] = useState([]);

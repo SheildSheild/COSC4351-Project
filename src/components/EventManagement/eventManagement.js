@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './eventManagement.css'; // Update CSS file path as needed
-import skills from '../mockData/skills.json'; // Update path to skills data
-import users from '../mockData/fake_users.json'; // Update path to users data
+import './eventManagement.css';
+import skills from '../mockData/skills.json';
+import users from '../mockData/fake_users.json';
 
 const Event = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ const Event = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [showSkills, setShowSkills] = useState(false); // State to toggle skills visibility
+  const [showSkills, setShowSkills] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +42,7 @@ const Event = () => {
     const date = e.target.value;
     setFormData({
       ...formData,
-      eventDate: date // Update eventDate directly
+      eventDate: date // Update eventDate
     });
   };
 
@@ -55,7 +55,6 @@ const Event = () => {
           errorMsg = 'Event Name cannot exceed 100 characters.';
         }
         break;
-      // Add validation cases for other fields as needed
       default:
         break;
     }
@@ -68,19 +67,16 @@ const Event = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here, e.g., send data to server
     console.log('Form submitted:', formData);
 
-    // Add a confirmation prompt for the admin
     if (window.confirm('Are you sure you want to create this event?')) {
-      // Push the event into the users' notification system
       const currentTime = new Date().toLocaleString();
       const newNotification = {
         message: `New Event: ${formData.eventName}, Date: ${formData.eventDate} | Created at ${currentTime}`,
         date: currentTime,
       };
 
-      // Update users with the new notification
+      // Updates users with the new notification
       const storedUsers = JSON.parse(localStorage.getItem('users')) || users;
       const updatedUsers = storedUsers.map(user => ({
         ...user,
