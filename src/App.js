@@ -9,6 +9,7 @@ import UserEventsPage from './components/userEvents/userEvents';
 import AdminHistory from './components/adminHistory/adminHistory';
 import UserHistory from './components/userHistory/userHistory';
 import VolunteerMatchingForm from './components/volunteerMatching/matchingForm';
+import AdminNotifications from './components/adminNotifications/adminNotifications';
 import logo from './images/volunLogo.png';
 import './App.css';
 
@@ -32,7 +33,6 @@ function App() {
     setUser(null);
     setUpdate(!update);
     
-    // Navigate to homepage after logout
     window.location.href = '/';
   };
 
@@ -44,7 +44,7 @@ function App() {
   let links = [["", "Home"], ["Login", "Login"], ["Register", "Register"]];
   if (isLoggedIn) {
     if (user.role === 'admin') {
-      links = [["", "Home"], ["Profile", "User Profile"], ["Events", "Event Management"], ["volunteerMatching", "Match Volunteers"], ["AdminHistory", "Volunteer History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
+      links = [["", "Home"], ["Profile", "User Profile"], ["Events", "Event Management"], ["volunteerMatching", "Match Volunteers"], ["AdminHistory", "Volunteer History"], ["AdminNotifications", "Notifications"], ["Logout", "Logout"]];
     } else {
       links = [["", "Home"], ["Profile", "User Profile"], ["UserEventsPage", "View Events"], ["userHistory", "My History"], ["Notifications", "Notifications"], ["Logout", "Logout"]];
     }
@@ -63,6 +63,8 @@ function App() {
         <Route path="/AdminHistory" element={<AdminHistory />} />
         <Route path="/UserHistory" element={<UserHistory />} />
         <Route path="/VolunteerMatching" element={<VolunteerMatchingForm />} />
+        <Route path="/AdminNotifications" element={<AdminNotifications />} />
+        {/* <Route path="/UserNotifications" element={<userNotifications />} /> */}
       </Routes>
     </Router>
   );

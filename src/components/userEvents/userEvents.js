@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import events from '../mockData/fake_event.json';
-// import users from '../mockData/fake_users.json';
 import dayjs from 'dayjs';
 import './userEvents.css';
 
@@ -22,14 +21,6 @@ const UserEventPage = () => {
       setUserEvents(filteredEvents);
     }
   }, [user]);
-
-  // const checkAvailability = (date, availability) => {
-  //   return availability.some(range => {
-  //     const [start, end] = range.split(' - ').map(dayjs);
-  //     const checkDate = dayjs(date);
-  //     return checkDate.isAfter(start) && checkDate.isBefore(end);
-  //   });
-  // };
 
   const onDateChange = (date) => {
     setValue(date);
@@ -67,6 +58,16 @@ const UserEventPage = () => {
       });
 
       localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+
+      // Create a notifications
+      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      notifications.push({
+        user: user.fullName,
+        event: matchedEvent.name,
+        time: currentTime,
+      });
+      localStorage.setItem('notifications', JSON.stringify(notifications));
+
       alert(`You have successfully signed up for ${matchedEvent.name} at ${currentTime}`);
     }
   };
@@ -86,10 +87,10 @@ const UserEventPage = () => {
 
   return (
     <div className="user-event-page">
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
+      <br />
+      <br />
       <div className="calendar-container">
         <Calendar
           onChange={onDateChange}
