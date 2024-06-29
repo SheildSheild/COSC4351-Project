@@ -31,6 +31,7 @@ function App() {
     localStorage.removeItem('loggedInUser');
     setUser(null);
     setUpdate(!update);
+    // Redirect to home page after logout
     return <Navigate to="/" />;
   };
 
