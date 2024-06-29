@@ -54,13 +54,14 @@ const Profile = () => {
       }));
     }
   };
-
+  
   const removeDate = (date) => {
     setFormData({
       ...formData,
       availability: formData.availability.filter(d => d !== date)
     });
   };
+  
 
   const validateInput = (name, value) => {
     let errorMsg = '';
@@ -125,7 +126,7 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     // Check for errors before submitting
     let hasErrors = false;
     const newErrors = {};
@@ -140,13 +141,13 @@ const Profile = () => {
         }
       }
     });
-
+  
     // Check if skills are selected
     if (formData.skills.length === 0) {
       newErrors.skills = 'Skills are required.';
       hasErrors = true;
     }
-
+  
     if (!hasErrors) {
       console.log('Form submitted successfully!', formData);
       // Here, you can handle the form submission, such as sending data to an API.
@@ -158,7 +159,7 @@ const Profile = () => {
       }));
     }
   };
-
+  
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -168,7 +169,7 @@ const Profile = () => {
       <h1>Profile Management</h1>
 
       <div className="form-group">
-        <label>Full Name:</label>
+        <label>Full Name: <span className="required">* required</span></label>
         <input
           type="text"
           name="fullName"
@@ -181,7 +182,7 @@ const Profile = () => {
       </div>
 
       <div className="form-group">
-        <label>Address 1:</label>
+        <label>Address 1: <span className="required">* required</span></label>
         <input
           type="text"
           name="address1"
@@ -206,7 +207,7 @@ const Profile = () => {
       </div>
 
       <div className="form-group">
-        <label>City:</label>
+        <label>City: <span className="required">* required</span></label>
         <input
           type="text"
           name="city"
@@ -219,7 +220,7 @@ const Profile = () => {
       </div>
 
       <div className="form-group">
-        <label>State:</label>
+        <label>State: <span className="required">* required</span></label>
         <select
           name="state"
           value={formData.state}
@@ -236,7 +237,7 @@ const Profile = () => {
       </div>
 
       <div className="form-group">
-        <label>ZIP Code:</label>
+        <label>ZIP Code: <span className="required">* required</span></label>
         <input
           type="text"
           name="zipCode"
@@ -250,7 +251,7 @@ const Profile = () => {
       </div>
 
       <div className="form-group">
-        <label>Skills:</label>
+        <label>Skills: <span className="required">* required</span></label>
         <div className="multi-select-dropdown">
           <button
             type="button"
@@ -304,7 +305,7 @@ const Profile = () => {
       </div>
 
       <div className="form-group">
-        <label>Availability:</label>
+        <label>Availability: <span className="required">* required</span></label>
         <input
           type="date"
           name="availability"
