@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useHistory } from 'react-router-dom'; // Import useHistory from react-router-dom
 import Navbar from './components/navBar/navBar';
 import LoginPage from './components/Login/Login';
 import RegisterPage from './components/Register/Register';
@@ -26,13 +26,13 @@ function Home() {
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
   const [update, setUpdate] = useState(false);
+  const history = useHistory(); // Use useHistory hook to get access to history object
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     setUser(null);
     setUpdate(!update);
-    // Redirect to home page after logout
-    return <Navigate to="/" />;
+    history.push('/'); // Redirect to the homepage
   };
 
   useEffect(() => {
