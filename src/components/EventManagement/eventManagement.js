@@ -81,7 +81,7 @@ const Event = () => {
       <h1>Event Management</h1>
 
       <div className="form-group">
-        <label>Event Name:</label>
+        <label>Event Name: <span className="required">* required</span></label>
         <input
           type="text"
           name="eventName"
@@ -94,7 +94,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Event Description:</label>
+        <label>Event Description: <span className="required">* required</span></label>
         <textarea
           name="eventDescription"
           value={formData.eventDescription}
@@ -105,7 +105,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Location:</label>
+        <label>Location: <span className="required">* required</span></label>
         <textarea
           name="location"
           value={formData.location}
@@ -116,7 +116,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Required Skills:</label>
+        <label>Required Skills: <span className="required">* required</span> </label>
         <div className="multi-select-dropdown">
           <button
             type="button"
@@ -144,7 +144,7 @@ const Event = () => {
       </div>
 
       <div className="form-group">
-        <label>Urgency:</label>
+        <label>Urgency: <span className="required">* required</span> </label>
         <select
           name="urgency"
           value={formData.urgency}
