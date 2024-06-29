@@ -25,17 +25,15 @@ const Event = () => {
     validateInput(name, value);
   };
 
-  const handleSkillsChange = (e) => {
-    const { options } = e.target;
-    const selectedSkills = [];
-    for (const option of options) {
-      if (option.selected) {
-        selectedSkills.push(option.value);
-      }
-    }
-    setFormData({
-      ...formData,
-      requiredSkills: selectedSkills
+  const handleSkillsChange = (skillId) => {
+    setFormData((prevData) => {
+      const newSkills = prevData.requiredSkills.includes(skillId)
+        ? prevData.requiredSkills.filter(id => id !== skillId)
+        : [...prevData.requiredSkills, skillId];
+      return {
+        ...prevData,
+        requiredSkills: newSkills
+      };
     });
   };
 
@@ -114,19 +112,28 @@ const Event = () => {
 
       <div className="form-group">
         <label>Required Skills:</label>
-        <select
-          name="requiredSkills"
-          value={formData.requiredSkills}
-          onChange={handleSkillsChange}
-          multiple
-          required
-        >
-          {skills.map((skill) => (
-            <option key={skill.id} value={skill.id}>
-              {skill.name}
-            </option>
-          ))}
-        </select>
+        <div className="multi-select-dropdown">
+          <button
+            type="button"
+            onClick={() => {}}
+            className={errors.requiredSkills ? "error" : ""}
+          >
+            {formData.requiredSkills.length === 0 ? 'Select Skills' : `Selected Skills: ${formData.requiredSkills.map(skillId => skills.find(skill => skill.id === skillId).name).join(', ')}`}
+          </button>
+          <div className="multi-select-options">
+            {skills.map((skill) => (
+              <label key={skill.id}>
+                <input
+                  type="checkbox"
+                  checked={formData.requiredSkills.includes(skill.id)}
+                  onChange={() => handleSkillsChange(skill.id)}
+                />
+                {skill.name}
+              </label>
+            ))}
+          </div>
+        </div>
+        {errors.requiredSkills && <span className="error-message">{errors.requiredSkills}</span>}
       </div>
 
       <div className="form-group">
