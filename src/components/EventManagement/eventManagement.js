@@ -73,7 +73,7 @@ const Event = () => {
     let hasErrors = false;
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
-      if (True) {
+      if ('1' == '1') {
         validateInput(key, formData[key]);
         if (formData[key] === '' || errors[key]) {
           hasErrors = true;
