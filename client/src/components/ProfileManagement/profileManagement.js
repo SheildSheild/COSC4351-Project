@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './profileManagement.css';
 import state from '../mockData/state.json';
 import skills from '../mockData/skills.json';
+import user from '../mockData/fake_users.json';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -126,8 +127,6 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // Check for errors before submitting
     let hasErrors = false;
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
@@ -142,14 +141,25 @@ const Profile = () => {
       }
     });
   
-    // Check if skills are selected
     if (formData.skills.length === 0) {
       newErrors.skills = 'Skills are required.';
       hasErrors = true;
     }
   
     if (!hasErrors) {
-      console.log('Form submitted successfully!', formData);
+      fetch(`http://localhost:3000/api/profile/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Profile updated successfully!', data);
+          alert('Profile updated successfully!');
+        })
+        .catch(error => console.error('Error updating profile:', error));
     } else {
       console.log('Form has errors.');
       setErrors((prevErrors) => ({

@@ -5,7 +5,9 @@
     "description": "Looking for volunteers to take care of dogs",
     "location": "PSC 6076, Box 0648\nAPO AP 07489",
     "date": "2025-01-04",
-    "requiredSkills": [1],
+    "requiredSkills": [
+      1
+    ],
     "urgency": {
       "id": 3,
       "name": "High"
@@ -18,7 +20,9 @@
     "description": "Event 2 description",
     "location": "72688 Warren Garden Suite 332\nLake Jamie, NE 35166",
     "date": "2024-12-26",
-    "requiredSkills": [2],
+    "requiredSkills": [
+      2
+    ],
     "urgency": {
       "id": 3,
       "name": "High"
@@ -37,7 +41,9 @@
     "description": "Event 3 description",
     "location": "60026 Patricia Rest\nGomezfort, OH 93381",
     "date": "2024-10-17",
-    "requiredSkills": [1],
+    "requiredSkills": [
+      1
+    ],
     "urgency": {
       "id": 1,
       "name": "Low"
@@ -54,7 +60,9 @@
     "description": "Event 4 description",
     "location": "5725 Benjamin Route\nAustinborough, AS 47039",
     "date": "2025-05-08",
-    "requiredSkills": [5],
+    "requiredSkills": [
+      5
+    ],
     "urgency": {
       "id": 3,
       "name": "High"
@@ -71,7 +79,9 @@
     "description": "Event 5 description",
     "location": "0212 Sandra Parkway Suite 751\nHowardchester, MP 77615",
     "date": "2025-03-26",
-    "requiredSkills": [4],
+    "requiredSkills": [
+      4
+    ],
     "urgency": {
       "id": 2,
       "name": "Medium"
@@ -88,7 +98,9 @@
     "description": "Walk my dog event! Give pound dogs a walk outside to give them a good time",
     "location": "3605 Carrie Crossing\nWest Donnahaven, MS 34525",
     "date": "2024-11-04",
-    "requiredSkills": [1],
+    "requiredSkills": [
+      1
+    ],
     "urgency": {
       "id": 1,
       "name": "Low"
@@ -106,7 +118,9 @@
     "description": "Event 7 description",
     "location": "88675 Erin Unions\nSouth Allenberg, GA 94633",
     "date": "2024-12-16",
-    "requiredSkills": [4],
+    "requiredSkills": [
+      4
+    ],
     "urgency": {
       "id": 1,
       "name": "Low"
@@ -122,7 +136,9 @@
     "description": "Event 8 description",
     "location": "9895 Carroll Road Apt. 045\nPort Sherriburgh, CT 48057",
     "date": "2025-03-22",
-    "requiredSkills": [4],
+    "requiredSkills": [
+      4
+    ],
     "urgency": {
       "id": 2,
       "name": "Medium"
@@ -140,7 +156,9 @@
     "description": "Event 9 description",
     "location": "32871 Stephen Viaduct\nNorth Danny, ND 90200",
     "date": "2024-11-15",
-    "requiredSkills": [5],
+    "requiredSkills": [
+      5
+    ],
     "urgency": {
       "id": 2,
       "name": "Medium"
@@ -156,7 +174,9 @@
     "description": "Event 10 description",
     "location": "17677 Vazquez Grove Suite 440\nPort Johnnyland, MO 72778",
     "date": "2025-02-03",
-    "requiredSkills": [3],
+    "requiredSkills": [
+      3
+    ],
     "urgency": {
       "id": 1,
       "name": "Low"

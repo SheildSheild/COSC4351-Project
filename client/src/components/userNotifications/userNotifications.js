@@ -7,20 +7,19 @@ const UserNotifications = () => {
 
   useEffect(() => {
     if (user) {
-      const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-      const currentUser = storedUsers.find(u => u.id === user.id);
-      if (currentUser) {
-        setNotifications(currentUser.notifications || []);
-      }
+      fetch(`http://localhost:3000/api/notifications/${user.id}`)
+        .then(response => response.json())
+        .then(data => setNotifications(data))
+        .catch(error => console.error('Error fetching notifications:', error));
     }
   }, [user]);
 
   return (
     <div className="notifications-container">
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
       <h2>Notifications</h2>
       <ul>
         {notifications.map((notification, index) => (

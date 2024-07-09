@@ -5,16 +5,15 @@ import { fileURLToPath } from 'url';
 
 const router = express.Router();
 
-// Get the current file path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-// Load users from fake_users.json
+// Loads fake users (mock data)
 const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
 let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
 
-// Handle user login
+// Handles user login
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
   const user = users.find(u => u.email === email && u.password === password);
@@ -34,18 +33,17 @@ router.post('/login', (req, res) => {
   }
 });
 
-// Handle user registration
+// Handles user registration
 router.post('/register', (req, res) => {
   const { username, password, email } = req.body;
 
-  // Check if the user already exists
   const userExists = users.some(u => u.email === email);
 
   if (userExists) {
     return res.status(400).json({ message: 'User already exists' });
   }
 
-  // Create new user with basic information
+  // New user is created for the mock data
   const newUser = {
     id: users.length + 1,
     username,
@@ -64,10 +62,10 @@ router.post('/register', (req, res) => {
     acceptedEvents: []
   };
 
-  // Add the new user to the users array
+  // Add the new user to the mock data
   users.push(newUser);
 
-  // Write updated users array back to the file
+  // Updates mock data user file
   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 
   res.status(201).json({

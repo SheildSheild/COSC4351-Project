@@ -1,7 +1,13 @@
 import admin from 'firebase-admin';
 import { readFileSync } from 'fs';
 import express from 'express';
+
+// Routes
 import authRoutes from './routes/authRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+import profileRoutes from './routes/userProfileRoutes.js';
+import historyRoutes from './routes/volunteerHistoryRoutes.js';
 
 const serviceAccount = JSON.parse(readFileSync('./cosc4353-35f65-firebase-adminsdk-5u4y6-655663d6f4.json', 'utf8'));
 
@@ -14,6 +20,10 @@ const port = 3000;
 
 app.use(express.json());
 app.use('/api/auth', authRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/history', historyRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

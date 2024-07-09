@@ -4,18 +4,25 @@ import './userHistory.css';
 
 const UserHistory = () => {
   const [acceptedEvents, setAcceptedEvents] = useState([]);
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
-    if (user && user.acceptedEvents) {
-      setAcceptedEvents(user.acceptedEvents);
+    if (user) {
+      fetch(`http://localhost:3000/api/history/${user.id}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data) {
+            setAcceptedEvents(data);
+          }
+        })
+        .catch(error => console.error('Error fetching user history:', error));
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="user-history-page">
-        <br></br>
-        <br></br>
+      <br></br>
+      <br></br>
       <h2>My Volunteer History</h2>
       <div className="table-container">
         <table>

@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './adminHistory.css';
 import fakeEvents from '../mockData/fake_event.json';
+import users from '../mockData/fake_users.json';
 
 const AdminHistory = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [eventParticipants, setEventParticipants] = useState([]);
 
   const handleEventClick = (eventId) => {
     if (selectedEvent === eventId) {
       setSelectedEvent(null); // Deselect event if already selected
     } else {
       setSelectedEvent(eventId); // Select the clicked event
+      fetchEventParticipants(eventId); // Fetch participants for the selected event
+    }
+  };
+
+  const fetchEventParticipants = async (eventId) => {
+    // Assuming the eventId is the same as the event index in the fakeEvents array
+    const event = fakeEvents.find(event => event.id === eventId);
+    if (event) {
+      const participants = event.participants.map(participantId => {
+        const user = users.find(u => u.id === participantId);
+        return user ? user.fullName : 'Unknown User';
+      });
+      setEventParticipants(participants);
     }
   };
 
@@ -42,7 +57,7 @@ const AdminHistory = () => {
                 <tr className="participants-row">
                   <td colSpan="6">
                     <ul>
-                      {event.participants.map((participant, index) => (
+                      {eventParticipants.map((participant, index) => (
                         <li key={index}>{participant}</li>
                       ))}
                     </ul>

@@ -1,18 +1,36 @@
-import React, { useState } from 'react';
-import users from '../mockData/fake_users.json';
-import events from '../mockData/fake_event.json';
-import skills from '../mockData/skills.json';
+import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import './matchingForm.css';
 
 const VolunteerMatchingForm = () => {
+  const [events, setEvents] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [matchingVolunteers, setMatchingVolunteers] = useState([]);
 
-  const isDateInRange = (date, range) => {
-    const [start, end] = range.split(' - ').map(dayjs);
-    const checkDate = dayjs(date);
-    return checkDate.isAfter(start) && checkDate.isBefore(end);
+  useEffect(() => {
+    // Fetch events from the server
+    fetch('/api/volunteer-matching/events')
+      .then(response => response.json())
+      .then(data => setEvents(data))
+      .catch(error => console.error('Error fetching events:', error));
+    
+    // Fetch skills from the server
+    fetch('/api/volunteer-matching/skills')
+      .then(response => response.json())
+      .then(data => setSkills(data))
+      .catch(error => console.error('Error fetching skills:', error));
+  }, []);
+
+  const handleEventChange = (event) => {
+    const eventId = parseInt(event.target.value);
+    fetch(`/api/volunteer-matching/match/${eventId}`)
+      .then(response => response.json())
+      .then(data => {
+        setSelectedEvent(data.event);
+        setMatchingVolunteers(data.volunteers);
+      })
+      .catch(error => console.error('Error fetching matching volunteers:', error));
   };
 
   const getSkillNames = (skillIds) => {
@@ -22,24 +40,11 @@ const VolunteerMatchingForm = () => {
     }).join(', ');
   };
 
-  const handleEventChange = (event) => {
-    const eventId = parseInt(event.target.value);
-    const selectedEvent = events.find(e => e.id === eventId);
-    setSelectedEvent(selectedEvent);
-
-    const matchedVolunteers = users.filter(user =>
-      user.skills.some(skill => selectedEvent.requiredSkills.includes(skill)) &&
-      user.availability.some(range => isDateInRange(selectedEvent.date, range))
-    );
-
-    setMatchingVolunteers(matchedVolunteers);
-  };
-
   return (
     <div className="volunteer-matching-form">
-        <br></br>
-        <br></br>
-        <br></br>
+      <br />
+      <br />
+      <br />
       <div className="dropdown-container">
         <select onChange={handleEventChange}>
           <option value="">Select an event</option>
