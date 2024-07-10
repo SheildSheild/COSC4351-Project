@@ -14,13 +14,23 @@ const UserEventPage = () => {
 
   useEffect(() => {
     if (user) {
-      const filteredEvents = events.filter(event =>
-        user.skills.some(skill => event.requiredSkills.includes(skill)) &&
-        !user.acceptedEvents?.some(acceptedEvent => acceptedEvent.eventName === event.name && dayjs(acceptedEvent.eventDate).isSame(event.date, 'day'))
-      );
-      setUserEvents(filteredEvents);
+      fetch('http://localhost:3000/api/events/all')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(events => {
+          const filteredEvents = events.filter(event =>
+            user.skills.some(skill => event.requiredSkills.includes(skill)) &&
+            !user.acceptedEvents?.some(acceptedEvent => acceptedEvent.eventName === event.name && dayjs(acceptedEvent.eventDate).isSame(event.date, 'day'))
+          );
+          setUserEvents(filteredEvents);
+        })
+        .catch(error => console.error('Error fetching events:', error));
     }
-  }, [user]);
+  }, [user, setUserEvents]);
 
   const onDateChange = (date) => {
     setValue(date);
@@ -32,20 +42,20 @@ const UserEventPage = () => {
     setAvailableEvents(userAvailableEvents);
   };
 
-  const onEventClick = (event) => {
+  const onEventClick = async (event) => {
     const matchedEvent = userEvents.find(e => e.date === dayjs(event.date).format('YYYY-MM-DD'));
     if (matchedEvent) {
       const isInAvailability = user.availability.some(range => {
         const [start, end] = range.split(' - ');
         return dayjs(matchedEvent.date).isAfter(start) && dayjs(matchedEvent.date).isBefore(end);
       });
-
+  
       if (!isInAvailability) {
         if (!window.confirm('This event is outside your availability. Are you sure you want to sign up?')) {
           return;
         }
       }
-
+  
       const updatedUser = { ...user };
       if (!updatedUser.acceptedEvents) {
         updatedUser.acceptedEvents = [];
@@ -56,19 +66,38 @@ const UserEventPage = () => {
         eventDate: matchedEvent.date,
         signUpTime: currentTime,
       });
-
-      localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
-
-      // Create a notifications
-      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-      notifications.push({
-        user: user.fullName,
-        event: matchedEvent.name,
-        time: currentTime,
-      });
-      localStorage.setItem('notifications', JSON.stringify(notifications));
-
-      alert(`You have successfully signed up for ${matchedEvent.name} at ${currentTime}`);
+  
+      try {
+        const response = await fetch(`http://localhost:3000/api/events/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userId: user.id, eventId: matchedEvent.id })
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+        console.log('Sign-up successful:', data);
+  
+        localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+  
+        const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+        notifications.push({
+          user: user.fullName,
+          event: matchedEvent.name,
+          time: currentTime,
+        });
+        localStorage.setItem('notifications', JSON.stringify(notifications));
+  
+        alert(`You have successfully signed up for ${matchedEvent.name} at ${currentTime}`);
+      } catch (error) {
+        console.error('Error signing up for event:', error);
+        alert('There was an error signing up for the event. Please try again.');
+      }
     }
   };
 

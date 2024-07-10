@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './profileManagement.css';
 import state from '../mockData/state.json';
 import skills from '../mockData/skills.json';
-import user from '../mockData/fake_users.json';
+// import user from '../mockData/fake_users.json';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -129,45 +129,56 @@ const Profile = () => {
     e.preventDefault();
     let hasErrors = false;
     const newErrors = {};
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+    if (!loggedInUser) {
+        console.error('No logged-in user found');
+        return;
+    }
+
     Object.keys(formData).forEach((key) => {
-      if (key !== 'address2' && key !== 'preferences') {
-        validateInput(key, formData[key]);
-        if (formData[key] === '' || errors[key]) {
-          hasErrors = true;
-          if (formData[key] === '') {
-            newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
-          }
+        if (key !== 'address2' && key !== 'preferences') {
+            validateInput(key, formData[key]);
+            if (formData[key] === '' || errors[key]) {
+                hasErrors = true;
+                if (formData[key] === '') {
+                    newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
+                }
+            }
         }
-      }
     });
-  
+
     if (formData.skills.length === 0) {
-      newErrors.skills = 'Skills are required.';
-      hasErrors = true;
+        newErrors.skills = 'Skills are required.';
+        hasErrors = true;
     }
-  
+
     if (!hasErrors) {
-      fetch(`http://localhost:3000/api/profile/${user.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Profile updated successfully!', data);
-          alert('Profile updated successfully!');
+        fetch(`http://localhost:3000/api/profile/${loggedInUser.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
         })
-        .catch(error => console.error('Error updating profile:', error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'User not found') {
+                    console.error('User not found');
+                } else {
+                    console.log('Profile updated successfully!', data);
+                    alert('Profile updated successfully!');
+                }
+            })
+            .catch(error => console.error('Error updating profile:', error));
     } else {
-      console.log('Form has errors.');
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        ...newErrors
-      }));
+        console.log('Form has errors.');
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            ...newErrors
+        }));
     }
-  };
+};
   
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);

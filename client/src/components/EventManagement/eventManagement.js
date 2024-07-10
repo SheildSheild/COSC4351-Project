@@ -68,25 +68,45 @@ const Event = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-
+  
     if (window.confirm('Are you sure you want to create this event?')) {
-      const currentTime = new Date().toLocaleString();
-      const newNotification = {
-        message: `New Event: ${formData.eventName}, Date: ${formData.eventDate} | Created at ${currentTime}`,
-        date: currentTime,
-      };
-
-      // Updates users with the new notification
-      const storedUsers = JSON.parse(localStorage.getItem('users')) || users;
-      const updatedUsers = storedUsers.map(user => ({
-        ...user,
-        notifications: user.notifications ? [...user.notifications, newNotification] : [newNotification]
-      }));
-
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
-      alert('Event created successfully! Notifications have been sent to users.');
+      fetch('http://localhost:3000/api/events/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          eventName: formData.eventName,
+          eventDescription: formData.eventDescription,
+          location: formData.location,
+          requiredSkills: formData.requiredSkills,
+          urgency: formData.urgency === 'low' ? 1 : formData.urgency === 'medium' ? 2 : 3,
+          eventDate: formData.eventDate,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Event created successfully!', data);
+          alert('Event created successfully!');
+  
+          const currentTime = new Date().toLocaleString();
+          const newNotification = {
+            message: `New Event: ${formData.eventName}, Date: ${formData.eventDate} | Created at ${currentTime}`,
+            date: currentTime,
+          };
+  
+          const storedUsers = JSON.parse(localStorage.getItem('users')) || users;
+          const updatedUsers = storedUsers.map((user) => ({
+            ...user,
+            notifications: user.notifications ? [...user.notifications, newNotification] : [newNotification],
+          }));
+  
+          localStorage.setItem('users', JSON.stringify(updatedUsers));
+        })
+        .catch((error) => console.error('Error creating event:', error));
     }
   };
+  
 
   const toggleSkills = () => {
     setShowSkills(!showSkills);
