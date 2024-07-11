@@ -15,12 +15,7 @@ const UserEventPage = () => {
   useEffect(() => {
     if (user) {
       fetch('http://localhost:3000/api/events/all')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
+        .then(response => response.json())
         .then(events => {
           const filteredEvents = events.filter(event =>
             user.skills.some(skill => event.requiredSkills.includes(skill)) &&
@@ -30,7 +25,7 @@ const UserEventPage = () => {
         })
         .catch(error => console.error('Error fetching events:', error));
     }
-  }, [user, setUserEvents]);
+  }, [user]);
 
   const onDateChange = (date) => {
     setValue(date);
@@ -62,13 +57,11 @@ const UserEventPage = () => {
       }
       const currentTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
       updatedUser.acceptedEvents.push({
-        eventName: matchedEvent.name,
-        eventDate: matchedEvent.date,
-        signUpTime: currentTime,
+        eventId: matchedEvent.id,
       });
   
       try {
-        const response = await fetch(`http://localhost:3000/api/events/signup`, {
+        const response = await fetch(`http://localhost:3000/api/signup`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -100,6 +93,7 @@ const UserEventPage = () => {
       }
     }
   };
+  
 
   const tileContent = ({ date, view }) => {
     if (view === 'month') {
