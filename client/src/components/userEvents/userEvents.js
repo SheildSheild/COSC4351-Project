@@ -11,7 +11,6 @@ const UserEventPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableEvents, setAvailableEvents] = useState([]);
   const user = JSON.parse(localStorage.getItem('loggedInUser'));
-
   useEffect(() => {
     if (user) {
       fetch('http://localhost:3000/api/events/all')
@@ -66,11 +65,14 @@ const UserEventPage = () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ userId: user.id, eventId: matchedEvent.id })
+          body: JSON.stringify({
+            userId: user.id,
+            eventId: matchedEvent.id,
+          }),
         });
   
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Network response was not ok: ' + response.statusText);
         }
   
         const data = await response.json();
@@ -86,7 +88,7 @@ const UserEventPage = () => {
         });
         localStorage.setItem('notifications', JSON.stringify(notifications));
   
-        alert(`You have successfully signed up for ${matchedEvent.name} at ${currentTime}`);
+        alert(`You have successfully signed up for ${matchedEvent.name}!`);
       } catch (error) {
         console.error('Error signing up for event:', error);
         alert('There was an error signing up for the event. Please try again.');

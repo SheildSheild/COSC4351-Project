@@ -13,7 +13,7 @@ const eventsFilePath = path.join(__dirname, '../../client/src/components/mockDat
 let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
 let events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
 
-router.post('/signup', (req, res) => {
+router.post('/', (req, res) => {
     const { userId, eventId } = req.body;
     
     if (!userId || !eventId) {
@@ -36,21 +36,21 @@ router.post('/signup', (req, res) => {
   
     const currentTime = new Date().toISOString();
     user.acceptedEvents.push(eventId);
-  
+
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-  
+
     // Update notifications for all users
     users = users.map(u => ({
-      ...u,
-      notifications: u.notifications ? [...u.notifications, {
+    ...u,
+    notifications: u.notifications ? [...u.notifications, {
         user: user.fullName,
         event: event.name,
         time: currentTime,
-      }] : [{
+    }] : [{
         user: user.fullName,
         event: event.name,
         time: currentTime,
-      }]
+    }]
     }));
     
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
