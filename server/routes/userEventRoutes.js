@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
@@ -40,18 +41,18 @@ router.post('/', (req, res) => {
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 
     // Update notifications for all users
-    users = users.map(u => ({
-    ...u,
-    notifications: u.notifications ? [...u.notifications, {
-        user: user.fullName,
-        event: event.name,
-        time: currentTime,
-    }] : [{
-        user: user.fullName,
-        event: event.name,
-        time: currentTime,
-    }]
-    }));
+    users = users.map(u => {
+      if (u.role === 'admin') {
+        const newNotification = {
+          id: uuidv4(),  // Generate a unique ID
+          user: user.fullName,
+          event: event.name,
+          time: currentTime,
+        };
+        u.notifications = u.notifications ? [...u.notifications, newNotification] : [newNotification];
+      }
+      return u;
+    });
     
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
   

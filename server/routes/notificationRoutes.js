@@ -47,4 +47,27 @@ router.post('/', (req, res) => {
   }
 });
 
+router.delete('/:id', (req, res) => {
+  const notificationId = req.params.id;
+  let notificationFound = false;
+
+  users = users.map(user => {
+    if (user.notifications) {
+      const initialLength = user.notifications.length;
+      user.notifications = user.notifications.filter(notification => notification.id !== notificationId);
+      if (user.notifications.length < initialLength) {
+        notificationFound = true;
+      }
+    }
+    return user;
+  });
+
+  if (notificationFound) {
+    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+    res.status(200).json({ message: 'Notification deleted successfully' });
+  } else {
+    res.status(404).json({ message: 'Notification not found' });
+  }
+});
+
 export default router;

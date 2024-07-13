@@ -42,6 +42,21 @@
         "user": "moma",
         "event": "test event for route",
         "time": "2024-07-12T00:59:58.272Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T02:53:46.089Z"
+      },
+      {
+        "user": "moma",
+        "event": "Another route test",
+        "time": "2024-07-12T03:02:55.036Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T03:10:41.673Z"
       }
     ]
   },
@@ -66,6 +81,12 @@
       "2024-07-25"
     ],
     "acceptedEvents": [
+      11,
+      11,
+      12,
+      11,
+      11,
+      12,
       11
     ],
     "notifications": [
@@ -85,6 +106,21 @@
         "user": "moma",
         "event": "test event for route",
         "time": "2024-07-12T00:59:58.272Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T02:53:46.089Z"
+      },
+      {
+        "user": "moma",
+        "event": "Another route test",
+        "time": "2024-07-12T03:02:55.036Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T03:10:41.673Z"
       }
     ]
   },
@@ -129,6 +165,21 @@
         "user": "moma",
         "event": "test event for route",
         "time": "2024-07-12T00:59:58.272Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T02:53:46.089Z"
+      },
+      {
+        "user": "moma",
+        "event": "Another route test",
+        "time": "2024-07-12T03:02:55.036Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T03:10:41.673Z"
       }
     ]
   },
@@ -169,6 +220,21 @@
         "user": "moma",
         "event": "test event for route",
         "time": "2024-07-12T00:59:58.272Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T02:53:46.089Z"
+      },
+      {
+        "user": "moma",
+        "event": "Another route test",
+        "time": "2024-07-12T03:02:55.036Z"
+      },
+      {
+        "user": "moma",
+        "event": "test event for route",
+        "time": "2024-07-12T03:10:41.673Z"
       }
     ]
   },
@@ -194,21 +260,10 @@
     "acceptedEvents": [],
     "notifications": [
       {
-        "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
-        "date": "7/9/2024, 1:25:21 PM"
-      },
-      {
-        "message": "New Event: test event for route, Date: 2024-07-26 | Created at 7/10/2024, 8:46:23 AM",
-        "date": "7/10/2024, 8:46:23 AM"
-      },
-      {
-        "message": "New Event: Another route test, Date: 2024-07-23 | Created at 7/11/2024, 7:34:27 PM",
-        "date": "7/11/2024, 7:34:27 PM"
-      },
-      {
+        "id": "a55edab9-a3e5-415f-ac1e-ddc42419efae",
         "user": "moma",
         "event": "test event for route",
-        "time": "2024-07-12T00:59:58.272Z"
+        "time": "2024-07-13T01:42:17.702Z"
       }
     ]
   }

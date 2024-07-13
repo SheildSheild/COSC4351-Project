@@ -18,7 +18,7 @@ const UserEventPage = () => {
         .then(events => {
           const filteredEvents = events.filter(event =>
             user.skills.some(skill => event.requiredSkills.includes(skill)) &&
-            !user.acceptedEvents?.some(acceptedEvent => acceptedEvent.eventName === event.name && dayjs(acceptedEvent.eventDate).isSame(event.date, 'day'))
+            !user.acceptedEvents?.some(acceptedEvent => acceptedEvent.eventId === event.id)
           );
           setUserEvents(filteredEvents);
         })
@@ -54,7 +54,7 @@ const UserEventPage = () => {
       if (!updatedUser.acceptedEvents) {
         updatedUser.acceptedEvents = [];
       }
-      const currentTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+      const currentTime = dayjs().format('MM-DD-YYYY HH');
       updatedUser.acceptedEvents.push({
         eventId: matchedEvent.id,
       });
@@ -81,14 +81,11 @@ const UserEventPage = () => {
         localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
   
         const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-        notifications.push({
-          user: user.fullName,
-          event: matchedEvent.name,
-          time: currentTime,
-        });
+        notifications.push({message: `${user.fullName} has signed up for the ${matchedEvent.name} job. | ${currentTime}`});
         localStorage.setItem('notifications', JSON.stringify(notifications));
   
         alert(`You have successfully signed up for ${matchedEvent.name}!`);
+        setUserEvents(userEvents.filter(e => e.id !== matchedEvent.id));
       } catch (error) {
         console.error('Error signing up for event:', error);
         alert('There was an error signing up for the event. Please try again.');
