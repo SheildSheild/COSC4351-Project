@@ -18,7 +18,6 @@ In your terminal, direct to the server folder i.e.: `cd COSC4353-Project/server`
 This starts the server for the application which allows real time CRUD operations with the front end and back end
 
 After starting the server, you can proceed with starting the client in order to access the front end.
-
 It is important to open a separate terminal in order to run the client along side the server.
 
 Once you have a new terminal open, direct to the client folder via this command in your terminal: `cd COSC4353-Project/client` and run the command `npm start`
