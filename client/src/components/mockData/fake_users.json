@@ -23,6 +23,9 @@
     "acceptedEvents": [
       12
     ],
+    "offeredEvents": [
+      1
+    ],
     "notifications": [
       {
         "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
@@ -59,6 +62,10 @@
         "user": "moma",
         "event": "test event for route",
         "time": "2024-07-12T03:10:41.673Z"
+      },
+      {
+        "message": "Admin Paul Conner has assigned you a position in the Dog Sitting event. | 2024-07-17T22:43:53.688Z",
+        "date": "2024-07-17T22:43:53.688Z"
       }
     ]
   },
@@ -86,6 +93,7 @@
       11,
       12
     ],
+    "offeredEvents": [],
     "notifications": [
       {
         "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
@@ -145,6 +153,7 @@
       "2024-11-01 - 2025-11-08"
     ],
     "acceptedEvents": [],
+    "offeredEvents": [],
     "notifications": [
       {
         "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
@@ -200,6 +209,7 @@
       "2024-08-30 - 2025-09-03"
     ],
     "acceptedEvents": [],
+    "offeredEvents": [],
     "notifications": [
       {
         "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
@@ -255,6 +265,7 @@
       "2024-01-09 - 2025-01-13"
     ],
     "acceptedEvents": [],
+    "offeredEvents": [],
     "notifications": []
   }
 ]

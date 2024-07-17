@@ -94,6 +94,20 @@ const VolunteerMatchingForm = () => {
     skill.name.toLowerCase().includes(searchTerm)
   );
 
+  const handleAssignClick = (volunteerId, eventId) => {
+    fetch('http://localhost:3000/api/volunteer-matching/assign', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ volunteerId, eventId })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Assignment successful:', data);
+        alert(`Volunteer assigned successfully and notification sent.`);
+      })
+      .catch(error => console.error('Error assigning volunteer:', error));
+  };
+
   return (
     <div className="volunteer-matching-form">
       <br></br>
@@ -173,7 +187,7 @@ const VolunteerMatchingForm = () => {
                   <tr key={volunteer.id}>
                     <td>{volunteer.fullName}</td>
                     <td>{getSkillNames(volunteer.skills)}</td>
-                    <td><button className="assign-button">Assign</button></td>
+                    <td><button className="assign-button" onClick={() => handleAssignClick(volunteer.id, selectedEvents[0])}>Assign</button></td>
                   </tr>
                 ))}
               </tbody>

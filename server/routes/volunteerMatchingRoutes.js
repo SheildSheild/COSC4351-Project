@@ -45,4 +45,41 @@ const isDateInRange = (date, range) => {
   return checkDate >= start && checkDate <= end;
 };
 
+router.post('/assign', (req, res) => {
+  const { volunteerId, eventId } = req.body;
+
+  if (!volunteerId || !eventId) {
+    return res.status(400).json({ message: 'Volunteer ID and Event ID are required' });
+  }
+
+  const volunteer = users.find(u => u.id === volunteerId);
+  if (!volunteer) {
+    return res.status(404).json({ message: 'Volunteer not found' });
+  }
+
+  const event = events.find(e => e.id === eventId);
+  if (!event) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+
+  if (!volunteer.offeredEvents) {
+    volunteer.offeredEvents = [];
+  }
+
+  const currentTime = new Date().toISOString();
+  volunteer.offeredEvents.push(eventId);
+
+  const admin = users.find(u => u.role === 'admin'); // Assuming the first admin is assigning
+  const notification = {
+    message: `Admin ${admin.fullName} has assigned you a position in the ${event.name} event. | ${currentTime}`,
+    date: currentTime
+  };
+  volunteer.notifications.push(notification);
+
+  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+
+  res.status(200).json({ message: 'Volunteer assigned successfully and notification sent' });
+});
+
+
 export default router;
