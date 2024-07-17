@@ -1,33 +1,79 @@
 import React, { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
 import './matchingForm.css';
 
 const VolunteerMatchingForm = () => {
   const [events, setEvents] = useState([]);
   const [skills, setSkills] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [selectedEvents, setSelectedEvents] = useState([]);
   const [matchingVolunteers, setMatchingVolunteers] = useState([]);
+  const [allSkillsSelected, setAllSkillsSelected] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     // Fetch events from the server
-    fetch('/api/volunteer-matching/events')
+    fetch('http://localhost:3000/api/volunteer-matching/events')
       .then(response => response.json())
-      .then(data => setEvents(data))
+      .then(data => {
+        console.log('Events fetched:', data);
+        setEvents(data);
+      })
       .catch(error => console.error('Error fetching events:', error));
-    
+
     // Fetch skills from the server
-    fetch('/api/volunteer-matching/skills')
+    fetch('http://localhost:3000/api/volunteer-matching/skills')
       .then(response => response.json())
-      .then(data => setSkills(data))
+      .then(data => {
+        console.log('Skills fetched:', data);
+        setSkills(data);
+      })
       .catch(error => console.error('Error fetching skills:', error));
   }, []);
 
+  const handleSkillChange = (event) => {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
+    let updatedSelectedSkills;
+  
+    if (value === 'all') {
+      if (isChecked) {
+        setSelectedSkills([]);
+        setFilteredEvents(events);
+      }
+      setAllSkillsSelected(isChecked);
+    } else {
+      updatedSelectedSkills = isChecked
+        ? [...selectedSkills, value]
+        : selectedSkills.filter(skill => skill !== value);
+  
+      setSelectedSkills(updatedSelectedSkills);
+  
+      if (updatedSelectedSkills.length === 0) {
+        setAllSkillsSelected(true);
+        setFilteredEvents(events);
+      } else {
+        setAllSkillsSelected(false);
+        const filtered = events.filter(event =>
+          updatedSelectedSkills.every(skill => event.requiredSkills.includes(parseInt(skill)))
+        );
+        setFilteredEvents(filtered);
+      }
+    }
+  };
+
   const handleEventChange = (event) => {
-    const eventId = parseInt(event.target.value);
-    fetch(`/api/volunteer-matching/match/${eventId}`)
+    const selectedOptions = Array.from(event.target.selectedOptions).map(option => parseInt(option.value));
+    setSelectedEvents(selectedOptions);
+
+    fetch('http://localhost:3000/api/volunteer-matching/match', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ eventIds: selectedOptions, skillIds: selectedSkills })
+    })
       .then(response => response.json())
       .then(data => {
-        setSelectedEvent(data.event);
+        console.log('Matching volunteers fetched:', data);
         setMatchingVolunteers(data.volunteers);
       })
       .catch(error => console.error('Error fetching matching volunteers:', error));
@@ -40,22 +86,79 @@ const VolunteerMatchingForm = () => {
     }).join(', ');
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value.toLowerCase());
+  };
+
+  const filteredSkills = skills.filter(skill =>
+    skill.name.toLowerCase().includes(searchTerm)
+  );
+
   return (
     <div className="volunteer-matching-form">
-      <br />
-      <br />
-      <br />
-      <div className="dropdown-container">
-        <select onChange={handleEventChange}>
-          <option value="">Select an event</option>
-          {events.map(event => (
-            <option key={event.id} value={event.id}>{event.name}</option>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <h1>Volunteer Matching Form</h1>
+      <div className="form-section">
+        <label htmlFor="skills">Select your desired skills:</label>
+        <input
+          type="text"
+          placeholder="Search for skills..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+        <div className="checkbox-container">
+          <div className="checkbox-item">
+            <label>
+              <input
+                type="checkbox"
+                value="all"
+                onChange={handleSkillChange}
+                checked={allSkillsSelected}
+              />
+              All
+            </label>
+          </div>
+          {filteredSkills.map(skill => (
+            <div key={skill.id} className="checkbox-item">
+              <label>
+                <input
+                  type="checkbox"
+                  value={skill.id}
+                  onChange={handleSkillChange}
+                  checked={selectedSkills.includes(skill.id.toString())}
+                />
+                {skill.name}
+              </label>
+            </div>
           ))}
-        </select>
+        </div>
       </div>
-      {selectedEvent && (
-        <div>
-          <h3>Matching Volunteers for {selectedEvent.name}</h3>
+      {filteredEvents.length > 0 && (
+        <div className="form-section">
+          <label htmlFor="events">Select events:</label>
+          <select
+            id="events"
+            multiple
+            onChange={handleEventChange}
+            className="events-dropdown"
+          >
+            {filteredEvents.map(event => (
+              <option key={event.id} value={event.id}>{event.name}</option>
+            ))}
+          </select>
+        </div>
+      )}
+      {matchingVolunteers.length > 0 && (
+        <div className="form-section">
+          <h3>Matching Volunteers</h3>
           <div className="table-container">
             <table>
               <thead>

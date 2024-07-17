@@ -20,7 +20,7 @@ const AdminNotifications = () => {
     } else {
       console.error('User ID not found in localStorage');
     }
-  }, [user]);
+  }, [notifications]);
   
 
   const handleDelete = async (id) => {
@@ -34,11 +34,11 @@ const AdminNotifications = () => {
         throw new Error('Network response was not ok: ' + response.statusText);
       }
 
+      setNotifications(user.notifications.filter(notification => notification.id !== id));
       const data = await response.json();
       console.log('Delete successful:', data);
 
       // Remove the deleted notification from the state
-      setNotifications(user.notifications.filter(notification => notification.id !== id));
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
@@ -53,7 +53,7 @@ const AdminNotifications = () => {
       <br></br>
       <h2>Admin Notifications</h2>
       <ul>
-        {user.notifications.map(notification => (
+        {notifications.map(notification => (
           <li key={notification.id}>
             <strong>{notification.user}</strong> signed up for <strong>{notification.event}</strong> at <em>{notification.time}</em>
             <button onClick={() => handleDelete(notification.id)}>Acknowledge</button>

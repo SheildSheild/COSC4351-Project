@@ -48,6 +48,10 @@ router.post('/', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
+  const { userId } = req.params;
+  console.log(users);
+  console.log(req.params);
+  const user = users.find(u => u.id === parseInt(userId));
   const notificationId = req.params.id;
   let notificationFound = false;
 

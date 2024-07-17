@@ -20,7 +20,9 @@
       "2024-10-06 - 2024-11-29",
       "2025-01-01 - 2025-01-05"
     ],
-    "acceptedEvents": [],
+    "acceptedEvents": [
+      12
+    ],
     "notifications": [
       {
         "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
@@ -82,12 +84,7 @@
     ],
     "acceptedEvents": [
       11,
-      11,
-      12,
-      11,
-      11,
-      12,
-      11
+      12
     ],
     "notifications": [
       {
@@ -258,13 +255,6 @@
       "2024-01-09 - 2025-01-13"
     ],
     "acceptedEvents": [],
-    "notifications": [
-      {
-        "id": "a55edab9-a3e5-415f-ac1e-ddc42419efae",
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-13T01:42:17.702Z"
-      }
-    ]
+    "notifications": []
   }
 ]
