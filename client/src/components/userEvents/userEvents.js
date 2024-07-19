@@ -11,15 +11,14 @@ const UserEventPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableEvents, setAvailableEvents] = useState([]);
   const user = JSON.parse(localStorage.getItem('loggedInUser'));
-  
+
   useEffect(() => {
     if (user) {
       fetch('http://localhost:3000/api/events/all')
         .then(response => response.json())
         .then(events => {
           const filteredEvents = events.filter(event =>
-            user.skills.some(skill => event.requiredSkills.includes(skill)) &&
-            !user.acceptedEvents?.some(acceptedEvent => acceptedEvent.eventId === event.id)
+            user.skills.some(skill => event.requiredSkills.includes(skill))
           );
           setUserEvents(filteredEvents);
         })
@@ -38,19 +37,19 @@ const UserEventPage = () => {
   };
 
   const onEventClick = async (event) => {
-    const matchedEvent = userEvents.find(e => e.date === dayjs(event.date).format('YYYY-MM-DD'));
+    const matchedEvent = userEvents.find(e => e.id === event.id);
     if (matchedEvent) {
       const isInAvailability = user.availability.some(range => {
         const [start, end] = range.split(' - ');
         return dayjs(matchedEvent.date).isAfter(start) && dayjs(matchedEvent.date).isBefore(end);
       });
-  
+
       if (!isInAvailability) {
         if (!window.confirm('This event is outside your availability. Are you sure you want to sign up?')) {
           return;
         }
       }
-  
+
       const updatedUser = { ...user };
       if (!updatedUser.acceptedEvents) {
         updatedUser.acceptedEvents = [];
@@ -59,7 +58,7 @@ const UserEventPage = () => {
       updatedUser.acceptedEvents.push({
         eventId: matchedEvent.id, signUpTime: currentTime
       });
-  
+
       try {
         const response = await fetch(`http://localhost:3000/api/signup`, {
           method: 'POST',
@@ -71,37 +70,39 @@ const UserEventPage = () => {
             eventId: matchedEvent.id,
           }),
         });
-  
+
         if (!response.ok) {
           throw new Error('Network response was not ok: ' + response.statusText);
         }
-  
+
         const data = await response.json();
         console.log('Sign-up successful:', data);
-  
+
         localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
-  
+
         const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
         notifications.push({message: `${user.fullName} has signed up for the ${matchedEvent.name} job. | ${currentTime}`});
         localStorage.setItem('notifications', JSON.stringify(notifications));
-  
+
         alert(`You have successfully signed up for ${matchedEvent.name}!`);
-        setUserEvents(userEvents.filter(e => e.id !== matchedEvent.id));
+        setUserEvents(userEvents.map(e => e.id === matchedEvent.id ? { ...e, signedUp: true } : e));
       } catch (error) {
         console.error('Error signing up for event:', error);
         alert('There was an error signing up for the event. Please try again.');
       }
     }
   };
-  
 
   const tileContent = ({ date, view }) => {
     if (view === 'month') {
       const event = userEvents.find(e => e.date === dayjs(date).format('YYYY-MM-DD'));
+      const signedUpEvent = user.acceptedEvents?.find(e => e.eventId === event?.id);
+
       if (event) {
         return (
-          <div className="event">
+          <div className={`event ${signedUpEvent ? 'signed-up' : ''}`}>
             <span>{event.name}</span>
+            {signedUpEvent && <span className="signed-up-indicator">✔</span>}
           </div>
         );
       }
@@ -126,11 +127,15 @@ const UserEventPage = () => {
         <div className="events-list">
           <h3>Events on {dayjs(selectedDate).format('MMMM D, YYYY')}</h3>
           <ul>
-            {availableEvents.map(event => (
-              <li key={event.id}>
-                {event.name} - {event.description} <button onClick={() => onEventClick(event)}>Sign Up</button>
-              </li>
-            ))}
+            {availableEvents.map(event => {
+              const isSignedUp = user.acceptedEvents?.some(e => e.eventId === event.id);
+              return (
+                <li key={event.id}>
+                  {event.name} - {event.description}
+                  {!isSignedUp && <button onClick={() => onEventClick(event)}>Sign Up</button>}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
