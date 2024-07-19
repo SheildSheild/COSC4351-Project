@@ -20,7 +20,7 @@ const AdminNotifications = () => {
     } else {
       console.error('User ID not found in localStorage');
     }
-  }, [notifications]);
+  }, [user]);
   
 
   const handleDelete = async (id) => {
