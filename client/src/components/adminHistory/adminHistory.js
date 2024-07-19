@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './adminHistory.css';
 import fakeEvents from '../mockData/fake_event.json';
 import users from '../mockData/fake_users.json';
