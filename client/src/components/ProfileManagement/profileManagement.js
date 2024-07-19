@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './profileManagement.css';
 import state from '../mockData/state.json';
 import skills from '../mockData/skills.json';
+import skillMapping from '../mockData/skillmapping.json';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -40,6 +41,10 @@ const Profile = () => {
     }));
 
     validateInput(name, value);
+  };
+
+  const mapSkills = (skillIds) => {
+    return skillIds.map(id => skillMapping[id] || id).join(', ');
   };
 
   const handleSkillsChange = (skillId) => {
@@ -283,49 +288,51 @@ const Profile = () => {
       </div>
 
       <div className="form-group">
-        <label>Skills: <span className="required">* required</span></label>
-        <div className="multi-select-dropdown">
-          <button
-            type="button"
-            onClick={toggleDropdown}
-            className={errors.skills ? "error" : ""}
-          >
-            {formData.skills.length === 0 ? 'Select Skills' : `Selected Skills: ${formData.skills.map(skillId => skills.find(skill => skill.id === skillId).name).join(', ')}`}
-          </button>
-          {dropdownOpen && (
-            <div className="multi-select-options">
-              {skills.map((skill) => (
-                <label key={skill.id}>
-                  <input
-                    type="checkbox"
-                    checked={formData.skills.includes(skill.id)}
-                    onChange={() => handleSkillsChange(skill.id)}
-                  />
-                  {skill.name}
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-        {errors.skills && <span className="error-message">{errors.skills}</span>}
+  <label>Skills: <span className="required">* required</span></label>
+  <div className="multi-select-dropdown">
+    <button
+      type="button"
+      onClick={toggleDropdown}
+      className={errors.skills ? "error" : ""}
+    >
+      {formData.skills.length === 0
+        ? 'Select Skills'
+        : `Selected Skills: ${formData.skills.map(skillId => skills.find(skill => skill.id === skillId)?.name || skillId).join(', ')}`}
+    </button>
+    {dropdownOpen && (
+      <div className="multi-select-options">
+        {skills.map((skill) => (
+          <label key={skill.id}>
+            <input
+              type="checkbox"
+              checked={formData.skills.includes(skill.id)}
+              onChange={() => handleSkillsChange(skill.id)}
+            />
+            {skill.name}
+          </label>
+        ))}
       </div>
+    )}
+  </div>
+  {errors.skills && <span className="error-message">{errors.skills}</span>}
+</div>
 
-      <div className="selected-skills">
-        {formData.skills.length > 0 ? (
-          formData.skills.map((skillId) => {
-            const skill = skills.find((s) => s.id === skillId);
-            return (
-              skill && (
-                <div key={skill.id} className="selected-skill">
-                  {skill.name}
-                </div>
-              )
-            );
-          })
-        ) : (
-          <div className="placeholder-text">No skills selected</div>
-        )}
-      </div>
+<div className="selected-skills">
+  {formData.skills.length > 0 ? (
+    formData.skills.map((skillId) => {
+      const skill = skills.find((s) => s.id === skillId);
+      return (
+        skill && (
+          <div key={skill.id} className="selected-skill">
+            {skill.name}
+          </div>
+        )
+      );
+    })
+  ) : (
+    <div className="placeholder-text">No skills selected</div>
+  )}
+</div>
 
       <div className="form-group">
         <label>Preferences:</label>
