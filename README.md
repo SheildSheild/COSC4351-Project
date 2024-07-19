@@ -12,9 +12,11 @@ Ensure that you have the latest dependencies by running this command
 
 `npm install`
 
-# How to run the Client and Server!
+# How to run the web application
 
-In your terminal, direct to the server folder i.e.: `cd COSC4353-Project/server` and run the command `node server.js`
+To run the web application, you **need** to run both the *server* and the *client* simultaneously. 
+
+First, in your terminal, direct to the server folder i.e.: `cd COSC4353-Project/server` and run the command `node server.js`
 This starts the server for the application which allows real time CRUD operations with the front end and back end
 
 After starting the server, you can proceed with starting the client in order to access the front end.
