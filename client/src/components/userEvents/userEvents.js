@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import events from '../mockData/fake_event.json';
+import skills from '../mockData/skills.json'; // Make sure to import skills
 import dayjs from 'dayjs';
 import './userEvents.css';
 
@@ -18,7 +19,8 @@ const UserEventPage = () => {
         .then(response => response.json())
         .then(events => {
           const filteredEvents = events.filter(event =>
-            user.skills.some(skill => event.requiredSkills.includes(skill))
+            user.skills.some(skill => event.requiredSkills.includes(skill)) &&
+            !user.acceptedEvents?.some(acceptedEvent => acceptedEvent.eventId === event.id)
           );
           setUserEvents(filteredEvents);
         })
@@ -37,7 +39,7 @@ const UserEventPage = () => {
   };
 
   const onEventClick = async (event) => {
-    const matchedEvent = userEvents.find(e => e.id === event.id);
+    const matchedEvent = userEvents.find(e => e.date === dayjs(event.date).format('YYYY-MM-DD'));
     if (matchedEvent) {
       const isInAvailability = user.availability.some(range => {
         const [start, end] = range.split(' - ');
@@ -85,7 +87,7 @@ const UserEventPage = () => {
         localStorage.setItem('notifications', JSON.stringify(notifications));
 
         alert(`You have successfully signed up for ${matchedEvent.name}!`);
-        setUserEvents(userEvents.map(e => e.id === matchedEvent.id ? { ...e, signedUp: true } : e));
+        setUserEvents(userEvents.filter(e => e.id !== matchedEvent.id));
       } catch (error) {
         console.error('Error signing up for event:', error);
         alert('There was an error signing up for the event. Please try again.');
@@ -96,13 +98,10 @@ const UserEventPage = () => {
   const tileContent = ({ date, view }) => {
     if (view === 'month') {
       const event = userEvents.find(e => e.date === dayjs(date).format('YYYY-MM-DD'));
-      const signedUpEvent = user.acceptedEvents?.find(e => e.eventId === event?.id);
-
       if (event) {
         return (
-          <div className={`event ${signedUpEvent ? 'signed-up' : ''}`}>
+          <div className="event">
             <span>{event.name}</span>
-            {signedUpEvent && <span className="signed-up-indicator">✔</span>}
           </div>
         );
       }
@@ -127,18 +126,20 @@ const UserEventPage = () => {
         <div className="events-list">
           <h3>Events on {dayjs(selectedDate).format('MMMM D, YYYY')}</h3>
           <ul>
-            {availableEvents.map(event => {
-              const isSignedUp = user.acceptedEvents?.some(e => e.eventId === event.id);
-              return (
-                <li key={event.id}>
+            {availableEvents.map(event => (
+              <li key={event.id}>
+                <div>
                   <strong>{event.name}</strong> - {event.description}
-                  <br />
-                  <span className="skills">Skills Required: {event.requiredSkills.join(', ')}</span>
-                  <br />
-                  {!isSignedUp && <button onClick={() => onEventClick(event)}>Sign Up</button>}
-                </li>
-              );
-            })}
+                </div>
+                <div>
+                  Skills Required: {event.requiredSkills.map(skillId => {
+                    const skill = skills.find(s => s.id === skillId);
+                    return skill ? skill.name : skillId;
+                  }).join(', ')}
+                </div>
+                <button onClick={() => onEventClick(event)}>Sign Up</button>
+              </li>
+            ))}
           </ul>
         </div>
       )}
