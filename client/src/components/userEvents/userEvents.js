@@ -131,7 +131,10 @@ const UserEventPage = () => {
               const isSignedUp = user.acceptedEvents?.some(e => e.eventId === event.id);
               return (
                 <li key={event.id}>
-                  {event.name} - {event.description}
+                  <strong>{event.name}</strong> - {event.description}
+                  <br />
+                  <span className="skills">Skills Required: {event.requiredSkills.join(', ')}</span>
+                  <br />
                   {!isSignedUp && <button onClick={() => onEventClick(event)}>Sign Up</button>}
                 </li>
               );
