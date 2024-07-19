@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './profileManagement.css';
 import state from '../mockData/state.json';
 import skills from '../mockData/skills.json';
-// import user from '../mockData/fake_users.json';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +18,19 @@ const Profile = () => {
 
   const [errors, setErrors] = useState({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+    if (loggedInUser) {
+      fetch(`http://localhost:3000/api/profile/${loggedInUser.id}`)
+        .then(response => response.json())
+        .then(data => {
+          setFormData(data);
+        })
+        .catch(error => console.error('Error fetching user profile:', error));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
