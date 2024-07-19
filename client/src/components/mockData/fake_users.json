@@ -21,51 +21,36 @@
       "2025-01-01 - 2025-01-05"
     ],
     "acceptedEvents": [
-      12
+      {
+        "eventId": 12,
+        "signUpTime": "2024-07-12T00:59:58.272Z"
+      },
+      {
+        "eventId": 1,
+        "signUpTime": "2024-07-13T14:21:30.000Z"
+      }
     ],
-    "offeredEvents": [
-      1
-    ],
+    "offeredEvents": [],
     "notifications": [
       {
-        "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
-        "date": "7/9/2024, 1:25:21 PM"
+        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
+        "date": "7/19/2024, 1:40:44 AM"
       },
       {
-        "message": "This is a test notification for routes",
-        "date": "7/9/2024, 1:40:05 PM"
+        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
+        "date": "7/19/2024, 1:40:57 AM"
       },
       {
-        "message": "New Event: test event for route, Date: 2024-07-26 | Created at 7/10/2024, 8:46:23 AM",
-        "date": "7/10/2024, 8:46:23 AM"
+        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
+        "date": "7/19/2024, 1:41:05 AM"
       },
       {
-        "message": "New Event: Another route test, Date: 2024-07-23 | Created at 7/11/2024, 7:34:27 PM",
-        "date": "7/11/2024, 7:34:27 PM"
+        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
+        "date": "7/19/2024, 1:41:14 AM"
       },
       {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T00:59:58.272Z"
-      },
-      {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T02:53:46.089Z"
-      },
-      {
-        "user": "moma",
-        "event": "Another route test",
-        "time": "2024-07-12T03:02:55.036Z"
-      },
-      {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T03:10:41.673Z"
-      },
-      {
-        "message": "Admin Paul Conner has assigned you a position in the Dog Sitting event. | 2024-07-17T22:43:53.688Z",
-        "date": "2024-07-17T22:43:53.688Z"
+        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
+        "date": "7/19/2024, 1:41:23 AM"
       }
     ]
   },
@@ -90,42 +75,36 @@
       "2024-07-25"
     ],
     "acceptedEvents": [
-      11,
-      12
+      {
+        "eventId": 11,
+        "signUpTime": "2024-07-12T12:34:56.000Z"
+      },
+      {
+        "eventId": 2,
+        "signUpTime": "2024-07-12T12:34:56.000Z"
+      }
     ],
     "offeredEvents": [],
     "notifications": [
       {
-        "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
-        "date": "7/9/2024, 1:25:21 PM"
+        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
+        "date": "7/19/2024, 1:40:44 AM"
       },
       {
-        "message": "New Event: test event for route, Date: 2024-07-26 | Created at 7/10/2024, 8:46:23 AM",
-        "date": "7/10/2024, 8:46:23 AM"
+        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
+        "date": "7/19/2024, 1:40:57 AM"
       },
       {
-        "message": "New Event: Another route test, Date: 2024-07-23 | Created at 7/11/2024, 7:34:27 PM",
-        "date": "7/11/2024, 7:34:27 PM"
+        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
+        "date": "7/19/2024, 1:41:05 AM"
       },
       {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T00:59:58.272Z"
+        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
+        "date": "7/19/2024, 1:41:14 AM"
       },
       {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T02:53:46.089Z"
-      },
-      {
-        "user": "moma",
-        "event": "Another route test",
-        "time": "2024-07-12T03:02:55.036Z"
-      },
-      {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T03:10:41.673Z"
+        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
+        "date": "7/19/2024, 1:41:23 AM"
       }
     ]
   },
@@ -156,36 +135,24 @@
     "offeredEvents": [],
     "notifications": [
       {
-        "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
-        "date": "7/9/2024, 1:25:21 PM"
+        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
+        "date": "7/19/2024, 1:40:44 AM"
       },
       {
-        "message": "New Event: test event for route, Date: 2024-07-26 | Created at 7/10/2024, 8:46:23 AM",
-        "date": "7/10/2024, 8:46:23 AM"
+        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
+        "date": "7/19/2024, 1:40:57 AM"
       },
       {
-        "message": "New Event: Another route test, Date: 2024-07-23 | Created at 7/11/2024, 7:34:27 PM",
-        "date": "7/11/2024, 7:34:27 PM"
+        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
+        "date": "7/19/2024, 1:41:05 AM"
       },
       {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T00:59:58.272Z"
+        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
+        "date": "7/19/2024, 1:41:14 AM"
       },
       {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T02:53:46.089Z"
-      },
-      {
-        "user": "moma",
-        "event": "Another route test",
-        "time": "2024-07-12T03:02:55.036Z"
-      },
-      {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T03:10:41.673Z"
+        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
+        "date": "7/19/2024, 1:41:23 AM"
       }
     ]
   },
@@ -212,36 +179,24 @@
     "offeredEvents": [],
     "notifications": [
       {
-        "message": "New Event: Route Test Event, Date: 2025-01-05 | Created at 7/9/2024, 1:25:21 PM",
-        "date": "7/9/2024, 1:25:21 PM"
+        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
+        "date": "7/19/2024, 1:40:44 AM"
       },
       {
-        "message": "New Event: test event for route, Date: 2024-07-26 | Created at 7/10/2024, 8:46:23 AM",
-        "date": "7/10/2024, 8:46:23 AM"
+        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
+        "date": "7/19/2024, 1:40:57 AM"
       },
       {
-        "message": "New Event: Another route test, Date: 2024-07-23 | Created at 7/11/2024, 7:34:27 PM",
-        "date": "7/11/2024, 7:34:27 PM"
+        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
+        "date": "7/19/2024, 1:41:05 AM"
       },
       {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T00:59:58.272Z"
+        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
+        "date": "7/19/2024, 1:41:14 AM"
       },
       {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T02:53:46.089Z"
-      },
-      {
-        "user": "moma",
-        "event": "Another route test",
-        "time": "2024-07-12T03:02:55.036Z"
-      },
-      {
-        "user": "moma",
-        "event": "test event for route",
-        "time": "2024-07-12T03:10:41.673Z"
+        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
+        "date": "7/19/2024, 1:41:23 AM"
       }
     ]
   },
@@ -266,6 +221,81 @@
     ],
     "acceptedEvents": [],
     "offeredEvents": [],
-    "notifications": []
+    "notifications": [
+      {
+        "id": "0c550294-af51-4bc3-b20e-6e40c1088371",
+        "user": "moma",
+        "event": "Event 3",
+        "time": "2024-07-18T06:14:29.592Z"
+      },
+      {
+        "id": "8814c4a9-58c7-4c9b-9228-c2685b03b31a",
+        "user": "moma",
+        "event": "Dog Walking",
+        "time": "2024-07-18T06:20:02.367Z"
+      },
+      {
+        "id": "a57b30b8-d75e-4bf7-83a9-cab2f6eaa8c5",
+        "user": "moma",
+        "event": "Event 3",
+        "time": "2024-07-18T06:38:13.504Z"
+      },
+      {
+        "id": "4c704de1-9019-41ff-aadd-821e2185b5d7",
+        "user": "moma",
+        "event": "Event 2",
+        "time": "2024-07-19T05:18:24.384Z"
+      },
+      {
+        "id": "bb60e80f-fb7e-4f2d-bf51-428866708757",
+        "user": "moma",
+        "event": "Event 2",
+        "time": "2024-07-19T05:59:33.822Z"
+      },
+      {
+        "id": "72d29187-a707-40cb-9a04-f21edfee3a51",
+        "user": "moma",
+        "event": "Dog Walking",
+        "time": "2024-07-19T06:12:51.262Z"
+      },
+      {
+        "id": "a5e9bdc7-0d1b-4d1b-8b65-1b881713e37e",
+        "user": "moma",
+        "event": "Dog Sitting",
+        "time": "2024-07-19T06:28:34.455Z"
+      },
+      {
+        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
+        "date": "7/19/2024, 1:40:44 AM"
+      },
+      {
+        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
+        "date": "7/19/2024, 1:40:57 AM"
+      },
+      {
+        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
+        "date": "7/19/2024, 1:41:05 AM"
+      },
+      {
+        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
+        "date": "7/19/2024, 1:41:14 AM"
+      },
+      {
+        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
+        "date": "7/19/2024, 1:41:23 AM"
+      },
+      {
+        "id": "fe46cdb5-7878-4348-bbde-9e4b24d07c4d",
+        "user": "moma",
+        "event": "test event 20",
+        "time": "2024-07-19T06:41:49.915Z"
+      },
+      {
+        "id": "4643abb9-16ef-440c-942c-2b9ece4a77ae",
+        "user": "moma",
+        "event": "test event 15",
+        "time": "2024-07-19T06:52:16.552Z"
+      }
+    ]
   }
 ]

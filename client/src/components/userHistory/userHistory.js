@@ -7,7 +7,7 @@ const UserHistory = () => {
   const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
   useEffect(() => {
-    if (user) {
+    if (user && user.id) {
       fetch(`http://localhost:3000/api/history/${user.id}`)
         .then(response => response.json())
         .then(data => {

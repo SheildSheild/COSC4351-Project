@@ -104,6 +104,7 @@ const VolunteerMatchingForm = () => {
       .then(data => {
         console.log('Assignment successful:', data);
         alert(`Volunteer assigned successfully and notification sent.`);
+        setMatchingVolunteers(prevVolunteers => prevVolunteers.filter(volunteer => volunteer.id !== volunteerId));
       })
       .catch(error => console.error('Error assigning volunteer:', error));
   };

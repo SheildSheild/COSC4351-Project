@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
 
 const router = express.Router();
 
@@ -35,8 +36,8 @@ router.post('/', (req, res) => {
       user.acceptedEvents = [];
     }
   
-    const currentTime = new Date().toISOString();
-    user.acceptedEvents.push(eventId);
+    const currentTime = dayjs().toISOString();
+    user.acceptedEvents.push({eventId: eventId, signUpTime: currentTime});
 
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 

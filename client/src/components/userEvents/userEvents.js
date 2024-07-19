@@ -56,7 +56,7 @@ const UserEventPage = () => {
       }
       const currentTime = dayjs().format('MM-DD-YYYY HH');
       updatedUser.acceptedEvents.push({
-        eventId: matchedEvent.id,
+        eventId: matchedEvent.id, signUpTime: currentTime
       });
   
       try {
