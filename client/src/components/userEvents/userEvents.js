@@ -11,6 +11,7 @@ const UserEventPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableEvents, setAvailableEvents] = useState([]);
   const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  
   useEffect(() => {
     if (user) {
       fetch('http://localhost:3000/api/events/all')

@@ -312,5 +312,20 @@
     },
     "date": "2024-07-05",
     "participants": []
+  },
+  {
+    "id": 18,
+    "name": "new event yo",
+    "description": "eveeee",
+    "location": "e",
+    "requiredSkills": [
+      1
+    ],
+    "urgency": {
+      "id": 2,
+      "name": "Medium"
+    },
+    "date": "2024-08-08",
+    "participants": []
   }
 ]

@@ -69,7 +69,7 @@ const VolunteerMatchingForm = () => {
     fetch('http://localhost:3000/api/volunteer-matching/match', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventIds: selectedOptions, skillIds: selectedSkills })
+      body: JSON.stringify({ eventIds: selectedOptions})
     })
       .then(response => response.json())
       .then(data => {

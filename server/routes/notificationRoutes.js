@@ -8,16 +8,15 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load users from fake_users.json
-const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-
-// Load events from fake_events.json
-const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-let events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
-
 // Get notifications for a user
 router.get('/:userId', (req, res) => {
+
+  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
+  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+
+  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
+  let events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
+
   const { userId } = req.params;
   const user = users.find(u => u.id === parseInt(userId));
 
@@ -41,6 +40,10 @@ router.get('/:userId', (req, res) => {
 
 // Send a notification
 router.post('/', (req, res) => {
+
+  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
+  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+
   const { userId, message } = req.body;
   const user = users.find(u => u.id === parseInt(userId));
 
@@ -63,6 +66,10 @@ router.post('/', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
+
+  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
+  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+
   const notificationId = req.params.id;
   let notificationFound = false;
 
@@ -87,6 +94,10 @@ router.delete('/:id', (req, res) => {
 
 // Accepting offered events
 router.post('/:userId/accept', (req, res) => {
+
+  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
+  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+
   const { userId } = req.params;
   const { eventId } = req.body;
   const user = users.find(u => u.id === parseInt(userId));
@@ -106,6 +117,10 @@ router.post('/:userId/accept', (req, res) => {
 
 // Declining offered events
 router.post('/:userId/decline', (req, res) => {
+
+  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
+  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+
   const { userId } = req.params;
   const { eventId } = req.body;
   const user = users.find(u => u.id === parseInt(userId));

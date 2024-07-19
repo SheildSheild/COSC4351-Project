@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-// import { createUserWithEmailAndPassword } from "firebase/auth";
-// import { auth } from '../../firebase/firebaseConfig';
-import './Register.css';
-import users from '../mockData/fake_users.json';
 import { useNavigate } from 'react-router-dom';
+import './Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -11,41 +8,35 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Checks if the user already exists
-    const existingUser = users.find((user) => user.email === email);
-    if (existingUser) {
-      alert('User already exists');
-      return;
+    // API call to the backend registration route
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store the new user in local storage
+        localStorage.setItem('loggedInUser', JSON.stringify(data.user));
+
+        // Redirect to homepage
+        navigate('/');
+      } else {
+        // Handle registration error
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('An error occurred during registration. Please try again.');
     }
-
-    const newUser = {
-      id: users.length + 1,
-      username: username,
-      email: email,
-      password: password,
-      role: 'user',
-      fullName: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      skills: [],
-      preferences: '',
-      availability: []
-    };
-
-    // Adds the new user into mock data
-    users.push(newUser);
-
-    // Store the new user in local storage
-    localStorage.setItem('loggedInUser', JSON.stringify(newUser));
-
-    // Redirects to homepage
-    navigate('/');
   };
 
   return (

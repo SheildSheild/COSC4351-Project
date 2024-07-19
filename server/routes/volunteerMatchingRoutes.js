@@ -25,18 +25,23 @@ router.get('/skills', (req, res) => {
 });
 
 router.post('/match', (req, res) => {
-  const { eventIds, skillIds } = req.body;
+  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
+  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
+
+  const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+  const events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
+
+  const { eventIds } = req.body;
 
   const matchedVolunteers = users.filter(user =>
-    skillIds.every(skill => user.skills.includes(skill)) &&
     eventIds.some(eventId => {
       const event = events.find(e => e.id === eventId);
-      return user.availability.some(range => isDateInRange(event.date, range)) &&
-             event.requiredSkills.every(skill => user.skills.includes(skill));
+      return event.requiredSkills.every(skill => user.skills.includes(skill)) &&
+             !user.acceptedEvents.some(acceptedEvent => acceptedEvent.eventId === eventId);
     })
   );
 
-  res.status(200).json({ volunteers: matchedVolunteers });
+  res.json({ volunteers: matchedVolunteers });
 });
 
 const isDateInRange = (date, range) => {
@@ -46,8 +51,14 @@ const isDateInRange = (date, range) => {
 };
 
 router.post('/assign', (req, res) => {
-  const { volunteerId, eventId } = req.body;
 
+  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
+  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
+
+  const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+  const events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
+
+  const { volunteerId, eventId } = req.body;
   if (!volunteerId || !eventId) {
     return res.status(400).json({ message: 'Volunteer ID and Event ID are required' });
   }
@@ -56,7 +67,7 @@ router.post('/assign', (req, res) => {
   if (!volunteer) {
     return res.status(404).json({ message: 'Volunteer not found' });
   }
-
+  
   const event = events.find(e => e.id === eventId);
   if (!event) {
     return res.status(404).json({ message: 'Event not found' });
@@ -75,9 +86,10 @@ router.post('/assign', (req, res) => {
     date: currentTime
   };
   volunteer.notifications.push(notification);
-
+  console.log(volunteerId, eventId);
+  
   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-
+  
   res.status(200).json({ message: 'Volunteer assigned successfully and notification sent' });
 });
 
