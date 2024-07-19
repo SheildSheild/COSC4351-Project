@@ -10,8 +10,8 @@ const AdminNotifications = () => {
       fetch(`http://localhost:3000/api/notifications/${user.id}`)
         .then(response => response.json())
         .then(data => {
-          if (Array.isArray(data)) {
-            setNotifications(data);
+          if (Array.isArray(data.notifications)) {
+            setNotifications(data.notifications);
           } else {
             console.error('Expected array but received:', data);
           }

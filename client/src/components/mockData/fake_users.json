@@ -45,40 +45,9 @@
     "offeredEvents": [],
     "notifications": [
       {
-        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
-        "date": "7/19/2024, 1:40:44 AM"
-      },
-      {
-        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
-        "date": "7/19/2024, 1:40:57 AM"
-      },
-      {
-        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
-        "date": "7/19/2024, 1:41:05 AM"
-      },
-      {
-        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
-        "date": "7/19/2024, 1:41:14 AM"
-      },
-      {
-        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
-        "date": "7/19/2024, 1:41:23 AM"
-      },
-      {
-        "message": "Admin Paul Conner has assigned you a position in the Dog Walking event. | 2024-07-19T08:28:20.891Z",
-        "date": "2024-07-19T08:28:20.891Z"
-      },
-      {
-        "message": "Admin Paul Conner has assigned you a position in the Dog Walking event. | 2024-07-19T08:34:45.248Z",
-        "date": "2024-07-19T08:34:45.248Z"
-      },
-      {
-        "message": "Admin Paul Conner has assigned you a position in the test event 15 event. | 2024-07-19T17:52:24.604Z",
-        "date": "2024-07-19T17:52:24.604Z"
-      },
-      {
-        "message": "Admin Paul Conner has assigned you a position in the Event 3 event. | 2024-07-19T18:15:33.916Z",
-        "date": "2024-07-19T18:15:33.916Z"
+        "id": "141b5450-71f6-4181-9506-2613e1522e98",
+        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
+        "date": "7/19/2024, 4:42:51 PM"
       }
     ]
   },
@@ -115,24 +84,9 @@
     "offeredEvents": [],
     "notifications": [
       {
-        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
-        "date": "7/19/2024, 1:40:44 AM"
-      },
-      {
-        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
-        "date": "7/19/2024, 1:40:57 AM"
-      },
-      {
-        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
-        "date": "7/19/2024, 1:41:05 AM"
-      },
-      {
-        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
-        "date": "7/19/2024, 1:41:14 AM"
-      },
-      {
-        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
-        "date": "7/19/2024, 1:41:23 AM"
+        "id": "141b5450-71f6-4181-9506-2613e1522e98",
+        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
+        "date": "7/19/2024, 4:42:51 PM"
       }
     ]
   },
@@ -166,32 +120,9 @@
     ],
     "notifications": [
       {
-        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
-        "date": "7/19/2024, 1:40:44 AM"
-      },
-      {
-        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
-        "date": "7/19/2024, 1:40:57 AM"
-      },
-      {
-        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
-        "date": "7/19/2024, 1:41:05 AM"
-      },
-      {
-        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
-        "date": "7/19/2024, 1:41:14 AM"
-      },
-      {
-        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
-        "date": "7/19/2024, 1:41:23 AM"
-      },
-      {
-        "message": "Admin Paul Conner has assigned you a position in the Event 3 event. | 2024-07-19T18:41:32.647Z",
-        "date": "2024-07-19T18:41:32.647Z"
-      },
-      {
-        "message": "Admin Paul Conner has assigned you a position in the Dog Walking event. | 2024-07-19T18:44:23.311Z",
-        "date": "2024-07-19T18:44:23.311Z"
+        "id": "141b5450-71f6-4181-9506-2613e1522e98",
+        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
+        "date": "7/19/2024, 4:42:51 PM"
       }
     ]
   },
@@ -218,24 +149,9 @@
     "offeredEvents": [],
     "notifications": [
       {
-        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
-        "date": "7/19/2024, 1:40:44 AM"
-      },
-      {
-        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
-        "date": "7/19/2024, 1:40:57 AM"
-      },
-      {
-        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
-        "date": "7/19/2024, 1:41:05 AM"
-      },
-      {
-        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
-        "date": "7/19/2024, 1:41:14 AM"
-      },
-      {
-        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
-        "date": "7/19/2024, 1:41:23 AM"
+        "id": "141b5450-71f6-4181-9506-2613e1522e98",
+        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
+        "date": "7/19/2024, 4:42:51 PM"
       }
     ]
   },
@@ -260,82 +176,7 @@
     ],
     "acceptedEvents": [],
     "offeredEvents": [],
-    "notifications": [
-      {
-        "id": "0c550294-af51-4bc3-b20e-6e40c1088371",
-        "user": "moma",
-        "event": "Event 3",
-        "time": "2024-07-18T06:14:29.592Z"
-      },
-      {
-        "id": "8814c4a9-58c7-4c9b-9228-c2685b03b31a",
-        "user": "moma",
-        "event": "Dog Walking",
-        "time": "2024-07-18T06:20:02.367Z"
-      },
-      {
-        "id": "a57b30b8-d75e-4bf7-83a9-cab2f6eaa8c5",
-        "user": "moma",
-        "event": "Event 3",
-        "time": "2024-07-18T06:38:13.504Z"
-      },
-      {
-        "id": "4c704de1-9019-41ff-aadd-821e2185b5d7",
-        "user": "moma",
-        "event": "Event 2",
-        "time": "2024-07-19T05:18:24.384Z"
-      },
-      {
-        "id": "bb60e80f-fb7e-4f2d-bf51-428866708757",
-        "user": "moma",
-        "event": "Event 2",
-        "time": "2024-07-19T05:59:33.822Z"
-      },
-      {
-        "id": "72d29187-a707-40cb-9a04-f21edfee3a51",
-        "user": "moma",
-        "event": "Dog Walking",
-        "time": "2024-07-19T06:12:51.262Z"
-      },
-      {
-        "id": "a5e9bdc7-0d1b-4d1b-8b65-1b881713e37e",
-        "user": "moma",
-        "event": "Dog Sitting",
-        "time": "2024-07-19T06:28:34.455Z"
-      },
-      {
-        "message": "New Event: test event 15, Date: 2024-07-10 | Created at 7/19/2024, 1:40:44 AM",
-        "date": "7/19/2024, 1:40:44 AM"
-      },
-      {
-        "message": "New Event: test event 16, Date: 2024-07-17 | Created at 7/19/2024, 1:40:57 AM",
-        "date": "7/19/2024, 1:40:57 AM"
-      },
-      {
-        "message": "New Event: test event 18, Date: 2024-07-30 | Created at 7/19/2024, 1:41:05 AM",
-        "date": "7/19/2024, 1:41:05 AM"
-      },
-      {
-        "message": "New Event: test event 19, Date: 2024-07-15 | Created at 7/19/2024, 1:41:14 AM",
-        "date": "7/19/2024, 1:41:14 AM"
-      },
-      {
-        "message": "New Event: test event 20, Date: 2024-07-05 | Created at 7/19/2024, 1:41:23 AM",
-        "date": "7/19/2024, 1:41:23 AM"
-      },
-      {
-        "id": "fe46cdb5-7878-4348-bbde-9e4b24d07c4d",
-        "user": "moma",
-        "event": "test event 20",
-        "time": "2024-07-19T06:41:49.915Z"
-      },
-      {
-        "id": "4643abb9-16ef-440c-942c-2b9ece4a77ae",
-        "user": "moma",
-        "event": "test event 15",
-        "time": "2024-07-19T06:52:16.552Z"
-      }
-    ]
+    "notifications": []
   },
   {
     "id": 6,
@@ -353,7 +194,13 @@
     "preferences": "",
     "availability": [],
     "acceptedEvents": [],
-    "notifications": []
+    "notifications": [
+      {
+        "id": "141b5450-71f6-4181-9506-2613e1522e98",
+        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
+        "date": "7/19/2024, 4:42:51 PM"
+      }
+    ]
   },
   {
     "id": 7,
@@ -382,13 +229,18 @@
       {
         "eventId": 6,
         "signUpTime": "2024-07-19T19:30:43.044Z"
+      },
+      {
+        "eventId": 3,
+        "signUpTime": "2024-07-19T21:04:17.559Z"
       }
     ],
     "offeredEvents": [],
     "notifications": [
       {
-        "message": "Admin Paul Conner has assigned you a position in the Dog Walking event. | 2024-07-19T19:30:24.227Z",
-        "date": "2024-07-19T19:30:24.227Z"
+        "id": "141b5450-71f6-4181-9506-2613e1522e98",
+        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
+        "date": "7/19/2024, 4:42:51 PM"
       }
     ]
   }

@@ -33,8 +33,8 @@ const UserNotifications = () => {
   };
 
   const handleDecline = (eventId) => {
-    fetch(`http://localhost:3000/api/notifications/${user.id}/decline`, {
-      method: 'POST',
+    fetch(`http://localhost:3000/api/notifications/${user.id}/decline/${eventId}`, {
+      method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ eventId })
     })

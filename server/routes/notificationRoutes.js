@@ -20,21 +20,31 @@ router.get('/:userId', (req, res) => {
   const { userId } = req.params;
   const user = users.find(u => u.id === parseInt(userId));
 
-  if (user) {
-    const offeredEventsDetails = user.offeredEvents.map(eventId => {
-      const event = events.find(e => e.id === eventId);
-      return {
-        eventId: event.id,
-        eventName: event.name
-      };
-    });
+  if(user && user.role == 'user'){
+    if (user) {
+      const offeredEventsDetails = user.offeredEvents.map(eventId => {
+        const event = events.find(e => e.id === eventId);
+        return {
+          eventId: event.id,
+          eventName: event.name
+        };
+      });
 
-    res.status(200).json({
-      notifications: user.notifications || [],
-      offeredEvents: offeredEventsDetails
-    });
-  } else {
-    res.status(404).json({ message: 'User not found' });
+      res.status(200).json({
+        notifications: user.notifications || [],
+        offeredEvents: offeredEventsDetails
+      });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } else if(user && user.role == 'admin'){
+    if (user) {
+      res.status(200).json({
+        notifications: Array.isArray(user.notifications) ? user.notifications : []
+      });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
   }
 });
 
@@ -116,22 +126,30 @@ router.post('/:userId/accept', (req, res) => {
 });
 
 // Declining offered events
-router.post('/:userId/decline', (req, res) => {
 
+router.delete('/:userId/decline/:eventId', (req, res) => {
   const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
   let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
 
-  const { userId } = req.params;
-  const { eventId } = req.body;
-  const user = users.find(u => u.id === parseInt(userId));
+  const { userId, eventId } = req.params; // Extract userId and eventId from request parameters
+  let eventFound = false;
 
-  if (user) {
-    user.offeredEvents = user.offeredEvents.filter(id => id !== eventId);
+  users = users.map(user => {
+    if (user.id === parseInt(userId) && user.offeredEvents) {
+      const initialLength = user.offeredEvents.length;
+      user.offeredEvents = user.offeredEvents.filter(id => id !== parseInt(eventId));
+      if (user.offeredEvents.length < initialLength) {
+        eventFound = true;
+      }
+    }
+    return user;
+  });
 
+  if (eventFound) {
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-    res.status(200).json({ message: 'Event declined' });
+    res.status(200).json({ message: 'Event declined and removed from offeredEvents' });
   } else {
-    res.status(404).json({ message: 'User not found' });
+    res.status(404).json({ message: 'Event or User not found' });
   }
 });
 

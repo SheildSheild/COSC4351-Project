@@ -327,5 +327,37 @@
     },
     "date": "2024-08-08",
     "participants": []
+  },
+  {
+    "id": 19,
+    "name": "event test for noti",
+    "description": "noti",
+    "location": "noti",
+    "requiredSkills": [
+      1,
+      2,
+      3
+    ],
+    "urgency": {
+      "id": 3,
+      "name": "High"
+    },
+    "date": "2024-08-10",
+    "participants": []
+  },
+  {
+    "id": 20,
+    "name": "noti test",
+    "description": "noti",
+    "location": "noti",
+    "requiredSkills": [
+      2
+    ],
+    "urgency": {
+      "id": 2,
+      "name": "Medium"
+    },
+    "date": "2024-07-07",
+    "participants": []
   }
 ]

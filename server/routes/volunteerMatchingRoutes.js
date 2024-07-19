@@ -86,7 +86,6 @@ router.post('/assign', (req, res) => {
     date: currentTime
   };
   volunteer.notifications.push(notification);
-  console.log(volunteerId, eventId);
   
   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
   
