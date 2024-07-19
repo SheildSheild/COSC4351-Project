@@ -59,7 +59,8 @@ router.post('/register', (req, res) => {
     skills: [],
     preferences: '',
     availability: [],
-    acceptedEvents: []
+    acceptedEvents: [],
+    notifications: []
   };
 
   // Add the new user to the mock data

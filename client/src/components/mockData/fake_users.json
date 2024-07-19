@@ -352,7 +352,8 @@
     "skills": [],
     "preferences": "",
     "availability": [],
-    "acceptedEvents": []
+    "acceptedEvents": [],
+    "notifications": []
   },
   {
     "id": 7,
@@ -377,7 +378,18 @@
       "2024-07-24",
       "2024-07-05"
     ],
-    "acceptedEvents": [],
-    "offeredEvents": []
+    "acceptedEvents": [
+      {
+        "eventId": 6,
+        "signUpTime": "2024-07-19T19:30:43.044Z"
+      }
+    ],
+    "offeredEvents": [],
+    "notifications": [
+      {
+        "message": "Admin Paul Conner has assigned you a position in the Dog Walking event. | 2024-07-19T19:30:24.227Z",
+        "date": "2024-07-19T19:30:24.227Z"
+      }
+    ]
   }
 ]

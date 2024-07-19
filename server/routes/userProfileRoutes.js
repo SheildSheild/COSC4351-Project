@@ -27,7 +27,6 @@ router.get('/:userId', (req, res) => {
 router.put('/:userId', (req, res) => {
   const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
   let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-  console.log("fabin");
   const { userId } = req.params;
   const updatedData = req.body;
   let userIndex = users.findIndex(u => u.id === parseInt(userId));
