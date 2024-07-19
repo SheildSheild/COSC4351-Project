@@ -46,6 +46,27 @@ const UserNotifications = () => {
       .catch(error => console.error('Error declining event:', error));
   };
 
+  const handleDelete = async (id) => {
+    console.log('Deleting notification with ID:', id);  // Log the ID
+    try {
+      const response = await fetch(`http://localhost:3000/api/notifications/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok: ' + response.statusText);
+      }
+
+      setNotifications(user.notifications.filter(notification => notification.id !== id));
+      const data = await response.json();
+      console.log('Delete successful:', data);
+
+      // Remove the deleted notification from the state
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  };
+
   return (
     <div className="notifications-container">
       <br></br>
@@ -58,6 +79,7 @@ const UserNotifications = () => {
           <li key={index}>
             <div>{notification.message}</div>
             <div>{notification.date}</div>
+            <button onClick={() => handleDelete(notification.id)}>Acknowledge</button>
           </li>
         ))}
       </ul>

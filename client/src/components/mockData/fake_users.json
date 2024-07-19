@@ -43,13 +43,7 @@
       }
     ],
     "offeredEvents": [],
-    "notifications": [
-      {
-        "id": "141b5450-71f6-4181-9506-2613e1522e98",
-        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
-        "date": "7/19/2024, 4:42:51 PM"
-      }
-    ]
+    "notifications": []
   },
   {
     "id": 2,
@@ -82,13 +76,7 @@
       }
     ],
     "offeredEvents": [],
-    "notifications": [
-      {
-        "id": "141b5450-71f6-4181-9506-2613e1522e98",
-        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
-        "date": "7/19/2024, 4:42:51 PM"
-      }
-    ]
+    "notifications": []
   },
   {
     "id": 3,
@@ -118,13 +106,7 @@
       3,
       6
     ],
-    "notifications": [
-      {
-        "id": "141b5450-71f6-4181-9506-2613e1522e98",
-        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
-        "date": "7/19/2024, 4:42:51 PM"
-      }
-    ]
+    "notifications": []
   },
   {
     "id": 4,
@@ -147,13 +129,7 @@
     ],
     "acceptedEvents": [],
     "offeredEvents": [],
-    "notifications": [
-      {
-        "id": "141b5450-71f6-4181-9506-2613e1522e98",
-        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
-        "date": "7/19/2024, 4:42:51 PM"
-      }
-    ]
+    "notifications": []
   },
   {
     "id": 5,
@@ -176,7 +152,14 @@
     ],
     "acceptedEvents": [],
     "offeredEvents": [],
-    "notifications": []
+    "notifications": [
+      {
+        "id": "af6e13fb-f583-41d3-b603-3f4f18c46dce",
+        "user": "test2",
+        "event": "test event 19",
+        "time": "2024-07-19T21:49:13.085Z"
+      }
+    ]
   },
   {
     "id": 6,
@@ -194,13 +177,7 @@
     "preferences": "",
     "availability": [],
     "acceptedEvents": [],
-    "notifications": [
-      {
-        "id": "141b5450-71f6-4181-9506-2613e1522e98",
-        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
-        "date": "7/19/2024, 4:42:51 PM"
-      }
-    ]
+    "notifications": []
   },
   {
     "id": 7,
@@ -233,15 +210,13 @@
       {
         "eventId": 3,
         "signUpTime": "2024-07-19T21:04:17.559Z"
+      },
+      {
+        "eventId": 16,
+        "signUpTime": "2024-07-19T21:49:13.085Z"
       }
     ],
     "offeredEvents": [],
-    "notifications": [
-      {
-        "id": "141b5450-71f6-4181-9506-2613e1522e98",
-        "message": "New Event: noti test, Date: 2024-07-07 | Created at 7/19/2024, 4:42:51 PM",
-        "date": "7/19/2024, 4:42:51 PM"
-      }
-    ]
+    "notifications": []
   }
 ]
