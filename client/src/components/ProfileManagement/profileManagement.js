@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './profileManagement.css';
 import state from '../mockData/state.json';
 import skills from '../mockData/skills.json';
-import skillMapping from '../mockData/skillmapping.json';
+
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -41,10 +41,6 @@ const Profile = () => {
     }));
 
     validateInput(name, value);
-  };
-
-  const mapSkills = (skillIds) => {
-    return skillIds.map(id => skillMapping[id] || id).join(', ');
   };
 
   const handleSkillsChange = (skillId) => {
