@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 import './adminNotifications.css';
 
 const AdminNotifications = () => {
@@ -55,7 +56,7 @@ const AdminNotifications = () => {
       <ul>
         {notifications.map(notification => (
           <li key={notification.id}>
-            <strong>{notification.user}</strong> signed up for <strong>{notification.event}</strong> at <em>{notification.time}</em>
+            <strong>{notification.user}</strong> signed up for <strong>{notification.event}</strong> at <em>{dayjs(notification.time).format('MMMM D, YYYY HH:mm:ss')}</em>
             <button onClick={() => handleDelete(notification.id)}>Acknowledge</button>
           </li>
         ))}

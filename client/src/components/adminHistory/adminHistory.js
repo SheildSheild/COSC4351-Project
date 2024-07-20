@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './adminHistory.css';
-import fakeEvents from '../mockData/fake_event.json';
-import users from '../mockData/fake_users.json';
 
 const AdminHistory = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [eventParticipants, setEventParticipants] = useState([]);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/adminHistory/events');
+      const eventsData = await response.json();
+      setEvents(eventsData);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
   const handleEventClick = (eventId) => {
     if (selectedEvent === eventId) {
@@ -17,14 +30,16 @@ const AdminHistory = () => {
   };
 
   const fetchEventParticipants = async (eventId) => {
-    // Assuming the eventId is the same as the event index in the fakeEvents array
-    const event = fakeEvents.find(event => event.id === eventId);
-    if (event) {
-      const participants = event.participants.map(participantId => {
-        const user = users.find(u => u.id === participantId);
-        return user ? user.fullName : 'Unknown User';
-      });
+    try {
+      const response = await fetch(`http://localhost:3000/api/adminHistory/participants/${eventId}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const participants = await response.json();
       setEventParticipants(participants);
+    } catch (error) {
+      console.error('Error fetching event participants:', error);
+      setEventParticipants([]); // Set to an empty array in case of error
     }
   };
 
@@ -43,7 +58,7 @@ const AdminHistory = () => {
           </tr>
         </thead>
         <tbody>
-          {fakeEvents.map((event) => (
+          {events.map((event) => (
             <React.Fragment key={event.id}>
               <tr onClick={() => handleEventClick(event.id)} className={selectedEvent === event.id ? 'selected' : ''}>
                 <td>{event.id}</td>
@@ -56,11 +71,15 @@ const AdminHistory = () => {
               {selectedEvent === event.id && (
                 <tr className="participants-row">
                   <td colSpan="6">
-                    <ul>
-                      {eventParticipants.map((participant, index) => (
-                        <li key={index}>{participant}</li>
-                      ))}
-                    </ul>
+                    {eventParticipants.length > 0 ? (
+                      <ul>
+                        {eventParticipants.map((participant, index) => (
+                          <li key={index}>{participant}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No participants for this event.</p>
+                    )}
                   </td>
                 </tr>
               )}

@@ -152,7 +152,14 @@
     ],
     "acceptedEvents": [],
     "offeredEvents": [],
-    "notifications": []
+    "notifications": [
+      {
+        "id": "8780c35b-38ee-446f-b1be-5fe1e124aa25",
+        "user": "test2",
+        "event": "test event 16",
+        "time": "2024-07-20T04:26:33.295Z"
+      }
+    ]
   },
   {
     "id": 6,
@@ -160,7 +167,7 @@
     "password": "test",
     "email": "test@email.com",
     "role": "user",
-    "fullName": "",
+    "fullName": "kyle",
     "address1": "",
     "address2": "",
     "city": "",
@@ -216,14 +223,52 @@
       {
         "eventId": 20,
         "signUpTime": "2024-07-19T23:10:14.221Z"
+      },
+      {
+        "eventId": 12,
+        "signUpTime": "2024-07-20T04:17:13.834Z"
+      },
+      {
+        "eventId": 14,
+        "signUpTime": "2024-07-20T04:26:33.295Z"
       }
     ],
     "offeredEvents": [],
-    "notifications": [
+    "notifications": []
+  },
+  {
+    "id": 8,
+    "username": "neuser",
+    "password": "new",
+    "email": "new@email.com",
+    "role": "user",
+    "fullName": "new",
+    "address1": "new",
+    "address2": "new",
+    "city": "new",
+    "state": "TN",
+    "zipCode": "84902",
+    "skills": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "preferences": "",
+    "availability": [
+      "2024-07-15"
+    ],
+    "acceptedEvents": [
       {
-        "message": "Admin Paul Conner has assigned you a position in the test event 15 event. | 2024-07-19T23:09:15.396Z",
-        "date": "2024-07-19T23:09:15.396Z"
+        "eventId": 14,
+        "signUpTime": "2024-07-20T03:45:30.936Z"
+      },
+      {
+        "eventId": 6,
+        "signUpTime": "2024-07-20T04:10:48.547Z"
       }
-    ]
+    ],
+    "notifications": []
   }
 ]

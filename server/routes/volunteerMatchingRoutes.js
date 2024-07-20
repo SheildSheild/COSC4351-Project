@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
@@ -82,6 +83,7 @@ router.post('/assign', (req, res) => {
 
   const admin = users.find(u => u.role === 'admin'); // Assuming the first admin is assigning
   const notification = {
+    id: uuidv4(),
     message: `Admin ${admin.fullName} has assigned you a position in the ${event.name} event. | ${currentTime}`,
     date: currentTime
   };

@@ -11,7 +11,6 @@ const UserHistory = () => {
       fetch(`http://localhost:3000/api/history/${user.id}`)
         .then(response => response.json())
         .then(data => {
-          console.log('Fetched Data:', data); // Debug log
           if (data) {
             setUserHistory(data);
           }
@@ -35,6 +34,7 @@ const UserHistory = () => {
               <th>Skills</th>
               <th>Location</th>
               <th>Description</th>
+              <th>Participation Status</th>
             </tr>
           </thead>
           <tbody>
@@ -43,10 +43,11 @@ const UserHistory = () => {
                 <tr key={index}>
                   <td>{event.eventName || 'N/A'}</td>
                   <td>{dayjs(event.eventDate).format('MMMM D, YYYY') || 'N/A'}</td>
-                  <td>{dayjs(event.signUpTime).format('MMMM D, YYYY HH:mm:ss') || 'N/A'}</td>
+                  <td>{dayjs(event.signUpTime).format('MMMM D, YYYY HH:mm:ss')}</td>
                   <td>{event.skills || 'N/A'}</td>
                   <td>{event.location || 'N/A'}</td>
                   <td>{event.description || 'N/A'}</td>
+                  <td>Active</td>
                 </tr>
               ))
             ) : (
