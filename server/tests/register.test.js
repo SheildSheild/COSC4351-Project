@@ -1,7 +1,7 @@
 import request from 'supertest';
-import app from '../server.js'; // Adjust the path to your server.js
+import app from '../server.js'; // Ensure the correct path to your server.js
 
-test('POST /api/auth/registerTest', () => { // Updated route for the test
+describe('POST /api/auth/registerTest', () => {
   it('should register a new user', async () => {
     const newUser = {
       username: 'testuser',
