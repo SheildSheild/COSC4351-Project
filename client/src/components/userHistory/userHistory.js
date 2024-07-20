@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import './userHistory.css';
 
 const UserHistory = () => {
-  const [acceptedEvents, setAcceptedEvents] = useState([]);
+  const [userHistory, setUserHistory] = useState([]);
   const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
   useEffect(() => {
@@ -11,8 +11,9 @@ const UserHistory = () => {
       fetch(`http://localhost:3000/api/history/${user.id}`)
         .then(response => response.json())
         .then(data => {
+          console.log('Fetched Data:', data); // Debug log
           if (data) {
-            setAcceptedEvents(data);
+            setUserHistory(data);
           }
         })
         .catch(error => console.error('Error fetching user history:', error));
@@ -21,8 +22,8 @@ const UserHistory = () => {
 
   return (
     <div className="user-history-page">
-      <br></br>
-      <br></br>
+      <br />
+      <br />
       <h2>My Volunteer History</h2>
       <div className="table-container">
         <table>
@@ -31,20 +32,26 @@ const UserHistory = () => {
               <th>Event Name</th>
               <th>Event Date</th>
               <th>Sign-Up Time</th>
+              <th>Skills</th>
+              <th>Location</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
-            {acceptedEvents.length > 0 ? (
-              acceptedEvents.map((event, index) => (
+            {userHistory.length > 0 ? (
+              userHistory.map((event, index) => (
                 <tr key={index}>
-                  <td>{event.eventName}</td>
-                  <td>{dayjs(event.eventDate).format('MMMM D, YYYY')}</td>
-                  <td>{dayjs(event.signUpTime).format('MMMM D, YYYY HH:mm:ss')}</td>
+                  <td>{event.eventName || 'N/A'}</td>
+                  <td>{dayjs(event.eventDate).format('MMMM D, YYYY') || 'N/A'}</td>
+                  <td>{dayjs(event.signUpTime).format('MMMM D, YYYY HH:mm:ss') || 'N/A'}</td>
+                  <td>{event.skills || 'N/A'}</td>
+                  <td>{event.location || 'N/A'}</td>
+                  <td>{event.description || 'N/A'}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="3">No events signed up yet.</td>
+                <td colSpan="6">No events signed up yet.</td>
               </tr>
             )}
           </tbody>
