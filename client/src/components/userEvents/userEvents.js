@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import events from '../mockData/fake_event.json';
-import skillMapping from '../mockData/skillmapping.json'; // Import skill mapping
 import dayjs from 'dayjs';
 import './userEvents.css';
+import skillMapping from '../mockData/skillmapping.json'; // Import skill mapping
 
 const UserEventPage = () => {
   const [value, setValue] = useState(new Date());
@@ -94,6 +94,10 @@ const UserEventPage = () => {
     }
   };
 
+  const getSkillName = (skillId) => {
+    return skillMapping[skillId] || 'Unknown skill';
+  };
+
   const tileContent = ({ date, view }) => {
     if (view === 'month') {
       const event = userEvents.find(e => e.date === dayjs(date).format('YYYY-MM-DD'));
@@ -103,7 +107,7 @@ const UserEventPage = () => {
         return (
           <div className={`event ${signedUpEvent ? 'signed-up' : ''}`}>
             <span>{event.name}</span>
-            {signedUpEvent && <span className="signed-up-indicator">✔</span>}
+            {signedUpEvent && <span className="signed-up-indicator">{'✔'}</span>}
           </div>
         );
       }
@@ -130,13 +134,15 @@ const UserEventPage = () => {
           <ul>
             {availableEvents.map(event => {
               const isSignedUp = user.acceptedEvents?.some(e => e.eventId === event.id);
-              // Map skill IDs to skill names
-              const requiredSkills = event.requiredSkills.map(skillId => skillMapping[skillId]).join(', ');
               return (
                 <li key={event.id}>
                   <strong>{event.name}</strong> - {event.description}
                   <br />
-                  <span className="skills">Skills Required: {requiredSkills}</span>
+                  <span className="location">Location: {event.location}</span>
+                  <br />
+                  <span className="skills">Skills Required: {event.requiredSkills.map(getSkillName).join(', ')}</span>
+                  <br />
+                  <span className="urgency">Urgency: {event.urgency.name}</span>
                   <br />
                   {!isSignedUp && <button onClick={() => onEventClick(event)}>Sign Up</button>}
                 </li>
