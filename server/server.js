@@ -32,6 +32,8 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/volunteer-matching', matchingRoutes);
 
+export default app;
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

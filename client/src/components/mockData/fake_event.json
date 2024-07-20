@@ -244,10 +244,7 @@
     "location": "e",
     "requiredSkills": [
       2,
-      1,
-      3,
-      5,
-      4
+      1
     ],
     "urgency": {
       "id": 2,
@@ -263,8 +260,6 @@
     "location": "e",
     "requiredSkills": [
       2,
-      1,
-      3,
       5,
       4
     ],

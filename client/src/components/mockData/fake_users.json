@@ -152,14 +152,7 @@
     ],
     "acceptedEvents": [],
     "offeredEvents": [],
-    "notifications": [
-      {
-        "id": "af6e13fb-f583-41d3-b603-3f4f18c46dce",
-        "user": "test2",
-        "event": "test event 19",
-        "time": "2024-07-19T21:49:13.085Z"
-      }
-    ]
+    "notifications": []
   },
   {
     "id": 6,
@@ -195,7 +188,8 @@
       2,
       1,
       3,
-      5
+      5,
+      4
     ],
     "preferences": "User 7 preferences",
     "availability": [
@@ -214,9 +208,22 @@
       {
         "eventId": 16,
         "signUpTime": "2024-07-19T21:49:13.085Z"
+      },
+      {
+        "eventId": 13,
+        "signUpTime": "2024-07-19T23:09:43.643Z"
+      },
+      {
+        "eventId": 20,
+        "signUpTime": "2024-07-19T23:10:14.221Z"
       }
     ],
     "offeredEvents": [],
-    "notifications": []
+    "notifications": [
+      {
+        "message": "Admin Paul Conner has assigned you a position in the test event 15 event. | 2024-07-19T23:09:15.396Z",
+        "date": "2024-07-19T23:09:15.396Z"
+      }
+    ]
   }
 ]
