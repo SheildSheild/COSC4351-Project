@@ -138,6 +138,8 @@ const UserEventPage = () => {
                 <li key={event.id}>
                   <strong>{event.name}</strong> - {event.description}
                   <br />
+                  <span className="location">Location: {event.location}</span>
+                  <br />
                   <span className="skills">Skills Required: {event.requiredSkills.map(getSkillName).join(', ')}</span>
                   <br />
                   <span className="urgency">Urgency: {event.urgency.name}</span>
