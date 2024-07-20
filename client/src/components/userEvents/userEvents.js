@@ -25,7 +25,7 @@ const UserEventPage = () => {
         })
         .catch(error => console.error('Error fetching events:', error));
     }
-  }, [user]);
+  }, []);
 
   const onDateChange = (date) => {
     setValue(date);
