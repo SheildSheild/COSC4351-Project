@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import db from '../mongoConnect.js';
 
 const router = express.Router();
 
@@ -9,15 +10,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Get user profile
-router.get('/:userId', (req, res) => {
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-
+router.get('/:userId', async (req, res) => {
+  const collection = db.collection("users");
   const { userId } = req.params;
-  const user = users.find(u => u.id === parseInt(userId));
+  let user = await collection.find({id: parseInt(userId)})
+    .limit(1).toArray();
 
+  console.log(user);
   if (user) {
-    res.status(200).json(user);
+    res.status(200).json(user[0]);
   } else {
     res.status(404).json({ message: 'User not found' });
   }
