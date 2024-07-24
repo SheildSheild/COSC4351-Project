@@ -1,41 +1,36 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import db from '../mongoConnect.js';
 
 const router = express.Router();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const getEvents = () => {
-  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-  return JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
-};
-
-router.get('/events', (req, res) => {
-    const events = getEvents();
+router.get('/events', async (req, res) => {
+  try {
+    const collection = db.collection("events");
+    const events = await collection.find({}).toArray();
     res.status(200).json(events);
-  });
-
-const getUsers = () => {
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  return JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-};
+  } catch (e) {
+    console.error('Error fetching events:', e);
+    res.status(500).json({ message: 'An error occurred while fetching events' });
+  }
+});
 
 // Get participants for a specific event
-router.get('/participants/:eventId', (req, res) => {
+router.get('/participants/:eventId', async (req, res) => {
   const { eventId } = req.params;
-  const users = getUsers();
+  try {
+    const usersCollection = db.collection("users");
+    const participants = await usersCollection.find({
+      acceptedEvents: { $elemMatch: { eventId: parseInt(eventId) } }
+    }).project({ fullName: 1 }).toArray();
 
-  const participants = users.filter(user => {
-    return user.acceptedEvents && user.acceptedEvents.some(event => event.eventId === parseInt(eventId));
-  }).map(user => user.fullName);
-
-  if (participants.length > 0) {
-    res.status(200).json(participants);
-  } else {
-    res.status(404).json({ message: 'No participants found for this event' });
+    if (participants.length > 0) {
+      res.status(200).json(participants.map(user => user.fullName));
+    } else {
+      res.status(404).json({ message: 'No participants found for this event' });
+    }
+  } catch (e) {
+    console.error('Error fetching participants:', e);
+    res.status(500).json({ message: 'An error occurred while fetching participants' });
   }
 });
 

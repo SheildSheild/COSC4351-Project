@@ -84,8 +84,15 @@ router.post('/create', (req, res) => {
 });
 
 // Get all events
-router.get('/all', (req, res) => {
-  res.status(200).json(events);
+router.get('/all', async (req, res) => {
+  try {
+    const collection = db.collection("events");
+    const events = await collection.find({}).toArray();
+    res.status(200).json(events);
+  } catch (e) {
+    console.error('Error fetching events:', e);
+    res.status(500).json({ message: 'An error occurred while fetching events' });
+  }
 });
 
 export default router;

@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import db from '../mongoConnect.js';
 
 const router = express.Router();
 
@@ -14,70 +15,92 @@ const usersFilePath = path.join(__dirname, '../../client/src/components/mockData
 let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
 
 // Handles user login
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = users.find(u => u.email === email && u.password === password);
+  try {
+    const usersCollection = db.collection("users");
 
-  if (user) {
-    res.status(200).json({
-      message: 'Login successful',
-      user: {
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        role: user.role
-      }
-    });
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+    // Find the user by email and password
+    const user = await usersCollection.findOne({ email, password });
+
+    if (user) {
+      res.status(200).json({
+        message: 'Login successful',
+        user: {
+          id: user.id,
+          email: user.email,
+          fullName: user.fullName,
+          role: user.role
+        }
+      });
+    } else {
+      res.status(401).json({ message: 'Invalid credentials' });
+    }
+  } catch (e) {
+    console.error('Error logging in user:', e);
+    res.status(500).json({ message: 'An error occurred while logging in the user' });
   }
 });
 
 // Handles user registration
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { username, password, email } = req.body;
 
-  const userExists = users.some(u => u.email === email);
+  try {
+    const usersCollection = db.collection("users");
 
-  if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
-  }
+    // Check if the user already exists
+    const userExists = await usersCollection.findOne({ email });
 
-  // New user is created for the mock data
-  const newUser = {
-    id: users.length + 1,
-    username,
-    password,
-    email,
-    role: 'user', // default role, can be changed later
-    fullName: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    skills: [],
-    preferences: '',
-    availability: [],
-    acceptedEvents: [],
-    notifications: []
-  };
-
-  // Add the new user to the mock data
-  users.push(newUser);
-
-  // Updates mock data user file
-  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-
-  res.status(201).json({
-    message: 'Registration successful',
-    user: {
-      id: newUser.id,
-      email: newUser.email,
-      username: newUser.username,
-      role: newUser.role
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
     }
-  });
+
+    const autoIncrement = await usersCollection.find({id: -1}).toArray();
+    const newUserId = autoIncrement.map(newID => newID.globalUserId);
+
+    // Create a new user
+    const newUser = {
+      id: parseInt(newUserId) + 1,
+      username,
+      password,
+      email,
+      role: 'user', // default role, can be changed later
+      fullName: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      skills: [],
+      preferences: '',
+      availability: [],
+      acceptedEvents: [],
+      notifications: []
+    };
+
+    // Insert the new user into the collection
+    const result = await usersCollection.insertOne(newUser);
+
+    usersCollection.findOneAndUpdate(
+      { id: -1 },
+      { $inc: { globalUserId: 1 } },
+      { returnOriginal: false, upsert: true }
+    );
+
+    res.status(201).json({
+      message: 'Registration successful',
+      user: {
+        id: result.insertedId,
+        email: newUser.email,
+        username: newUser.username,
+        role: newUser.role
+      }
+    });
+  } catch (e) {
+    console.error('Error registering user:', e);
+    res.status(500).json({ message: 'An error occurred while registering the user' });
+  }
 });
 
 export default router;

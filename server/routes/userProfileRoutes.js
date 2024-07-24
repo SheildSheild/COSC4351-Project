@@ -1,13 +1,7 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import db from '../mongoConnect.js';
 
 const router = express.Router();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Get user profile
 router.get('/:userId', async (req, res) => {
@@ -16,7 +10,6 @@ router.get('/:userId', async (req, res) => {
   let user = await collection.find({id: parseInt(userId)})
     .limit(1).toArray();
 
-  console.log(user);
   if (user) {
     res.status(200).json(user[0]);
   } else {
