@@ -25,22 +25,27 @@ router.get('/:userId', async (req, res) => {
 });
 
 // Update user profile
-router.put('/:userId', (req, res) => {
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+router.put('/:userId', async (req, res) => {
+  const collection = db.collection("users");
   const { userId } = req.params;
   const updatedData = req.body;
-  let userIndex = users.findIndex(u => u.id === parseInt(userId));
 
-  if (userIndex !== -1) {
-    users[userIndex] = { ...users[userIndex], ...updatedData };
+  try {
+    const result = await collection.updateOne(
+      { id: parseInt(userId) }, // Query to find the user by id
+      { $set: updatedData } // Update operation
+    );
 
-    // Update the users file
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-
-    res.status(200).json({ message: 'Profile updated successfully', user: users[userIndex] });
-  } else {
-    res.status(404).json({ message: 'User not found' });
+    if (result.matchedCount > 0) {
+      // Fetch the updated user to send back as response
+      const updatedUser = await collection.findOne({ id: parseInt(userId) });
+      res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'An error occurred while updating the user' });
   }
 });
 
