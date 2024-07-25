@@ -1,23 +1,8 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { v4 as uuidv4 } from 'uuid';
+import db from '../mongoConnect.js';
 
 const router = express.Router();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Load events from fake_event.json
-const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-let events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
-
-// Load users from fake_users.json for notifications
-const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-
-// Create a new event
 const getUrgencyNameById = (id) => {
   switch (id) {
     case 1: return "Low";
@@ -28,59 +13,53 @@ const getUrgencyNameById = (id) => {
 };
 
 // Create a new event
-router.post('/create', (req, res) => {
-  // Load events from fake_event.json
-  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-  let events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
+router.post('/create', async (req, res) => {
+  const { eventName, eventDescription, location, requiredSkills, urgency, eventDate } = req.body;
 
-  // Load users from fake_users.json for notifications
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+  try {
+    const eventsCollection = db.collection("events");
+    const usersCollection = db.collection("users");
+    const skillsCollection = db.collection("skills");
 
-  const { eventName, eventDescription, location, requiredSkills, urgency, eventDate, userId } = req.body;
-  const user = users.find(u => u.id === userId);
+    const skills = await skillsCollection.find({ id: { $in: requiredSkills } }).toArray();
 
-  const newEvent = {
-    id: events.length + 1,
-    name: eventName,
-    description: eventDescription,
-    location,
-    requiredSkills,
-    urgency: {
-      id: urgency,
-      name: getUrgencyNameById(urgency)
-    },
-    date: eventDate,
-    participants: []
-  };
-
-  events.push(newEvent);
-
-  // Update the events file
-  fs.writeFileSync(eventsFilePath, JSON.stringify(events, null, 2));
-
-  // Notify all users
-  const currentTime = new Date().toLocaleString();
-  const newNotification = {
-    id: uuidv4(),
-    message: `New Event: ${eventName}, Date: ${eventDate} | Created at ${currentTime}`,
-    date: currentTime,
-  };
-
-  users = users.map(user => {
-    if (user.role === 'user') {
-      return {
-        ...user,
-        notifications: user.notifications ? [...user.notifications, newNotification] : [newNotification]
-      };
+    if (skills.length !== requiredSkills.length) {
+      return res.status(400).json({ message: 'One or more required skills are invalid' });
     }
-    return user;
-  });
 
-  // Update the users file
-  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+    const newEvent = {
+      name: eventName,
+      description: eventDescription,
+      location,
+      requiredSkills: skills.map(skill => skill.id),
+      urgency: {
+        id: urgency,
+        name: getUrgencyNameById(urgency)
+      },
+      date: eventDate,
+      participants: []
+    };
 
-  res.status(201).json({ message: 'Event created successfully!', event: newEvent });
+    const eventResult = await eventsCollection.insertOne(newEvent);
+
+    // Create notification
+    const currentTime = new Date().toLocaleString();
+    const newNotification = {
+      message: `New Event: ${eventName}, Date: ${eventDate} | Created at ${currentTime}`,
+      date: currentTime,
+    };
+
+    // Update all users with the new notification
+    await usersCollection.updateMany(
+      { role: 'user' },
+      { $push: { notifications: newNotification } }
+    );
+
+    res.status(201).json({ message: 'Event created successfully!', event: eventResult[0] });
+  } catch (e) {
+    console.error('Error creating event:', e);
+    res.status(500).json({ message: 'An error occurred while creating the event' });
+  }
 });
 
 // Get all events

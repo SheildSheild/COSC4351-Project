@@ -1,18 +1,7 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import db from '../mongoConnect.js';
 
 const router = express.Router();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-
-// Loads fake users (mock data)
-const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
 
 // Handles user login
 router.post('/login', async (req, res) => {
@@ -49,7 +38,6 @@ router.post('/register', async (req, res) => {
   try {
     const usersCollection = db.collection("users");
 
-    // Check if the user already exists
     const userExists = await usersCollection.findOne({ email });
 
     if (userExists) {
@@ -65,7 +53,7 @@ router.post('/register', async (req, res) => {
       username,
       password,
       email,
-      role: 'user', // default role, can be changed later
+      role: 'user',
       fullName: '',
       address1: '',
       address2: '',
@@ -79,7 +67,6 @@ router.post('/register', async (req, res) => {
       notifications: []
     };
 
-    // Insert the new user into the collection
     const result = await usersCollection.insertOne(newUser);
 
     usersCollection.findOneAndUpdate(
