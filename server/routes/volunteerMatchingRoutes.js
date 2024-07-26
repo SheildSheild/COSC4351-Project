@@ -1,98 +1,92 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { v4 as uuidv4 } from 'uuid';
+import db from '../mongoConnect.js';
 
 const router = express.Router();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-// Load mock data
-const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-const skillsFilePath = path.join(__dirname, '../../client/src/components/mockData/skills.json');
-
-const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-const events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
-const skills = JSON.parse(fs.readFileSync(skillsFilePath, 'utf-8'));
-
-router.get('/events', (req, res) => {
-  res.status(200).json(events);
+// Get all events
+router.get('/events', async (req, res) => {
+  try {
+    const eventsCollection = db.collection("events");
+    const events = await eventsCollection.find({ id: { $ne: -1 } }).toArray();
+    res.status(200).json(events);
+  } catch (e) {
+    console.error('Error fetching events:', e);
+    res.status(500).json({ message: 'An error occurred while fetching events' });
+  }
 });
 
-router.get('/skills', (req, res) => {
-  res.status(200).json(skills);
+// Get all skills
+router.get('/skills', async (req, res) => {
+  try {
+    const skillsCollection = db.collection("skills");
+    const skills = await skillsCollection.find({}).toArray();
+    res.status(200).json(skills);
+  } catch (e) {
+    console.error('Error fetching skills:', e);
+    res.status(500).json({ message: 'An error occurred while fetching skills' });
+  }
 });
 
-router.post('/match', (req, res) => {
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-
-  const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-  const events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
-
+// Match volunteers to events
+router.post('/match', async (req, res) => {
   const { eventIds } = req.body;
 
-  const matchedVolunteers = users.filter(user =>
-    eventIds.some(eventId => {
-      const event = events.find(e => e.id === eventId);
-      return event.requiredSkills.every(skill => user.skills.includes(skill)) &&
-             !user.acceptedEvents.some(acceptedEvent => acceptedEvent.eventId === eventId);
-    })
-  );
+  try {
+    const usersCollection = db.collection("users");
+    const eventsCollection = db.collection("events");
 
-  res.json({ volunteers: matchedVolunteers });
+    const events = await eventsCollection.find({ id: { $in: eventIds, $ne: -1 } }).toArray();
+    const users = await usersCollection.find({ id: { $ne: -1 } }).toArray();
+
+    const matchedVolunteers = users.filter(user =>
+      eventIds.some(eventId => {
+        const event = events.find(e => e.id === eventId);
+        return event.requiredSkills.every(skill => user.skills.includes(skill)) &&
+               !user.acceptedEvents.some(acceptedEvent => acceptedEvent.eventId === eventId);
+      })
+    );
+
+    res.json({ volunteers: matchedVolunteers });
+  } catch (e) {
+    console.error('Error matching volunteers:', e);
+    res.status(500).json({ message: 'An error occurred while matching volunteers' });
+  }
 });
 
-const isDateInRange = (date, range) => {
-  const [start, end] = range.split(' - ').map(date => new Date(date));
-  const checkDate = new Date(date);
-  return checkDate >= start && checkDate <= end;
-};
-
-router.post('/assign', (req, res) => {
-
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-
-  const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-  const events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
-
+// Assign a volunteer to an event
+router.post('/assign', async (req, res) => {
   const { volunteerId, eventId } = req.body;
+
   if (!volunteerId || !eventId) {
     return res.status(400).json({ message: 'Volunteer ID and Event ID are required' });
   }
 
-  const volunteer = users.find(u => u.id === volunteerId);
-  if (!volunteer) {
-    return res.status(404).json({ message: 'Volunteer not found' });
-  }
-  
-  const event = events.find(e => e.id === eventId);
-  if (!event) {
-    return res.status(404).json({ message: 'Event not found' });
-  }
+  try {
+    const usersCollection = db.collection("users");
+    const eventsCollection = db.collection("events");
 
-  if (!volunteer.offeredEvents) {
-    volunteer.offeredEvents = [];
+    const volunteer = await usersCollection.findOne({ id: volunteerId });
+    if (!volunteer) {
+      return res.status(404).json({ message: 'Volunteer not found' });
+    }
+
+    const event = await eventsCollection.findOne({ id: eventId });
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    const currentTime = new Date().toISOString();
+    
+    await usersCollection.updateOne(
+      { id: volunteerId },
+      { $push: { offeredEvents: eventId, notifications: { message: `You have been assigned to the ${event.name} event.`, date: currentTime } } }
+    );
+
+    res.status(200).json({ message: 'Volunteer assigned successfully and notification sent' });
+  } catch (e) {
+    console.error('Error assigning volunteer:', e);
+    res.status(500).json({ message: 'An error occurred while assigning the volunteer' });
   }
-
-  const currentTime = new Date().toISOString();
-  volunteer.offeredEvents.push(eventId);
-
-  const admin = users.find(u => u.role === 'admin'); // Assuming the first admin is assigning
-  const notification = {
-    id: uuidv4(),
-    message: `Admin ${admin.fullName} has assigned you a position in the ${event.name} event. | ${currentTime}`,
-    date: currentTime
-  };
-  volunteer.notifications.push(notification);
-  
-  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-  
-  res.status(200).json({ message: 'Volunteer assigned successfully and notification sent' });
 });
-
 
 export default router;

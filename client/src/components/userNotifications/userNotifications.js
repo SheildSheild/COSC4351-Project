@@ -49,7 +49,7 @@ const UserNotifications = () => {
   const handleDelete = async (id) => {
     console.log('Deleting notification with ID:', id);  // Log the ID
     try {
-      const response = await fetch(`http://localhost:3000/api/notifications/${id}`, {
+      const response = await fetch(`http://localhost:3000/api/notifications/${user.id}/${id}`, {
         method: 'DELETE',
       });
 

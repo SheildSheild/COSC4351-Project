@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/events', async (req, res) => {
   try {
     const collection = db.collection("events");
-    const events = await collection.find({}).toArray();
+    const events = await collection.find({id: { $ne: -1 }}).toArray();
     res.status(200).json(events);
   } catch (e) {
     console.error('Error fetching events:', e);

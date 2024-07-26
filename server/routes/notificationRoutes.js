@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import db from '../mongoConnect.js';
 
 const router = express.Router();
 
@@ -9,16 +10,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Get notifications for a user
-router.get('/:userId', (req, res) => {
-
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-
-  const eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-  let events = JSON.parse(fs.readFileSync(eventsFilePath, 'utf-8'));
-
+router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
-  const user = users.find(u => u.id === parseInt(userId));
+
+  const usersCollection = db.collection("users");
+  const eventsCollection = db.collection("events");
+  const events = await eventsCollection.find({id: { $ne: -1 }}).toArray();
+  const user = await usersCollection.findOne({ id: parseInt(userId) });
 
   if(user && user.role == 'user'){
     if (user) {
@@ -75,81 +73,127 @@ router.post('/', (req, res) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
+// Deletes a user's selected notification
+router.delete('/:userId/:index', async (req, res) => {
+  const { userId, index } = req.params;
 
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+  const usersCollection = db.collection("users");
 
-  const notificationId = req.params.id;
-  let notificationFound = false;
+  try {
+    // Convert index to integer
+    const notificationIndex = parseInt(index);
 
-  users = users.map(user => {
-    if (user.notifications) {
-      const initialLength = user.notifications.length;
-      user.notifications = user.notifications.filter(notification => notification.id !== notificationId);
-      if (user.notifications.length < initialLength) {
-        notificationFound = true;
-      }
+    // Find the user by userId
+    const user = await usersCollection.findOne({ id: parseInt(userId) });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    return user;
-  });
 
-  if (notificationFound) {
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+    if (!user.notifications || user.notifications.length <= notificationIndex || notificationIndex < 0) {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
+
+    // Remove the notification by index
+    user.notifications.splice(notificationIndex, 1);
+
+    // Update the user's notifications array
+    await usersCollection.updateOne(
+      { id: parseInt(userId) },
+      { $set: { notifications: user.notifications } }
+    );
+
     res.status(200).json({ message: 'Notification deleted successfully' });
-  } else {
-    res.status(404).json({ message: 'Notification not found' });
+  } catch (e) {
+    console.error('Error deleting notification:', e);
+    res.status(500).json({ message: 'An error occurred while deleting the notification' });
   }
 });
 
+
 // Accepting offered events
-router.post('/:userId/accept', (req, res) => {
-
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-
+router.post('/:userId/accept', async (req, res) => {
   const { userId } = req.params;
   const { eventId } = req.body;
-  const user = users.find(u => u.id === parseInt(userId));
   const currentTime = new Date().toISOString();
 
-  if (user) {
-    user.acceptedEvents = user.acceptedEvents || [];
-    user.acceptedEvents.push({ eventId: eventId, signUpTime: currentTime });
-    user.offeredEvents = user.offeredEvents.filter(id => id !== eventId);
+  const usersCollection = db.collection("users");
+  const eventsCollection = db.collection("events");
 
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-    res.status(200).json({ message: 'Event accepted' });
-  } else {
-    res.status(404).json({ message: 'User not found' });
+  try {
+    // Find the user by userId
+    const user = await usersCollection.findOne({ id: parseInt(userId) });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if the event is in the offeredEvents array
+    if (!user.offeredEvents.includes(parseInt(eventId))) {
+      return res.status(400).json({ message: 'Event not found in offered events' });
+    }
+
+    const event = await eventsCollection.findOne({ id: parseInt(eventId) });
+    const newNotification = {
+      message: `${user.fullName} has accepted the offered event: ${event.name}`,
+      date: currentTime,
+    };
+
+    // Add the event to the acceptedEvents array and remove it from the offeredEvents array
+    await usersCollection.updateOne(
+      { id: parseInt(userId) },
+      {
+        $push: { acceptedEvents: { eventId: parseInt(eventId), signUpTime: currentTime } },
+        $pull: { offeredEvents: parseInt(eventId) }
+      }
+    );
+
+    // Find all admin users
+    const admins = await usersCollection.find({ role: 'admin' }).toArray();
+
+    // Send notification to all admins
+    await Promise.all(admins.map(admin => 
+      usersCollection.updateOne(
+        { id: admin.id },
+        { $push: { notifications: newNotification } }
+      )
+    ));
+
+    res.status(200).json({ message: 'Event accepted and notifications sent to admins' });
+  } catch (e) {
+    console.error('Error accepting event:', e);
+    res.status(500).json({ message: 'An error occurred while accepting the event' });
   }
 });
 
 // Declining offered events
-
-router.delete('/:userId/decline/:eventId', (req, res) => {
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-
+router.delete('/:userId/decline/:eventId', async (req, res) => {
   const { userId, eventId } = req.params; // Extract userId and eventId from request parameters
-  let eventFound = false;
 
-  users = users.map(user => {
-    if (user.id === parseInt(userId) && user.offeredEvents) {
-      const initialLength = user.offeredEvents.length;
-      user.offeredEvents = user.offeredEvents.filter(id => id !== parseInt(eventId));
-      if (user.offeredEvents.length < initialLength) {
-        eventFound = true;
-      }
+  const usersCollection = db.collection("users");
+
+  try {
+    // Find the user by userId
+    const user = await usersCollection.findOne({ id: parseInt(userId) });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    return user;
-  });
 
-  if (eventFound) {
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+    if (!user.offeredEvents || !user.offeredEvents.includes(parseInt(eventId))) {
+      return res.status(404).json({ message: 'Event not found in offered events' });
+    }
+
+    // Remove the event from the offeredEvents array
+    await usersCollection.updateOne(
+      { id: parseInt(userId) },
+      { $pull: { offeredEvents: parseInt(eventId) } }
+    );
+
     res.status(200).json({ message: 'Event declined and removed from offeredEvents' });
-  } else {
-    res.status(404).json({ message: 'Event or User not found' });
+  } catch (e) {
+    console.error('Error declining event:', e);
+    res.status(500).json({ message: 'An error occurred while declining the event' });
   }
 });
 

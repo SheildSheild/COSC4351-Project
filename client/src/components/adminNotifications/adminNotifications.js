@@ -27,7 +27,7 @@ const AdminNotifications = () => {
   const handleDelete = async (id) => {
     console.log('Deleting notification with ID:', id);  // Log the ID
     try {
-      const response = await fetch(`http://localhost:3000/api/notifications/${id}`, {
+      const response = await fetch(`http://localhost:3000/api/notifications/${user.id}/${id}`, {
         method: 'DELETE',
       });
 
@@ -53,12 +53,12 @@ const AdminNotifications = () => {
       <br></br>
       <br></br>
       <h2>Admin Notifications</h2>
-      <ul>
-        {notifications.map(notification => (
-          <li key={notification.id}>
-            <strong>{notification.user}</strong> signed up for <strong>{notification.event}</strong> at <em>{dayjs(notification.time).format('MMMM D, YYYY HH:mm:ss')}</em>
-            <button onClick={() => handleDelete(notification.id)}>Acknowledge</button>
-          </li>
+        <ul>
+          {notifications.map((notification, index) => (
+            <li key={index}>
+              <h3>{notification.message} at {dayjs(notification.date).format('MMMM D, YYYY h:mm A')}</h3>
+              <button onClick={() => handleDelete(index)}>Acknowledge</button>
+            </li>
         ))}
       </ul>
     </div>

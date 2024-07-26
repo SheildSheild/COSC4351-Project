@@ -27,7 +27,11 @@ router.post('/create', async (req, res) => {
       return res.status(400).json({ message: 'One or more required skills are invalid' });
     }
 
+    const autoIncrement = await eventsCollection.find({id: -1}).toArray();
+    const newEventId = autoIncrement.map(newID => newID.globalEventId);
+
     const newEvent = {
+      id: newEventId,
       name: eventName,
       description: eventDescription,
       location,
@@ -55,6 +59,12 @@ router.post('/create', async (req, res) => {
       { $push: { notifications: newNotification } }
     );
 
+    eventsCollection.findOneAndUpdate(
+      { id: -1 },
+      { $inc: { globalEventId: 1 } },
+      { returnOriginal: false, upsert: true }
+    );
+
     res.status(201).json({ message: 'Event created successfully!', event: eventResult[0] });
   } catch (e) {
     console.error('Error creating event:', e);
@@ -66,7 +76,7 @@ router.post('/create', async (req, res) => {
 router.get('/all', async (req, res) => {
   try {
     const collection = db.collection("events");
-    const events = await collection.find({}).toArray();
+    const events = await collection.find({ id: { $ne: -1 } }).toArray();
     res.status(200).json(events);
   } catch (e) {
     console.error('Error fetching events:', e);
