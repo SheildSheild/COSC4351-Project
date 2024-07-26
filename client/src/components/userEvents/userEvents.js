@@ -11,7 +11,20 @@ const UserEventPage = () => {
   const [userEvents, setUserEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableEvents, setAvailableEvents] = useState([]);
-  const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  const [user, setUser] = useState([]);
+  const isLoggedIn = JSON.parse(localStorage.getItem('loggedInUser'));
+
+  useEffect(() => {
+    if (user) {
+      fetch(`http://localhost:3000/api/signup/${isLoggedIn.id}`)
+        .then(response => response.json())
+        .then(data => {
+          setUser(data);
+        })
+        .catch(error => console.error('Error fetching user:', error));
+    }
+        // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -25,8 +38,7 @@ const UserEventPage = () => {
         })
         .catch(error => console.error('Error fetching events:', error));
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   const onDateChange = (date) => {
     setValue(date);
@@ -45,6 +57,8 @@ const UserEventPage = () => {
         const [start, end] = range.split(' - ');
         return dayjs(matchedEvent.date).isAfter(start) && dayjs(matchedEvent.date).isBefore(end);
       });
+
+      console.log(isInAvailability);
 
       if (!isInAvailability) {
         if (!window.confirm('This event is outside your availability. Are you sure you want to sign up?')) {

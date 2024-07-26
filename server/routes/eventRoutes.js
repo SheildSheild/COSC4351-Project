@@ -31,7 +31,7 @@ router.post('/create', async (req, res) => {
     const newEventId = autoIncrement.map(newID => newID.globalEventId);
 
     const newEvent = {
-      id: newEventId,
+      id: parseInt(newEventId),
       name: eventName,
       description: eventDescription,
       location,
