@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js';
 
 const router = express.Router();
 
@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
+    const db = await connectToDatabase();
     const usersCollection = db.collection("users");
 
     // Find the user by email and password
@@ -36,6 +37,7 @@ router.post('/register', async (req, res) => {
   const { username, password, email } = req.body;
 
   try {
+    const db = await connectToDatabase();
     const usersCollection = db.collection("users");
 
     const userExists = await usersCollection.findOne({ email });
@@ -44,12 +46,13 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const autoIncrement = await usersCollection.find({id: -1}).toArray();
-    const newUserId = autoIncrement.map(newID => newID.globalUserId);
+    // Find the last user ID and increment
+    const lastUser = await usersCollection.findOne({}, { sort: { id: -1 } });
+    const newUserId = lastUser ? lastUser.id + 1 : 1;
 
     // Create a new user
     const newUser = {
-      id: parseInt(newUserId) + 1,
+      id: newUserId,
       username,
       password,
       email,
@@ -68,12 +71,6 @@ router.post('/register', async (req, res) => {
     };
 
     const result = await usersCollection.insertOne(newUser);
-
-    usersCollection.findOneAndUpdate(
-      { id: -1 },
-      { $inc: { globalUserId: 1 } },
-      { returnOriginal: false, upsert: true }
-    );
 
     res.status(201).json({
       message: 'Registration successful',
