@@ -25,14 +25,17 @@ router.get('/:userId', async (req, res) => {
 
     // Get details of accepted events
     const acceptedEventsDetails = await Promise.all(user.acceptedEvents.map(async (acceptedEvent) => {
-      const event = await eventsCollection.findOne({ id: acceptedEvent.eventId, id: { $ne: -1 } });
-      if (!event) return null;
+      const event = await eventsCollection.findOne({ id: acceptedEvent.eventId });
+
+      const requiredSkills = await skillsCollection.find({ id: { $in: event.requiredSkills } }).toArray();
+      const requiredSkillsNames = requiredSkills.map(skill => skill.name).join(', ');
+      if (event.id == -1) return null;
       return {
         eventId: acceptedEvent.eventId,
         eventName: event.name,
         eventDate: event.date,
         signUpTime: acceptedEvent.signUpTime,
-        skills: userSkillsNames,
+        skills: requiredSkillsNames,
         location: event.location || 'N/A',
         description: event.description || 'N/A'
       };

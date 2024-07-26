@@ -1,9 +1,26 @@
 import express from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import db from '../mongoConnect.js';
 
 const router = express.Router();
+
+// Gets the user's information
+router.get('/:userId', async (req, res) => {
+  const {userId} = req.params;
+
+  try {
+    const usersCollection = db.collection("users");
+
+    const user = await usersCollection.findOne({ id: parseInt(userId)});
+    if (!user){
+      return res.status(404).json({message: 'User not found'});
+    }
+    res.status(200).json(user);
+  } catch (e) {
+    console.error('Error fetching user:', e);
+    res.status(500).json({ message: 'An error occurred while fetching user' });
+  }
+});
 
 // Route to sign up a user for an event
 router.post('/', async (req, res) => {
@@ -37,7 +54,6 @@ router.post('/', async (req, res) => {
 
     // Update notifications for all admin users
     const newNotification = {
-      id: uuidv4(),
       user: user.fullName,
       event: event.name,
       time: currentTime,

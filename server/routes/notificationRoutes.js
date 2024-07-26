@@ -1,13 +1,8 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import db from '../mongoConnect.js';
+import dayjs from 'dayjs';
 
 const router = express.Router();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Get notifications for a user
 router.get('/:userId', async (req, res) => {
@@ -43,33 +38,6 @@ router.get('/:userId', async (req, res) => {
     } else {
       res.status(404).json({ message: 'User not found' });
     }
-  }
-});
-
-// Send a notification
-router.post('/', (req, res) => {
-
-  const usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-  let users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
-
-  const { userId, message } = req.body;
-  const user = users.find(u => u.id === parseInt(userId));
-
-  if (user) {
-    const currentTime = new Date().toLocaleString();
-    const newNotification = {
-      message,
-      date: currentTime,
-    };
-
-    user.notifications = user.notifications ? [...user.notifications, newNotification] : [newNotification];
-
-    // Update the users file
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-
-    res.status(201).json({ message: 'Notification sent successfully', notification: newNotification });
-  } else {
-    res.status(404).json({ message: 'User not found' });
   }
 });
 
@@ -115,7 +83,7 @@ router.delete('/:userId/:index', async (req, res) => {
 router.post('/:userId/accept', async (req, res) => {
   const { userId } = req.params;
   const { eventId } = req.body;
-  const currentTime = new Date().toISOString();
+  const currentTime = dayjs().toISOString();
 
   const usersCollection = db.collection("users");
   const eventsCollection = db.collection("events");
@@ -134,9 +102,11 @@ router.post('/:userId/accept', async (req, res) => {
     }
 
     const event = await eventsCollection.findOne({ id: parseInt(eventId) });
+
     const newNotification = {
-      message: `${user.fullName} has accepted the offered event: ${event.name}`,
-      date: currentTime,
+      user: user.fullName,
+      event: event.name,
+      time: currentTime,
     };
 
     // Add the event to the acceptedEvents array and remove it from the offeredEvents array

@@ -56,7 +56,7 @@ const AdminNotifications = () => {
         <ul>
           {notifications.map((notification, index) => (
             <li key={index}>
-              <h3>{notification.message} at {dayjs(notification.date).format('MMMM D, YYYY h:mm A')}</h3>
+              <h3><strong>{notification.user}</strong> has signed up for {notification.event} on {dayjs(notification.time).format('MMMM D, YYYY h:mm A')}</h3>
               <button onClick={() => handleDelete(index)}>Acknowledge</button>
             </li>
         ))}

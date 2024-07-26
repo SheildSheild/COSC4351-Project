@@ -19,6 +19,19 @@ const UserHistory = () => {
     }
   }, [user]);
 
+  const getStatus = (eventDate) => {
+    const today = dayjs();
+    const dateOfEvent = dayjs(eventDate);
+    
+    if (dateOfEvent.isAfter(today, 'day')) {
+      return "Scheduled";
+    } else if (dateOfEvent.isSame(today, 'day')) {
+      return "Active";
+    } else {
+      return "Completed";
+    }
+  };
+  
   return (
     <div className="user-history-page">
       <br />
@@ -47,7 +60,7 @@ const UserHistory = () => {
                   <td>{event.skills || 'N/A'}</td>
                   <td>{event.location || 'N/A'}</td>
                   <td>{event.description || 'N/A'}</td>
-                  <td>Active</td>
+                  <td>{getStatus(event.eventDate)}</td>
                 </tr>
               ))
             ) : (

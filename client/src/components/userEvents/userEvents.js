@@ -25,6 +25,7 @@ const UserEventPage = () => {
         })
         .catch(error => console.error('Error fetching events:', error));
     }
+    // eslint-disable-next-line
   }, []);
 
   const onDateChange = (date) => {

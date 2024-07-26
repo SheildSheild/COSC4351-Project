@@ -21,7 +21,7 @@ router.get('/:userId', async (req, res) => {
 router.put('/:userId', async (req, res) => {
   const collection = db.collection("users");
   const { userId } = req.params;
-  const updatedData = req.body;
+  const { _id, ...updatedData } = req.body;
 
   try {
     const result = await collection.updateOne(
