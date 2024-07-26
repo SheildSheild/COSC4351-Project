@@ -28,7 +28,7 @@ const UserHistory = () => {
     } else if (dateOfEvent.isSame(today, 'day')) {
       return "Active";
     } else {
-      return "Completed";
+      return "Complete";
     }
   };
   
