@@ -77,7 +77,7 @@ router.post('/register', async (req, res) => {
         return res.status(500).json({ message: 'Error sending verification email' });
       }
       console.log('Email sent:', info.response);
-      res.status(201).json({
+      return res.status(201).json({
         message: 'Registration successful. Please check your email for verification link.',
         user: {
           id: result.insertedId,

@@ -1,5 +1,6 @@
 import express from 'express';
-import db from '../mongoConnect.js';
+// import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 
 const router = express.Router();
 
@@ -8,6 +9,7 @@ router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const usersCollection = db.collection("users");
     const eventsCollection = db.collection("events");
     const skillsCollection = db.collection("skills");

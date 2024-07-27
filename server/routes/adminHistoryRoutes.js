@@ -1,10 +1,12 @@
 import express from 'express';
-import db from '../mongoConnect.js';
+// import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 
 const router = express.Router();
 
 router.get('/events', async (req, res) => {
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const collection = db.collection("events");
     const events = await collection.find({id: { $ne: -1 }}).toArray();
     res.status(200).json(events);
@@ -18,6 +20,7 @@ router.get('/events', async (req, res) => {
 router.get('/participants/:eventId', async (req, res) => {
   const { eventId } = req.params;
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const usersCollection = db.collection("users");
     const participants = await usersCollection.find({
       acceptedEvents: { $elemMatch: { eventId: parseInt(eventId) } }

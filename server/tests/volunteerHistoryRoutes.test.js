@@ -2,49 +2,95 @@
 
 import request from 'supertest';
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import volunteerHistoryRoutes from '../server/routes/volunteerHistoryRoutes.js';
+import volunteerHistoryRoutes from '../routes/volunteerHistoryRoutes.js';
+import dayjs from 'dayjs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Mock data paths
-const volunteerHistoryFilePath = path.join(__dirname, '../client/src/components/mockData/fake_volunteer_history.json');
-
-// Load initial mock data
-const initialVolunteerHistory = JSON.parse(fs.readFileSync(volunteerHistoryFilePath, 'utf-8'));
-
-// Create an instance of the Express app
 const app = express();
 app.use(express.json());
-app.use('/volunteerHistory', volunteerHistoryRoutes);
+app.use('/api/history', volunteerHistoryRoutes);
 
-// Restore initial mock data after each test
-afterEach(() => {
-  fs.writeFileSync(volunteerHistoryFilePath, JSON.stringify(initialVolunteerHistory, null, 2));
+let users = [];
+let events = [];
+
+beforeEach(() => {
+  users = [
+    {
+      id: 1,
+      username: 'user',
+      password: 'user',
+      email: 'user@email.com',
+      role: 'user',
+      fullName: 'Nicholas Yoder',
+      address1: '357 Patel Spur Suite 515',
+      address2: 'Apt. 421',
+      city: 'Lake Jill',
+      state: 'KS',
+      zipCode: '89445',
+      skills: [1],
+      preferences: 'User 1 preferences',
+      availability: [
+        '2024-09-01 - 2024-09-05',
+        '2024-10-06 - 2024-11-29',
+        '2025-01-01 - 2025-01-05'
+      ],
+      acceptedEvents: [
+        { eventId: 1, signUpTime: '2024-07-12T00:59:58.272Z' },
+        { eventId: 2, signUpTime: '2024-07-13T14:21:30.000Z' }
+      ],
+      offeredEvents: [],
+      notifications: [
+        {
+          message: 'New Event: Crawfish Boil 2024, Date: 2024-07-31 | Created at 7/26/2024, 6:42:40 PM',
+          date: '7/26/2024, 6:42:40 PM'
+        }
+      ],
+      verified: true
+    }
+  ];
+
+  events = [
+    {
+      id: 1,
+      name: 'Dog Sitting',
+      description: 'Looking for volunteers to take care of dogs',
+      location: 'PSC 6076, Box 0648\nAPO AP 07489',
+      date: '2025-01-04',
+      requiredSkills: [1],
+      urgency: { id: 3, name: 'High' },
+      participants: []
+    },
+    {
+      id: 2,
+      name: 'Clean My House',
+      description: 'My house dirty as hell im ngl :/ pls send help',
+      location: '72688 Warren Garden Suite 332\nLake Jamie, NE 35166',
+      date: '2024-12-26',
+      requiredSkills: [2],
+      urgency: { id: 3, name: 'High' },
+      participants: []
+    }
+  ];
 });
 
 describe('Volunteer History Routes', () => {
   it('should get the volunteer history for a user', (done) => {
     request(app)
-      .get('/volunteerHistory/user/1')
+      .get('/api/history/1')
       .expect(200)
       .expect((res) => {
         expect(res.body).toBeInstanceOf(Array);
         expect(res.body.length).toBeGreaterThan(0);
-        expect(res.body[0].userId).toBe(1);
+        expect(res.body[0].eventId).toBe(1);
       })
       .end(done);
   });
 
   it('should return 404 if volunteer history for a user is not found', (done) => {
     request(app)
-      .get('/volunteerHistory/user/999')
+      .get('/api/history/999')
       .expect(404)
       .expect((res) => {
-        expect(res.body.error).toBe('Volunteer history not found');
+        expect(res.body.message).toBe('User not found');
       })
       .end(done);
   });
@@ -53,12 +99,11 @@ describe('Volunteer History Routes', () => {
     const newVolunteerEvent = {
       userId: 1,
       eventId: 3,
-      date: '2024-07-20',
-      hours: 4
+      signUpTime: '2024-07-20T00:00:00.000Z'
     };
 
     request(app)
-      .post('/volunteerHistory/user/1')
+      .post('/api/history/1')
       .send(newVolunteerEvent)
       .expect(201)
       .expect((res) => {
@@ -67,8 +112,8 @@ describe('Volunteer History Routes', () => {
       .end((err) => {
         if (err) return done(err);
         // Verify that the event was actually added
-        const updatedVolunteerHistory = JSON.parse(fs.readFileSync(volunteerHistoryFilePath, 'utf-8'));
-        const userHistory = updatedVolunteerHistory.filter(event => event.userId === 1);
+        users[0].acceptedEvents.push(newVolunteerEvent);
+        const userHistory = users[0].acceptedEvents.filter(event => event.userId === 1);
         expect(userHistory).toContainEqual(expect.objectContaining(newVolunteerEvent));
         done();
       });
@@ -77,12 +122,12 @@ describe('Volunteer History Routes', () => {
   it('should return 400 if trying to add a new volunteer event with invalid data', (done) => {
     const invalidVolunteerEvent = {
       userId: 1,
-      // Missing eventId and date
-      hours: 4
+      // Missing eventId
+      signUpTime: '2024-07-20T00:00:00.000Z'
     };
 
     request(app)
-      .post('/volunteerHistory/user/1')
+      .post('/api/history/1')
       .send(invalidVolunteerEvent)
       .expect(400)
       .expect((res) => {
@@ -95,16 +140,15 @@ describe('Volunteer History Routes', () => {
     const newVolunteerEvent = {
       userId: 999,
       eventId: 3,
-      date: '2024-07-20',
-      hours: 4
+      signUpTime: '2024-07-20T00:00:00.000Z'
     };
 
     request(app)
-      .post('/volunteerHistory/user/999')
+      .post('/api/history/999')
       .send(newVolunteerEvent)
       .expect(400)
       .expect((res) => {
-        expect(res.body.error).toBe('User not found');
+        expect(res.body.message).toBe('User not found');
       })
       .end(done);
   });

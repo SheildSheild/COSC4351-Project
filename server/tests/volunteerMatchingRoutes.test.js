@@ -1,24 +1,12 @@
 import { strict as assert } from 'assert';
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import request from 'supertest';
-import router from '../server/routes/volunteerMatchingRoutes.js'; // Update the path to your router file
+import router from '../routes/volunteerMatchingRoutes.js'; // Update the path to your router file
+import fs from 'fs';
 
 const app = express();
 app.use(express.json());
 app.use('/api', router);
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Helper function to mock file reads
-function mockFileRead(filePath, data) {
-  fs.__setMockFiles({
-    [filePath]: JSON.stringify(data),
-  });
-}
 
 describe('Router Tests', function () {
   beforeEach(() => {
@@ -30,6 +18,19 @@ describe('Router Tests', function () {
         offeredEvents: [],
         notifications: [],
         role: 'volunteer',
+        username: "user",
+        password: "user",
+        email: "user@email.com",
+        fullName: "Nicholas Yoder",
+        address1: "357 Patel Spur Suite 515",
+        address2: "Apt. 421",
+        city: "Lake Jill",
+        state: "KS",
+        zipCode: "89445",
+        preferences: "User 1 preferences",
+        availability: ["2024-09-01 - 2024-09-05", "2024-10-06 - 2024-11-29", "2025-01-01 - 2025-01-05"],
+        acceptedEvents: [],
+        verified: true
       },
       {
         id: 2,
@@ -38,42 +39,114 @@ describe('Router Tests', function () {
         notifications: [],
         role: 'admin',
         fullName: 'Admin User',
+        username: "admin",
+        password: "admin",
+        email: "admin@example.com",
+        fullName: "Admin User",
+        address1: "123 Admin St",
+        address2: "",
+        city: "Admin City",
+        state: "CA",
+        zipCode: "12345",
+        preferences: "",
+        availability: [],
+        acceptedEvents: [],
+        verified: true
       },
     ];
 
     const events = [
       {
         id: 1,
-        name: 'Event 1',
+        name: 'Dog Sitting',
+        description: 'Looking for volunteers to take care of dogs',
+        location: 'PSC 6076, Box 0648\nAPO AP 07489',
+        date: '2025-01-04',
         requiredSkills: [1],
+        urgency: { id: 3, name: 'High' },
+        participants: ['Nicholas Yoder', 'Keean Smith']
       },
       {
         id: 2,
-        name: 'Event 2',
-        requiredSkills: [3],
+        name: 'Clean My House',
+        description: 'My house dirty as hell im ngl :/ pls send help',
+        location: '72688 Warren Garden Suite 332\nLake Jamie, NE 35166',
+        date: '2024-12-26',
+        requiredSkills: [2],
+        urgency: { id: 3, name: 'High' },
+        participants: []
+      },
+      {
+        id: 3,
+        name: 'Crawfish Boil 2024',
+        description: 'Come and boil crawfish at the sugar land HEB',
+        location: 'HEB',
+        date: '2024-07-31',
+        requiredSkills: [5],
+        urgency: { id: 2, name: 'Medium' },
+        participants: []
       },
     ];
 
     const skills = [
-      { id: 1, name: 'Skill 1' },
-      { id: 2, name: 'Skill 2' },
-      { id: 3, name: 'Skill 3' },
+      { id: 1, name: 'Dog Sitting' },
+      { id: 2, name: 'Mopping' },
+      { id: 3, name: 'Mowing Lawn' },
+      { id: 4, name: 'Cleaning' },
+      { id: 5, name: 'Cooking' },
     ];
 
-    // Mock file reads
-    mockFileRead(path.join(__dirname, '../../client/src/components/mockData/fake_users.json'), users);
-    mockFileRead(path.join(__dirname, '../../client/src/components/mockData/fake_event.json'), events);
-    mockFileRead(path.join(__dirname, '../../client/src/components/mockData/skills.json'), skills);
+    jest.mock('fs', () => ({
+      readFileSync: jest.fn((filePath) => {
+        if (filePath.includes('fake_users.json')) {
+          return JSON.stringify(users);
+        } else if (filePath.includes('fake_event.json')) {
+          return JSON.stringify(events);
+        } else if (filePath.includes('skills.json')) {
+          return JSON.stringify(skills);
+        }
+        return null;
+      }),
+    }));
   });
 
   describe('GET /api/events', function () {
     it('should return all events', async function () {
       const response = await request(app).get('/api/events');
       assert.equal(response.status, 200);
-      assert.deepEqual(response.body, [
-        { id: 1, name: 'Event 1', requiredSkills: [1] },
-        { id: 2, name: 'Event 2', requiredSkills: [3] },
-      ]);
+      const expectedEvents = [
+        {
+          id: 1,
+          name: 'Dog Sitting',
+          description: 'Looking for volunteers to take care of dogs',
+          location: 'PSC 6076, Box 0648\nAPO AP 07489',
+          date: '2025-01-04',
+          requiredSkills: [1],
+          urgency: { id: 3, name: 'High' },
+          participants: ['Nicholas Yoder', 'Keean Smith']
+        },
+        {
+          id: 2,
+          name: 'Clean My House',
+          description: 'My house dirty as hell im ngl :/ pls send help',
+          location: '72688 Warren Garden Suite 332\nLake Jamie, NE 35166',
+          date: '2024-12-26',
+          requiredSkills: [2],
+          urgency: { id: 3, name: 'High' },
+          participants: []
+        },
+        {
+          id: 3,
+          name: 'Crawfish Boil 2024',
+          description: 'Come and boil crawfish at the sugar land HEB',
+          location: 'HEB',
+          date: '2024-07-31',
+          requiredSkills: [5],
+          urgency: { id: 2, name: 'Medium' },
+          participants: []
+        }
+      ];
+      assert.deepEqual(response.body, expectedEvents);
     });
   });
 
@@ -81,11 +154,14 @@ describe('Router Tests', function () {
     it('should return all skills', async function () {
       const response = await request(app).get('/api/skills');
       assert.equal(response.status, 200);
-      assert.deepEqual(response.body, [
-        { id: 1, name: 'Skill 1' },
-        { id: 2, name: 'Skill 2' },
-        { id: 3, name: 'Skill 3' },
-      ]);
+      const expectedSkills = [
+        { id: 1, name: 'Dog Sitting' },
+        { id: 2, name: 'Mopping' },
+        { id: 3, name: 'Mowing Lawn' },
+        { id: 4, name: 'Cleaning' },
+        { id: 5, name: 'Cooking' }
+      ];
+      assert.deepEqual(response.body, expectedSkills);
     });
   });
 
@@ -96,17 +172,29 @@ describe('Router Tests', function () {
         .send({ eventIds: [1] });
 
       assert.equal(response.status, 200);
-      assert.deepEqual(response.body, {
-        volunteers: [
-          {
-            id: 1,
-            skills: [1, 2],
-            offeredEvents: [],
-            notifications: [],
-            role: 'volunteer',
-          },
-        ],
-      });
+      const expectedVolunteers = [
+        {
+          id: 1,
+          skills: [1, 2],
+          offeredEvents: [],
+          notifications: [],
+          role: 'volunteer',
+          username: "user",
+          password: "user",
+          email: "user@email.com",
+          fullName: "Nicholas Yoder",
+          address1: "357 Patel Spur Suite 515",
+          address2: "Apt. 421",
+          city: "Lake Jill",
+          state: "KS",
+          zipCode: "89445",
+          preferences: "User 1 preferences",
+          availability: ["2024-09-01 - 2024-09-05", "2024-10-06 - 2024-11-29", "2025-01-01 - 2025-01-05"],
+          acceptedEvents: [],
+          verified: true
+        }
+      ];
+      assert.deepEqual(response.body.volunteers, expectedVolunteers);
     });
   });
 
@@ -120,7 +208,7 @@ describe('Router Tests', function () {
       assert.deepEqual(response.body, { message: 'Volunteer assigned successfully and notification sent' });
 
       // Check if the volunteer has been assigned the event and notification is added
-      const users = JSON.parse(fs.readFileSync(path.join(__dirname, '../../client/src/components/mockData/fake_users.json'), 'utf-8'));
+      const users = JSON.parse(fs.readFileSync('../../client/src/components/mockData/fake_users.json', 'utf-8'));
       const volunteer = users.find(user => user.id === 1);
       assert(volunteer.offeredEvents.includes(1));
       assert(volunteer.notifications.length > 0);

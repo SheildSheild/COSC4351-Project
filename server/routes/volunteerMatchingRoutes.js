@@ -1,11 +1,13 @@
 import express from 'express';
-import db from '../mongoConnect.js';
+// import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 
 const router = express.Router();
 
 // Get all events
 router.get('/events', async (req, res) => {
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const eventsCollection = db.collection("events");
     const events = await eventsCollection.find({ id: { $ne: -1 } }).toArray();
     res.status(200).json(events);
@@ -18,6 +20,7 @@ router.get('/events', async (req, res) => {
 // Get all skills
 router.get('/skills', async (req, res) => {
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const skillsCollection = db.collection("skills");
     const skills = await skillsCollection.find({}).toArray();
     res.status(200).json(skills);
@@ -32,6 +35,7 @@ router.post('/match', async (req, res) => {
   const { eventIds } = req.body;
 
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const usersCollection = db.collection("users");
     const eventsCollection = db.collection("events");
 
@@ -62,6 +66,7 @@ router.post('/assign', async (req, res) => {
   }
 
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const usersCollection = db.collection("users");
     const eventsCollection = db.collection("events");
 

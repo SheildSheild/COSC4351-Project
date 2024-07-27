@@ -1,5 +1,6 @@
 import express from 'express';
-import db from '../mongoConnect.js';
+// import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.post('/create', async (req, res) => {
   const { eventName, eventDescription, location, requiredSkills, urgency, eventDate } = req.body;
 
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const eventsCollection = db.collection("events");
     const usersCollection = db.collection("users");
     const skillsCollection = db.collection("skills");
@@ -75,6 +77,7 @@ router.post('/create', async (req, res) => {
 // Get all events
 router.get('/all', async (req, res) => {
   try {
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const collection = db.collection("events");
     const events = await collection.find({ id: { $ne: -1 } }).toArray();
     res.status(200).json(events);

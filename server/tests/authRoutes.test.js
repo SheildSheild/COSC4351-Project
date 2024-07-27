@@ -1,3 +1,13 @@
+jest.mock('nodemailer', () => {
+  return {
+    createTransport: jest.fn().mockReturnValue({
+      sendMail: jest.fn((mailOptions, callback) => {
+        callback(null, { response: 'Mock email sent' });
+      })
+    })
+  };
+});
+
 import express from 'express';
 import request from 'supertest';
 import authRoutes from '../routes/authRoutes.js';
@@ -15,7 +25,7 @@ beforeAll(async () => {
 
 afterEach(async () => {
   const usersCollection = db.collection("users");
-  
+
   // Remove the newly registered user
   await usersCollection.deleteMany({ email: "newuser@example.com" });
 });
@@ -52,16 +62,16 @@ describe('Auth Routes', () => {
   it('should register a new user', async () => {
     const response = await request(app)
       .post('/auth/register')
-      .send({ username: 'newuser', email: 'newuser@example.com', password: 'newpassword'})
+      .send({ username: 'newuser', email: 'newuser@example.com', password: 'newpassword' })
       .expect(201);
 
-    expect(response.body.message).toBe('Registration successful');
+    expect(response.body.message).toBe('Registration successful. Please check your email for verification link.');
     expect(response.body.user).toMatchObject({
-      email: newUser.email,
-      username: newUser.username,
+      email: 'newuser@example.com',
+      username: 'newuser',
       role: 'user'
     });
-  });
+  }, 10000); // Set timeout to 10 seconds
 
   it('should not register an existing user', async () => {
     const existingUser = {

@@ -1,10 +1,12 @@
 import express from 'express';
-import db from '../mongoConnect.js';
+// import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 
 const router = express.Router();
 
 // Get user profile
 router.get('/:userId', async (req, res) => {
+  const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
   const collection = db.collection("users");
   const { userId } = req.params;
   let user = await collection.find({id: parseInt(userId)})
@@ -19,6 +21,7 @@ router.get('/:userId', async (req, res) => {
 
 // Update user profile
 router.put('/:userId', async (req, res) => {
+  const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
   const collection = db.collection("users");
   const { userId } = req.params;
   const { _id, ...updatedData } = req.body;

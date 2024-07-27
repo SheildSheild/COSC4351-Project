@@ -1,50 +1,18 @@
 import { strict as assert } from 'assert';
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import request from 'supertest';
-import router from '../server/routes/userEventRoutes.js'; // Update the path to your router file
+import router from '../routes/userEventRoutes.js'; // Update the path to your router file
 import dayjs from 'dayjs';
 
 const app = express();
 app.use(express.json());
 app.use('/api/events/signup', router);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Helper function to mock file reads and writes
-function mockFileSystem(filePath, data) {
-  fs.__setMockFiles({
-    [filePath]: JSON.stringify(data),
-  });
-}
-
-// Mocking fs methods
-fs.__setMockFiles = function (mockFiles) {
-  fs.readFileSync = (filePath, encoding) => {
-    if (mockFiles[filePath]) {
-      return mockFiles[filePath];
-    }
-    throw new Error('File not found');
-  };
-  fs.writeFileSync = (filePath, data) => {
-    if (!mockFiles[filePath]) {
-      throw new Error('File not found');
-    }
-    mockFiles[filePath] = data;
-  };
-};
-
 describe('Event Signup Routes Tests', function () {
-  let usersFilePath, eventsFilePath;
+  let users, events;
 
   beforeEach(() => {
-    usersFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_users.json');
-    eventsFilePath = path.join(__dirname, '../../client/src/components/mockData/fake_event.json');
-
-    const users = [
+    users = [
       {
         id: 1,
         fullName: 'User One',
@@ -60,7 +28,7 @@ describe('Event Signup Routes Tests', function () {
       },
     ];
 
-    const events = [
+    events = [
       {
         id: 1,
         name: 'Event One',
@@ -70,9 +38,6 @@ describe('Event Signup Routes Tests', function () {
         name: 'Event Two',
       },
     ];
-
-    mockFileSystem(usersFilePath, users);
-    mockFileSystem(eventsFilePath, events);
   });
 
   describe('POST /api/events/signup', function () {
@@ -85,7 +50,6 @@ describe('Event Signup Routes Tests', function () {
       assert.deepEqual(response.body, { message: 'User signed up for event successfully' });
 
       // Verify the user has been signed up for the event
-      const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
       const user = users.find(u => u.id === 1);
       assert.deepEqual(user.acceptedEvents, [{ eventId: 1, signUpTime: dayjs().toISOString() }]);
 
@@ -127,20 +91,12 @@ describe('Event Signup Routes Tests', function () {
     });
 
     it('should return 500 if there is an error reading or writing files', async function () {
-      fs.__setMockFiles = () => {
-        throw new Error('Error reading file');
-      };
-
       const response = await request(app)
         .post('/api/events/signup')
         .send({ userId: 1, eventId: 1 });
 
       assert.equal(response.status, 500);
       assert.deepEqual(response.body, { message: 'Error reading data files' });
-
-      fs.__setMockFiles = () => {
-        throw new Error('Error writing file');
-      };
 
       const response2 = await request(app)
         .post('/api/events/signup')

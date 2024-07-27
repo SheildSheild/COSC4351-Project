@@ -1,5 +1,6 @@
 import express from 'express';
-import db from '../mongoConnect.js';
+// import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 import dayjs from 'dayjs';
 
 const router = express.Router();
@@ -8,6 +9,7 @@ const router = express.Router();
 router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
 
+  const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
   const usersCollection = db.collection("users");
   const eventsCollection = db.collection("events");
   const events = await eventsCollection.find({id: { $ne: -1 }}).toArray();
@@ -45,6 +47,7 @@ router.get('/:userId', async (req, res) => {
 router.delete('/:userId/:index', async (req, res) => {
   const { userId, index } = req.params;
 
+  const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
   const usersCollection = db.collection("users");
 
   try {
@@ -85,6 +88,7 @@ router.post('/:userId/accept', async (req, res) => {
   const { eventId } = req.body;
   const currentTime = dayjs().toISOString();
 
+  const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
   const usersCollection = db.collection("users");
   const eventsCollection = db.collection("events");
 
@@ -140,6 +144,7 @@ router.post('/:userId/accept', async (req, res) => {
 router.delete('/:userId/decline/:eventId', async (req, res) => {
   const { userId, eventId } = req.params; // Extract userId and eventId from request parameters
 
+  const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
   const usersCollection = db.collection("users");
 
   try {
