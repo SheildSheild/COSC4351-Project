@@ -1,12 +1,22 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
-const uri = "mongodb+srv://keeansmith1:keens@cosc4353.onpjljk.mongodb.net/?retryWrites=true&w=majority&appName=COSC4353";
+import { MongoClient } from 'mongodb';
 
-const client = new MongoClient(uri);
-let conn;
-try {
-  conn = await client.connect();
-} catch(e) {
-  console.error(e);
-}
-let db = conn.db("COSC4353");
-export default db;
+const uri = "mongodb+srv://keeansmith1:keens@cosc4353.onpjljk.mongodb.net/?retryWrites=true&w=majority&ssl=true";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+let db;
+
+const connectToDatabase = async () => {
+  try {
+    if (!db) {
+      await client.connect();
+      db = client.db("COSC4353");
+      console.log("Connected to database");
+    }
+    return db;
+  } catch (e) {
+    console.error("Error connecting to the database:", e);
+    throw e;
+  }
+};
+
+export default connectToDatabase;

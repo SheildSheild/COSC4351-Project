@@ -1,6 +1,6 @@
 import express from 'express';
-import db from '../mongoConnect.js';
-// import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
+// import db from '../mongoConnect.js';
+import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 
@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
   const { username, password, email } = req.body;
 
   try {
-    // const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const usersCollection = db.collection("users");
 
     const userExists = await usersCollection.findOne({ email });
@@ -102,7 +102,7 @@ router.get('/verify-email', async (req, res) => {
     const decoded = jwt.verify(token, jwtSecret);
     const { userId, email } = decoded;
 
-    // const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const usersCollection = db.collection("users");
 
     // Find the user and update the verified status
@@ -127,7 +127,7 @@ router.get('/verify-email', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
-    // const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
+    const db = await connectToDatabase(); // Commented out due to differences in mongoConnect.js
     const usersCollection = db.collection("users");
 
     // Find the user by email and password
