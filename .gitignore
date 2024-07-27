@@ -7,7 +7,6 @@
 /.pnp
 .pnp.js
 /server/cosc4353-35f65-firebase-adminsdk-5u4y6-655663d6f4.json
-/server/mongoConnect.js
 
 # testing
 /coverage
