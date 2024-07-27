@@ -33,6 +33,7 @@
     "pug": "2.0.0-beta11",
     "react-scripts": "^5.0.1",
     "react-test-renderer": "^18.3.1",
+    "semver": "^7.6.3",
     "text-encoding": "^0.7.0",
     "util": "^0.12.5"
   },
