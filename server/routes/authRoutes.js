@@ -1,12 +1,13 @@
 import express from 'express';
 // import db from '../mongoConnect.js';
+import { body, validationResult } from 'express-validator';
 import connectToDatabase from '../mongoConnect.js'; // Commented out due to differences in mongoConnect.js
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
-const jwtSecret = 'my_secret'; // Replace with your secret
+const jwtSecret = 'my_secret';
 const jwtExpiresIn = '1h'; // Token expiry time
 
 // Configure nodemailer
@@ -19,7 +20,15 @@ const transporter = nodemailer.createTransport({
 });
 
 // Handles user registration
-router.post('/register', async (req, res) => {
+router.post('/register', [
+  body('username').notEmpty().withMessage('Username is required'),
+  body('email').isEmail().withMessage('Valid email is required'),
+  body('password').notEmpty().withMessage('Password is required')
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const { username, password, email } = req.body;
 
   try {

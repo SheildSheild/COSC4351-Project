@@ -15,6 +15,10 @@ router.get('/:userId', async (req, res) => {
   const events = await eventsCollection.find({id: { $ne: -1 }}).toArray();
   const user = await usersCollection.findOne({ id: parseInt(userId) });
 
+  if(!user){
+    return res.status(404).json({ message: 'User not found' });
+  }
+  
   if(user && user.role == 'user'){
     if (user) {
       const offeredEventsDetails = user.offeredEvents.map(eventId => {
@@ -29,10 +33,8 @@ router.get('/:userId', async (req, res) => {
         notifications: user.notifications || [],
         offeredEvents: offeredEventsDetails
       });
-    } else {
-      res.status(404).json({ message: 'User not found' });
-    }
-  } else if(user && user.role == 'admin'){
+    } } 
+    else if(user && user.role == 'admin'){
     if (user) {
       res.status(200).json({
         notifications: Array.isArray(user.notifications) ? user.notifications : []

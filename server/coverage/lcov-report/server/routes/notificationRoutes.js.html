@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.44% </span>
+                <span class="strong">69.86% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>50/72</span>
+                <span class='fraction'>51/73</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60.6% </span>
+                <span class="strong">54.28% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>20/33</span>
+                <span class='fraction'>19/35</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.01% </span>
+                <span class="strong">69.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/71</span>
+                <span class='fraction'>50/72</span>
             </div>
         
             
@@ -238,7 +238,9 @@
 <a name='L173'></a><a href='#L173'>173</a>
 <a name='L174'></a><a href='#L174'>174</a>
 <a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,9 +259,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,8 +277,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -324,25 +328,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -430,8 +434,12 @@ router.get('/:userId', async (req, res) =&gt; {
   const events = await eventsCollection.find({id: { $ne: -1 }}).toArray();
   const user = await usersCollection.findOne({ id: parseInt(userId) });
 &nbsp;
+  if(!user){
+    return res.status(404).json({ message: 'User not found' });
+  }
+  
   if(user &amp;&amp; user.role == 'user'){
-    if (user) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (user) {
       const offeredEventsDetails = user.offeredEvents.map(eventId =&gt; {
         const event = events.find(e =&gt; e.id === eventId);
         return {
@@ -444,10 +452,8 @@ router.get('/:userId', async (req, res) =&gt; {
         notifications: user.notifications || <span class="branch-1 cbranch-no" title="branch not covered" >[],</span>
         offeredEvents: offeredEventsDetails
       });
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
-<span class="cstat-no" title="statement not covered" >      res.status(404).json({ message: 'User not found' });</span>
-    }
-  } else <span class="missing-if-branch" title="if path not taken" >I</span>if(user &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >user.role == 'admin')</span>{
+    } } 
+    else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if(user &amp;&amp; user.role == 'admin'){</span>
 <span class="cstat-no" title="statement not covered" >    if (user) {</span>
 <span class="cstat-no" title="statement not covered" >      res.status(200).json({</span>
         notifications: Array.isArray(user.notifications) ? user.notifications : []
@@ -595,7 +601,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-27T04:28:16.375Z
+                at 2024-08-03T23:01:12.754Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
