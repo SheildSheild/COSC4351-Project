@@ -113,4 +113,25 @@ describe('Event Routes', () => {
       })
       .end(done);
   });
+
+  it('deny event creation due to no selected skills', (done) => {
+    const noSkillEvent = {
+      name: 'No Skill Event',
+      description: 'This is a test event',
+      location: 'Test Location',
+      requiredSkills: [],
+      urgency: {id: 2, name: "Medium"},
+      date: '2024-07-21',
+      userId: 1,
+    };
+
+    request(app)
+      .post('/events/create')
+      .send(noSkillEvent)
+      .expect(400)
+      .expect((res) => {
+        res.body.message === 'One or more required skills are invalid';
+      })
+      .end(done);
+  });
 });

@@ -25,7 +25,7 @@ router.post('/create', async (req, res) => {
 
     const skills = await skillsCollection.find({ id: { $in: requiredSkills } }).toArray();
 
-    if (skills.length !== requiredSkills.length) {
+    if (!requiredSkills.length) {
       return res.status(400).json({ message: 'One or more required skills are invalid' });
     }
 

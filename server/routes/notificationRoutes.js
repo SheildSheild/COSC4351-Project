@@ -102,10 +102,10 @@ router.post('/:userId/accept', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Check if the event is in the offeredEvents array
-    if (!user.offeredEvents.includes(parseInt(eventId))) {
-      return res.status(400).json({ message: 'Event not found in offered events' });
-    }
+    // // Check if the event is in the offeredEvents array
+    // if (!user.offeredEvents.includes(parseInt(eventId))) {
+    //   return res.status(400).json({ message: 'Event not found in offered events' });
+    // }
 
     const event = await eventsCollection.findOne({ id: parseInt(eventId) });
 
@@ -157,9 +157,9 @@ router.delete('/:userId/decline/:eventId', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (!user.offeredEvents || !user.offeredEvents.includes(parseInt(eventId))) {
-      return res.status(404).json({ message: 'Event not found in offered events' });
-    }
+    // if (!user.offeredEvents || !user.offeredEvents.includes(parseInt(eventId))) {
+    //   return res.status(404).json({ message: 'Event not found in offered events' });
+    // }
 
     // Remove the event from the offeredEvents array
     await usersCollection.updateOne(

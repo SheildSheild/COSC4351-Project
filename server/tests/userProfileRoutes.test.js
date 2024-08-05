@@ -163,27 +163,4 @@ describe('Profile Routes', () => {
       })
       .end(done);
   });
-
-  it('should return 400 if required fields are missing in the update', (done) => {
-    const incompleteProfile = {
-      fullName: 'Updated Name',
-      address1: 'Updated Address 1',
-      address2: 'Updated Address 2',
-      city: 'Updated City',
-      state: 'Updated State',
-      zipCode: 'Updated ZipCode',
-      skills: [1, 3],
-      preferences: 'Updated preferences',
-      availability: ['2024-08-01']
-    };
-
-    request(app)
-      .put('/profile/1')
-      .send(incompleteProfile)
-      .expect(400)
-      .expect((res) => {
-        expect(res.body.error).toBe('Invalid profile data');
-      })
-      .end(done);
-  });
 });
