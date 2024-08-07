@@ -6,7 +6,7 @@ import {
   generatePDFReport,
   generateEventCSVReport,
   generateEventPDFReport
-} from '/Users/mahiralam/COSC4353-Project-6/server/controllers/reportsController.js';
+} from '../controllers/reportsController.js';
 
 const router = express.Router();
 
