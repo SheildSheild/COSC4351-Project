@@ -159,7 +159,7 @@ const UserEventPage = () => {
                   <br />
                   <span className="urgency">Urgency: {event.urgency.name}</span>
                   <br />
-                  {!isSignedUp && <button onClick={() => onEventClick(event)}>Sign Up</button>}
+                  {!isSignedUp && !(dayjs(availableEvents.find(e => e.id === event.id).date).isBefore(dayjs(), 'day')) && <button onClick={() => onEventClick(event)}>Sign Up</button>}
                 </li>
               );
             })}
