@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import events from '../mockData/fake_event.json';
+// import events from '../mockData/fake_event.json';
 import dayjs from 'dayjs';
 import './userEvents.css';
 import skillMapping from '../mockData/skillmapping.json'; // Import skill mapping
@@ -24,13 +24,13 @@ const UserEventPage = () => {
         .catch(error => console.error('Error fetching user:', error));
     }
         // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (user) {
       fetch('http://localhost:3000/api/events/all')
-        .then(response => response.json())
-        .then(events => {
+      .then(response => response.json())
+      .then(events => {
           const filteredEvents = events.filter(event =>
             user.skills.some(skill => event.requiredSkills.includes(skill))
           );
@@ -43,7 +43,7 @@ const UserEventPage = () => {
   const onDateChange = (date) => {
     setValue(date);
     setSelectedDate(date);
-    const userAvailableEvents = events.filter(event =>
+    const userAvailableEvents = userEvents.filter(event =>
       user.skills.some(skill => event.requiredSkills.includes(skill)) &&
       dayjs(event.date).isSame(date, 'day')
     );
@@ -51,7 +51,7 @@ const UserEventPage = () => {
   };
 
   const onEventClick = async (event) => {
-    const matchedEvent = userEvents.find(e => e.id === event.id);
+    const matchedEvent = availableEvents.find(e => e.id === event.id);
     if (matchedEvent) {
       const isInAvailability = user.availability.some(range => {
         const [start, end] = range.split(' - ');
