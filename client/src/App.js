@@ -11,6 +11,7 @@ import UserHistory from './components/userHistory/userHistory';
 import VolunteerMatchingForm from './components/volunteerMatching/matchingForm';
 import AdminNotifications from './components/adminNotifications/adminNotifications';
 import UserNotifications from './components/userNotifications/userNotifications';
+import AdminPromotions from './components/adminPromotions/adminPromotions';
 import Reports from './components/reports/reports';
 import logo from './images/volunLogo.png';
 import './App.css';
@@ -46,7 +47,7 @@ function App() {
   let links = [["", "Home"], ["Login", "Login"], ["Register", "Register"]];
   if (isLoggedIn) {
     if (user.role === 'admin') {
-      links = [["", "Home"], ["Profile", "User Profile"], ["Events", "Event Management"], ["volunteerMatching", "Match Volunteers"], ["AdminHistory", "Volunteer History"], ["AdminNotifications", "Notifications"], ["Reports", "Reports"], ["Logout", "Logout"]];
+      links = [["", "Home"], ["Profile", "User Profile"], ["Events", "Event Management"], ["volunteerMatching", "Match Volunteers"], ["AdminHistory", "Volunteer History"], ["AdminNotifications", "Notifications"], ["AdminPromotions", "Promotions"], ["Reports", "Reports"], ["Logout", "Logout"]];
     } else {
       links = [["", "Home"], ["Profile", "User Profile"], ["UserEventsPage", "View Events"], ["userHistory", "My History"], ["UserNotifications", "Notifications"], ["Logout", "Logout"]];
     }
@@ -66,6 +67,7 @@ function App() {
         <Route path="/UserHistory" element={<UserHistory />} />
         <Route path="/VolunteerMatching" element={<VolunteerMatchingForm />} />
         <Route path="/AdminNotifications" element={<AdminNotifications />} />
+        <Route path="/AdminPromotions" element={<AdminPromotions />} />
         <Route path="/UserNotifications" element={<UserNotifications />} />
         <Route path="/Reports" element={<Reports />} />
       </Routes>

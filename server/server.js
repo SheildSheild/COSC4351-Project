@@ -13,6 +13,7 @@ import userEventRoutes from './routes/userEventRoutes.js';
 import matchingRoutes from './routes/volunteerMatchingRoutes.js';
 import adminHistoryRoutes from './routes/adminHistoryRoutes.js';
 import reportsRoutes from './routes/reportsRoutes.js';
+import promotionRoutes from './routes/promotionRoutes.js'
 
 const serviceAccount = JSON.parse(readFileSync('./cosc4353-35f65-firebase-adminsdk-5u4y6-655663d6f4.json', 'utf8'));
 
@@ -35,6 +36,7 @@ app.use('/api/history', historyRoutes);
 app.use('/api/volunteer-matching', matchingRoutes);
 app.use('/api/adminHistory', adminHistoryRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/api/promotion', promotionRoutes);
 
 export default app;
 
