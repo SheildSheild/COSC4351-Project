@@ -79,7 +79,7 @@ const UserNotifications = () => {
           <li key={index}>
             <div>{notification.message}</div>
             <div>{notification.date}</div>
-            <button onClick={() => handleDelete(notification.id)}>Acknowledge</button>
+            <button onClick={() => handleDelete(index)}>Acknowledge</button>
           </li>
         ))}
       </ul>
