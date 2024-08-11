@@ -97,6 +97,16 @@ describe('Notifications Routes', () => {
       .end(done);
   });
 
+  it('should get user not found', (done) => {
+    request(app)
+      .delete('/notifications/500/decline/1')
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe('User not found');
+      })
+      .end(done);
+  });
+
   it('should return 404 if user not found', (done) => {
     request(app)
       .get('/notifications/999')
